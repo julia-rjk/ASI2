@@ -43,7 +43,7 @@ public class UserController {
     @PutMapping(Router.REGISTER)
     public void register(@RequestBody @Validated UserDTO userDto) {
         try {
-            userService.add(userDto);
+            userService.register(userDto);
         } catch (Exception e) {
             log.error("Error when registered the user : {}", e.getMessage());
         }
