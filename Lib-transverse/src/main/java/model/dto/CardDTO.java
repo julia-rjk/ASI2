@@ -11,5 +11,5 @@ public class CardDTO {
     private Float hp;
     private Float defence;
     private Float attack;
-    private String price;
+    private Float price;
 }
