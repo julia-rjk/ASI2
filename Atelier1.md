@@ -90,5 +90,14 @@ Source :
 
 - Quelles sont les fonctionnalités des différentes annotations en Springboot ?: 
     - @EnableJpaRepositories 
+        - Permet d'activer les JPA Repositories qui contiennent les API pour les opérations CRUD de base, les API pour la pagination et les API pour le tri.
+        - https://www.simplilearn.com/tutorials/jpa-tutorial/spring-boot-jpa
     - @EntityScan 
+        - Configure les paquets de base utilisés par l'autoconfiguration lors de la recherche de classes d'entités. 
+        L'utilisation de @EntityScan entraînera l'auto-configuration à :
+            -  Définit les paquets analysés pour les entités JPA.
+            - Définir le jeu d'entités initial utilisé avec les contextes de mapping Spring Data MongoDB, Neo4j, Cassandra et Couchbase.
+        - https://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/autoconfigure/domain/EntityScan.html
     - @ComponentScan 
+        - Indique à Spring d'analyser le paquet actuel et tous ses sous-paquets
+        - https://www.geeksforgeeks.org/spring-componentscan-annotation-with-example/
