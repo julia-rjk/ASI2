@@ -1,6 +1,11 @@
 ### IntelliJ IDEA ###
 .idea/
+
+### VsCode ###
 .vscode/
+
+### Java ###
+*.class
 
 ### NodeJS ###
 MS-Auth/node_modules
