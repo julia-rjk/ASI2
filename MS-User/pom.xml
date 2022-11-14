@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.asi2</groupId>
-	<artifactId>userService</artifactId>
+	<artifactId>ms-user</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>userService</name>
-	<description>userService</description>
+	<name>ms-user</name>
+	<description>ms-user</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
@@ -75,7 +75,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-		</plugins>a
+		</plugins>
 	</build>
 
 </project>
