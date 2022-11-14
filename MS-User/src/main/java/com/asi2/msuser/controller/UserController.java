@@ -1,5 +1,6 @@
 package com.asi2.msuser.controller;
 
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import model.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @ApiOperation(value = "", nickname = "getAllUsers")
     @GetMapping()
     public List<UserDTO> getAllUsers() {
         List<UserDTO> users = null;
@@ -30,6 +32,7 @@ public class UserController {
         }
     }
 
+    @ApiOperation(value = "", nickname = "getUserByid")
     @GetMapping(value = "/{id}")
     public UserDTO getUserByid(@PathVariable("id") Long id) {
         UserDTO userDto = null;
@@ -41,6 +44,7 @@ public class UserController {
         }
     }
 
+    @ApiOperation(value = "", nickname = "register")
     @PostMapping(Router.REGISTER)
     public UserDTO register(@RequestBody @Validated UserDTO userDto) {
         try {
@@ -54,6 +58,7 @@ public class UserController {
         return null;
     }
 
+    @ApiOperation(value = "", nickname = "login")
     @PutMapping(Router.LOGIN)
     public UserDTO login(@RequestBody UserDTO userDTO) {
         try {
