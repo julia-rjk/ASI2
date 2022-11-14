@@ -59,4 +59,26 @@ public class WebService {
             return null;
         }
     }
+
+    public static <T> String put(String url, T objectToUpdate) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            RestTemplate restTemplate = new RestTemplate();
+
+            // Set the header
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.valueOf(MediaType.APPLICATION_JSON_VALUE));
+
+            // Set the request
+            HttpEntity<String> request = new HttpEntity<>(mapper.writeValueAsString(objectToUpdate), headers);
+
+            // Send
+            restTemplate.put(url, request);
+
+            return "OK";
+        } catch (Exception e) {
+            log.error("Error when PUT URL=[{}] : {}", url, e.getMessage());
+            return null;
+        }
+    }
 }
