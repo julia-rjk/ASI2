@@ -71,7 +71,7 @@ public class CardServiceImpl implements CardService {
         String request = globalProperty.getUrlCardBasics();
         String response = WebService.get(request);
 
-        if(response != null) {
+        if(response != null && response.length() != 0) {
             // Mapping all card models
             List<CardBasicsDTO> cardModelsList;
             try {

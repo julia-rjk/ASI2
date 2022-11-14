@@ -1,11 +1,10 @@
 package com.asi2.msstore.controller;
 
-import com.asi2.msstore.model.StoreOrder;
+import com.asi2.msstorepublic.model.StoreOrder;
 import com.asi2.msstore.model.StoreTransaction;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 //ONLY FOR TEST NEED ALSO TO ALLOW CROOS ORIGIN ON WEB BROWSER SIDE
@@ -35,5 +34,4 @@ public class StoreRestController {
 	private List<StoreTransaction> getCard() {
 		return storeService.getAllTransactions();
 	}
-
 }
