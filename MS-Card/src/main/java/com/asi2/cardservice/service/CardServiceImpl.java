@@ -71,36 +71,37 @@ public class CardServiceImpl implements CardService {
         String request = globalProperty.getUrlCardBasics();
         String response = WebService.get(request);
 
-        // Mapping all card models
-        List<CardBasicsDTO> cardModelsList;
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            cardModelsList = mapper.readValue(response, new TypeReference<>() {
-            });
-        } catch (JsonProcessingException e) {
-            log.error("Error when mapping card models : {}", e.getMessage());
-            return null;
-        }
+        if(response != null) {
+            // Mapping all card models
+            List<CardBasicsDTO> cardModelsList;
+            try {
+                ObjectMapper mapper = new ObjectMapper();
+                cardModelsList = mapper.readValue(response, new TypeReference<>() {});
+            } catch (JsonProcessingException e) {
+                log.error("Error when mapping card models : {}", e.getMessage());
+                return null;
+            }
 
-        // Generate card from models with random stats
-        if (cardModelsList != null) {
-            Card card = new Card();
-            CardBasicsDTO cardBasicsDTO = cardModelsList.get(generateRandomIntegerValue(0, cardModelsList.size() - 1));
+            // Generate card from models with random stats
+            if (cardModelsList != null) {
+                Card card = new Card();
+                CardBasicsDTO cardBasicsDTO = cardModelsList.get(generateRandomIntegerValue(0, cardModelsList.size() - 1));
 
-            card.setIdCardBasics(cardBasicsDTO.getId());
-            card.setIdUser(userDTO.getId());
-            card.setEnergy(generateRandomFloatValue(Game.ENERGY_MIN, Game.ENERGY_MAX));
-            card.setHp(generateRandomFloatValue(Game.HP_MIN, Game.HP_MAX));
-            card.setDefence(generateRandomFloatValue(Game.DEFENCE_MIN, Game.DEFENCE_MAX));
-            card.setAttack(generateRandomFloatValue(Game.ATTACK_MIN, Game.ATTACK_MAX));
-            card.setPrice(generateRandomFloatValue(Game.PRICE_MIN, Game.PRICE_MAX));
+                card.setIdCardBasics(cardBasicsDTO.getId());
+                card.setIdUser(userDTO.getId());
+                card.setEnergy(generateRandomFloatValue(Game.ENERGY_MIN, Game.ENERGY_MAX));
+                card.setHp(generateRandomFloatValue(Game.HP_MIN, Game.HP_MAX));
+                card.setDefence(generateRandomFloatValue(Game.DEFENCE_MIN, Game.DEFENCE_MAX));
+                card.setAttack(generateRandomFloatValue(Game.ATTACK_MIN, Game.ATTACK_MAX));
+                card.setPrice(generateRandomFloatValue(Game.PRICE_MIN, Game.PRICE_MAX));
 
-            if(save(card)) {
-                CardDTO cardDTO = Mapper.map(card, CardDTO.class);
-                cardDTO.setModel(cardBasicsDTO);
-                return cardDTO;
-            } else {
-                log.error("Error when generating a card");
+                if(save(card)) {
+                    CardDTO cardDTO = Mapper.map(card, CardDTO.class);
+                    cardDTO.setModel(cardBasicsDTO);
+                    return cardDTO;
+                } else {
+                    log.error("Error when generating a card");
+                }
             }
         }
 
