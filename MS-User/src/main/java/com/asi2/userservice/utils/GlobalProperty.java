@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class GlobalProperty {
-    @Value("webservice.url.card")
+    @Value("${webservice.url.card}")
     private String urlCard;
 
     public String getUrlCard() {

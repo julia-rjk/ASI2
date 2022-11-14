@@ -4,13 +4,18 @@ import com.asi2.userservice.constant.Game;
 import com.asi2.userservice.model.User;
 import com.asi2.userservice.repository.UserDAO;
 import com.asi2.userservice.utils.GlobalProperty;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import model.dto.CardDTO;
 import model.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import utils.Mapper;
 import utils.WebService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -38,7 +43,9 @@ public class UserServiceImpl implements UserService {
         try {
             if (userDao.findById(id).isPresent()) {
                 User user = userDao.findById(id).get();
-                return Mapper.map(user, UserDTO.class);
+                UserDTO userDTO = Mapper.map(user, UserDTO.class);
+                userDTO.setCards(getAllCardsOfUser(user));
+                return userDTO;
             } else {
                 log.info("The user[{}] doesn't exist", id);
             }
@@ -68,18 +75,50 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Boolean register(UserDTO userDto) {
+        User user = Mapper.map(userDto, User.class);
         try {
-            User user = Mapper.map(userDto, User.class);
+            // Needed to have an id
+            if (save(user)) {
+                // Set up the default deck of the user
+                String response;
+                ObjectMapper mapper = new ObjectMapper();
+                List<Long> idUserCards = new ArrayList<>();
+                for (int i = 0; i < Game.MINIMUM_CARD; i++) {
+                    // Call Card Service to set up default card for the user
+                    response = WebService.post(globalProperty.getUrlCard(), user);
 
-            // Call Card Service to set up default card for the user
-            String response = WebService.get(globalProperty.getUrlCard());
+                    // Mapping from JSON to DTO
+                    if (response != null) {
+                        CardDTO card = mapper.readValue(response, CardDTO.class);
+                        idUserCards.add(card.getId());
+                    } else {
+                        log.error("An error occured with the Card Service or the service is not available");
+                        userDao.delete(user);
+                        return Boolean.FALSE;
+                    }
+                }
 
-            save(user);
-            return true;
+                // Set all id of cards to user
+                user.setAccount(Game.BASE_ACCOUNT);
+                user.setIdCardList(idUserCards);
+
+                if (save(user)) {
+                    userDto.setId(user.getId());
+                    return Boolean.TRUE;
+                }
+            } else {
+                log.error("An error occured during the creation of the user");
+                userDao.delete(user);
+            }
+        } catch (JsonMappingException e) {
+            userDao.delete(user);
+            log.error("Error when mapping the card for user: {} ", e.getMessage());
         } catch (Exception e) {
-            log.error("Error when saving in the database : {} ", e.getMessage());
-            return Boolean.FALSE;
+            userDao.delete(user);
+            log.error("Error when register the user : {} ", e.getMessage());
         }
+
+        return Boolean.FALSE;
     }
 
     @Override
@@ -92,7 +131,35 @@ public class UserServiceImpl implements UserService {
         // TODO When it'll be useful
     }
 
-    private void save(User user) {
-        userDao.save(user);
+    private Boolean save(User user) {
+        try {
+            userDao.save(user);
+            return Boolean.TRUE;
+        } catch (Exception e) {
+            log.error("Error when saving entity to database : {}", e.getMessage());
+            return Boolean.FALSE;
+        }
+    }
+
+    private List<CardDTO> getAllCardsOfUser(User user) {
+        ObjectMapper mapper = new ObjectMapper();
+        List<CardDTO> cards = new ArrayList<>();
+        for (int i = 0; i < user.getIdCardList().size(); i++) {
+            // Call Card Service to set up default card for the user
+            String response = WebService.get(globalProperty.getUrlCard() + "/" + user.getIdCardList().get(i));
+
+            // Mapping the response
+            try {
+                if (response != null) {
+                    cards.add(mapper.readValue(response, CardDTO.class));
+                } else {
+                    log.error("An error occured with the Card Service or the service is not available");
+                }
+
+            } catch (JsonProcessingException e) {
+                log.error("Error when mapping the card for user: {} ", e.getMessage());
+            }
+        }
+        return cards;
     }
 }

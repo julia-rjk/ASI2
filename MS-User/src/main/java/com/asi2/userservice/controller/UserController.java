@@ -40,16 +40,20 @@ public class UserController {
         }
     }
 
-    @PutMapping(Router.REGISTER)
-    public void register(@RequestBody @Validated UserDTO userDto) {
+    @PostMapping(Router.REGISTER)
+    public UserDTO register(@RequestBody @Validated UserDTO userDto) {
         try {
-            userService.register(userDto);
+            if(userService.register(userDto)) {
+                return userDto;
+            }
         } catch (Exception e) {
             log.error("Error when registered the user : {}", e.getMessage());
         }
+
+        return null;
     }
 
-    @PostMapping(Router.LOGIN)
+    @PutMapping(Router.LOGIN)
     public UserDTO login(@RequestBody UserDTO userDTO) {
         try {
             return userService.login(userDTO.getLogin(), userDTO.getPassword());

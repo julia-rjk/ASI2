@@ -28,7 +28,7 @@ public class CardBasicsController {
         }
     }
 
-    @PutMapping
+    @PostMapping
     public CardBasicsDTO createCardBasics(@RequestBody @Validated CardBasicsDTO cardBasicsDTO) {
         try {
             if (cardBasicsService.add(cardBasicsDTO)) {

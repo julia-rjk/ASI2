@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import model.dto.CardBasicsDTO;
 import model.dto.CardDTO;
+import model.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import utils.Mapper;
@@ -62,7 +63,7 @@ public class CardServiceImpl implements CardService {
      * @return the card generated
      */
     @Override
-    public CardDTO generateCard(Long idUser) {
+    public CardDTO generateCard(UserDTO userDTO) {
 
         // Get all card model from CardBasics service
         String request = globalProperty.getUrlCardBasics();
@@ -82,10 +83,10 @@ public class CardServiceImpl implements CardService {
         // Generate card from models with random stats
         if (cardModelsList != null) {
             Card card = new Card();
-            CardBasicsDTO cardBasicsDTO = cardModelsList.get(generateRandomIntegerValue(0, cardModelsList.size()));
+            CardBasicsDTO cardBasicsDTO = cardModelsList.get(generateRandomIntegerValue(0, cardModelsList.size() - 1));
 
             card.setIdCardBasics(cardBasicsDTO.getId());
-            card.setIdUser(idUser);
+            card.setIdUser(userDTO.getId());
             card.setEnergy(generateRandomFloatValue(Game.ENERGY_MIN, Game.ENERGY_MAX));
             card.setHp(generateRandomFloatValue(Game.HP_MIN, Game.HP_MAX));
             card.setDefence(generateRandomFloatValue(Game.DEFENCE_MIN, Game.DEFENCE_MAX));
@@ -118,7 +119,6 @@ public class CardServiceImpl implements CardService {
     }
 
     private int generateRandomIntegerValue(int min, int max) {
-        Random random = new Random();
-        return min + random.nextInt() * (max - min);
+        return new Random().nextInt((max - min) + 1) + min;
     }
 }
