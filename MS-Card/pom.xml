@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.asi2</groupId>
-	<artifactId>cardService</artifactId>
+	<artifactId>ms-card</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>cardService</name>
-	<description>cardService</description>
+	<name>ms-card</name>
+	<description>ms-card</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
