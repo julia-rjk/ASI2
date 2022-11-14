@@ -28,7 +28,18 @@ public class CardBasicsController {
         }
     }
 
-    @PutMapping
+    @GetMapping("/{id}")
+    public CardBasicsDTO getCardBasicsById(@PathVariable Long id) {
+        CardBasicsDTO model = null;
+        try {
+            return cardBasicsService.findById(id);
+        } catch (Exception e) {
+            log.error("Error when retrieving all model of cards : {}", e.getMessage());
+            return null;
+        }
+    }
+
+    @PostMapping
     public CardBasicsDTO createCardBasics(@RequestBody @Validated CardBasicsDTO cardBasicsDTO) {
         try {
             if (cardBasicsService.add(cardBasicsDTO)) {

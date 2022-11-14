@@ -2,6 +2,8 @@ package model.dto;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class UserDTO {
     private Long id;
@@ -11,4 +13,5 @@ public class UserDTO {
     private String lastName;
     private String surName;
     private String email;
+    private List<CardDTO> cards;
 }

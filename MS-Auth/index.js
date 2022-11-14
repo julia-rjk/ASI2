@@ -3,8 +3,10 @@ const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken');
 const app = express();
 const bodyParser = require('body-parser');
+const axios = require('axios')
+
 app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({extended: true}))
+app.use(bodyParser.urlencoded({ extended: true }))
 
 // Set up Global configuration access
 dotenv.config();
@@ -14,39 +16,37 @@ app.listen(PORT, () => {
     console.log(`Server is up and running on ${PORT} ...`);
 });
 
-// Main Code Here  //
-// Generating JWT
-app.post("/user/generateToken", (req, res) => {
-    // Validate User Here
+app.post("/user/generateToken", async (req, res) => {
     console.log(req.body)
-    if (req.body.username=="" && req.body.password=="") {
-        // Then generate JWT Token
-        let jwtSecretKey = process.env.JWT_SECRET_KEY;
-        let data = {
-            time: Date(),
-            usernmae: req.body.username
+    return await axios.get(process.env.URL_MS_USER_GET, { login: req.body.login, password: req.body.password }).then(res => {
+        if (res.data) {
+            // Then generate JWT Token
+            let jwtSecretKey = process.env.JWT_SECRET_KEY;
+            let data = {
+                time: Date(),
+                username: req.body.login
+            }
+
+            const options = {
+                expiresIn: process.env.JWT_EXPIRY,
+                algorithm: 'HS256'
+            }
+
+            const token = jwt.sign(data, jwtSecretKey, options);
+            res.send(token);
+        } else {
+            return res.status(401).send("Invalid credentials.");
         }
-
-        const options = {
-            expiresIn: process.env.JWT_EXPIRY,
-            algorithm: 'HS256'
-          }
-
-        const token = jwt.sign(data, jwtSecretKey, options);
-        res.send(token);
-    } else {
+    }).catch(err => {
+        console.log(err)
         return res.status(401).send("Invalid credentials.");
-    }
+    })
 });
 
 // Verification of JWT
 app.get("/user/validateToken", (req, res) => {
-    // Tokens are generally passed in header of request
-    // Due to security reasons.
-
     let tokenHeaderKey = process.env.TOKEN_HEADER_KEY;
     let jwtSecretKey = process.env.JWT_SECRET_KEY;
-
     try {
         const token = req.header(tokenHeaderKey);
         const verified = jwt.verify(token, jwtSecretKey);

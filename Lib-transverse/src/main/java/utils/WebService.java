@@ -1,6 +1,7 @@
 package utils;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -41,6 +42,7 @@ public class WebService {
      */
     public static <T> String post(String url, T objectToSend) {
         try {
+            ObjectMapper mapper = new ObjectMapper();
             RestTemplate restTemplate = new RestTemplate();
 
             // Set the header
@@ -48,7 +50,7 @@ public class WebService {
             headers.setContentType(MediaType.valueOf(MediaType.APPLICATION_JSON_VALUE));
 
             // Set the request
-            HttpEntity<String> request = new HttpEntity<>(objectToSend.toString(), headers);
+            HttpEntity<String> request = new HttpEntity<>(mapper.writeValueAsString(objectToSend), headers);
 
             // Send
             return restTemplate.postForObject(url, request, String.class);

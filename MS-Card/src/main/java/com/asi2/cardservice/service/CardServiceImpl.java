@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import model.dto.CardBasicsDTO;
 import model.dto.CardDTO;
+import model.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import utils.Mapper;
@@ -43,7 +44,9 @@ public class CardServiceImpl implements CardService {
         try {
             if (cardDAO.findById(id).isPresent()) {
                 Card card = cardDAO.findById(id).get();
-                return Mapper.map(card, CardDTO.class);
+                CardDTO cardDTO = Mapper.map(card, CardDTO.class);
+                cardDTO.setModel(getModelOfCard(card));
+                return cardDTO;
             } else {
                 log.info("The card[{}] doesn't exist", id);
             }
@@ -62,7 +65,7 @@ public class CardServiceImpl implements CardService {
      * @return the card generated
      */
     @Override
-    public CardDTO generateCard(Long idUser) {
+    public CardDTO generateCard(UserDTO userDTO) {
 
         // Get all card model from CardBasics service
         String request = globalProperty.getUrlCardBasics();
@@ -82,10 +85,10 @@ public class CardServiceImpl implements CardService {
         // Generate card from models with random stats
         if (cardModelsList != null) {
             Card card = new Card();
-            CardBasicsDTO cardBasicsDTO = cardModelsList.get(generateRandomIntegerValue(0, cardModelsList.size()));
+            CardBasicsDTO cardBasicsDTO = cardModelsList.get(generateRandomIntegerValue(0, cardModelsList.size() - 1));
 
             card.setIdCardBasics(cardBasicsDTO.getId());
-            card.setIdUser(idUser);
+            card.setIdUser(userDTO.getId());
             card.setEnergy(generateRandomFloatValue(Game.ENERGY_MIN, Game.ENERGY_MAX));
             card.setHp(generateRandomFloatValue(Game.HP_MIN, Game.HP_MAX));
             card.setDefence(generateRandomFloatValue(Game.DEFENCE_MIN, Game.DEFENCE_MAX));
@@ -93,7 +96,9 @@ public class CardServiceImpl implements CardService {
             card.setPrice(generateRandomFloatValue(Game.PRICE_MIN, Game.PRICE_MAX));
 
             if(save(card)) {
-                return Mapper.map(card, CardDTO.class);
+                CardDTO cardDTO = Mapper.map(card, CardDTO.class);
+                cardDTO.setModel(cardBasicsDTO);
+                return cardDTO;
             } else {
                 log.error("Error when generating a card");
             }
@@ -118,7 +123,26 @@ public class CardServiceImpl implements CardService {
     }
 
     private int generateRandomIntegerValue(int min, int max) {
-        Random random = new Random();
-        return min + random.nextInt() * (max - min);
+        return new Random().nextInt((max - min) + 1) + min;
+    }
+
+    private CardBasicsDTO getModelOfCard(Card card) {
+        // Get the card model from CardBasics service
+        String request = globalProperty.getUrlCardBasics() + "/" + card.getIdCardBasics();
+        String response = WebService.get(request);
+
+        if(response != null) {
+            CardBasicsDTO cardBasicsDTO;
+            try {
+                ObjectMapper mapper = new ObjectMapper();
+                return mapper.readValue(response, CardBasicsDTO.class);
+            } catch (JsonProcessingException e) {
+                log.error("Error when mapping card models : {}", e.getMessage());
+            }
+        } else {
+            log.error("Error when getting the model of card from the CardBasics Service");
+        }
+
+        return null;
     }
 }
