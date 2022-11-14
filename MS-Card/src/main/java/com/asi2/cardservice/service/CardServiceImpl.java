@@ -44,7 +44,9 @@ public class CardServiceImpl implements CardService {
         try {
             if (cardDAO.findById(id).isPresent()) {
                 Card card = cardDAO.findById(id).get();
-                return Mapper.map(card, CardDTO.class);
+                CardDTO cardDTO = Mapper.map(card, CardDTO.class);
+                cardDTO.setModel(getModelOfCard(card));
+                return cardDTO;
             } else {
                 log.info("The card[{}] doesn't exist", id);
             }
@@ -94,7 +96,9 @@ public class CardServiceImpl implements CardService {
             card.setPrice(generateRandomFloatValue(Game.PRICE_MIN, Game.PRICE_MAX));
 
             if(save(card)) {
-                return Mapper.map(card, CardDTO.class);
+                CardDTO cardDTO = Mapper.map(card, CardDTO.class);
+                cardDTO.setModel(cardBasicsDTO);
+                return cardDTO;
             } else {
                 log.error("Error when generating a card");
             }
@@ -120,5 +124,25 @@ public class CardServiceImpl implements CardService {
 
     private int generateRandomIntegerValue(int min, int max) {
         return new Random().nextInt((max - min) + 1) + min;
+    }
+
+    private CardBasicsDTO getModelOfCard(Card card) {
+        // Get the card model from CardBasics service
+        String request = globalProperty.getUrlCardBasics() + "/" + card.getIdCardBasics();
+        String response = WebService.get(request);
+
+        if(response != null) {
+            CardBasicsDTO cardBasicsDTO;
+            try {
+                ObjectMapper mapper = new ObjectMapper();
+                return mapper.readValue(response, CardBasicsDTO.class);
+            } catch (JsonProcessingException e) {
+                log.error("Error when mapping card models : {}", e.getMessage());
+            }
+        } else {
+            log.error("Error when getting the model of card from the CardBasics Service");
+        }
+
+        return null;
     }
 }
