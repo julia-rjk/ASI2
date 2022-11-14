@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 //ONLY FOR TEST NEED ALSO TO ALLOW CROOS ORIGIN ON WEB BROWSER SIDE
 @CrossOrigin
 @RestController
-@RequestMapping(value="/store")
+@RequestMapping(value="/api/store")
 public class StoreRestController {
 
 	private final StoreService storeService;
@@ -30,7 +30,7 @@ public class StoreRestController {
 		return storeService.sellCard(order.getUser_id(), order.getCard_id());
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "/transaction")
+	@RequestMapping(method = RequestMethod.GET, value = "")
 	private List<StoreTransaction> getCard() {
 		return storeService.getAllTransactions();
 	}

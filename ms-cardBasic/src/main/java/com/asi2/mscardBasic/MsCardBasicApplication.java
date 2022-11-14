@@ -1,13 +1,13 @@
-package com.asi2.msstore;
+package com.asi2.mscardBasic;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class MsStoreApplication {
+public class MsCardBasicApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(MsStoreApplication.class, args);
+		SpringApplication.run(MsCardBasicApplication.class, args);
 	}
 
 }

@@ -12,7 +12,7 @@
 	<artifactId>ms-store</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>ms-store</name>
-	<description>Micro-service for the store. With this service you can bye and sell cards</description>
+	<description>Micro-service for the store. With this service you can buy and sell cards</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
@@ -69,17 +69,6 @@
 			<artifactId>ms-store-public</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 			<scope>compile</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-boot-starter</artifactId>
-			<version>3.0.0</version>
-		</dependency>
-		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger-ui</artifactId>
-			<version>3.0.0</version>
 		</dependency>
 	</dependencies>
 
