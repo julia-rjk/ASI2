@@ -41,12 +41,20 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
+<<<<<<< HEAD
         <dependency>
             <groupId>com.asi2</groupId>
             <artifactId>transverse</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
+=======
+		<dependency>
+			<groupId>com.asi2</groupId>
+			<artifactId>transverse</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+>>>>>>> da6ad0e0818669210450956fffdf58c476e0893f
     </dependencies>
 
 	<build>
