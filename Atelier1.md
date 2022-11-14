@@ -2,9 +2,18 @@
 
 ## Tableau  récapitulatif  des  bus  de  communication  les  plus  répandus  (avantage/inconvénients) 
 
-| Aspect |  Apache ActiveMQ  | Test | Test |
+| Aspect |  Apache ActiveMQ  | RabbitMQ | Apache Kafka |
 |-----------|-------|-----|---------|
-|**Open source**| Oui|Test|Test|
+|**Open source**| Oui|Oui|Oui|
+|**Développé par**| Apache Software Foundation|Pivotal|Oui|
+|**Langage**| Java|Erlang / OTP |Oui|
+|**Transaction**| JMS & XA| -- |Pas de support|
+|**Plateforme de message**| Push-type| -- |Pull-type|
+|**Broker**| 2 brokers| 1 broker | -- |
+
+Source : 
+- https://www.educba.com/activemq-vs-rabbitmq/
+- https://www.educba.com/activemq-vs-kafka/
 
 ## Framework frontend
 
@@ -61,21 +70,34 @@
     - 
     
 - Quels avantages proposent un bus de communication vis-à-vis de requêtes http classiques ? 
-    - 
+    - Facilite la communication en normalisant les données dans un même format
+    - Garantit la sécurité 
 
 - Comment faire pour partager des modules Maven avec un partenaire extérieur ? 
-    - 
+    - Faire un maven plugin / jar
 
 - Comment faire pour exporter un composant REACTJS ? 
-    - 
+    - "export default App"
+    - "export {Greet as Greeting}"
 
 - Quel est le pré-requis pour Springboot afin de pouvoir convertir automatiquement le message reçu dans un bus de communication en objet ? 
-    - 
+    - Il faut injecter la dépendance jmsTemplate
+    - "jmsTemplate.convertAndSend("RESULT_BUS_MNG",msg);"
 
 - Comment est réalisée la traduction des messages reçus (bus de communication ou request http) en objet Java ? Quelles sont les prérequis ? Est-ce toujours possible ? 
-    - 
+    - On utilise un DTO : "@RequestBody @Validated UserDTO userDto"
+    - [ A COMPLETER ]
 
 - Quelles sont les fonctionnalités des différentes annotations en Springboot ?: 
     - @EnableJpaRepositories 
+        - Permet d'activer les JPA Repositories qui contiennent les API pour les opérations CRUD de base, les API pour la pagination et les API pour le tri.
+        - https://www.simplilearn.com/tutorials/jpa-tutorial/spring-boot-jpa
     - @EntityScan 
+        - Configure les paquets de base utilisés par l'autoconfiguration lors de la recherche de classes d'entités. 
+        L'utilisation de @EntityScan entraînera l'auto-configuration à :
+            -  Définit les paquets analysés pour les entités JPA.
+            - Définir le jeu d'entités initial utilisé avec les contextes de mapping Spring Data MongoDB, Neo4j, Cassandra et Couchbase.
+        - https://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/autoconfigure/domain/EntityScan.html
     - @ComponentScan 
+        - Indique à Spring d'analyser le paquet actuel et tous ses sous-paquets
+        - https://www.geeksforgeeks.org/spring-componentscan-annotation-with-example/
