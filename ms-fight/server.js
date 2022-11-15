@@ -26,48 +26,19 @@ io.on('connection', socket => {
         joinWaitingList(socket, user );
     });
 
-    // socket.on('play', ({ username }) => {
-
-    //     if(usersWaiting.length == 0){
-    //         usersWaiting.push(username)
-    //     }else{
-
-    //     }
-
-
-    //     const user = newUser(socket.id, username, room);
-
-    //     socket.join(user.room);
-
-    //     // General welcome
-    //     socket.emit('message', formatMessage("", 'Bienvenue '));
-
-    //     // Broadcast everytime users connects
-    //     socket.broadcast
-    //         .to(user.room)
-    //         .emit(
-    //             'message',
-    //             formatMessage("--", `${user.username} a rejoint le chat`)
-    //         );
-
-    //     // Current active users and room name
-    //     io.to(user.room).emit('roomUsers', {
-    //         room: user.room,
-    //         users: getIndividualRoomUsers(user.room)
-    //     });
-    // });
-
-    // // Listen for client message
-    // socket.on('chatMessage', msg => {
-    //     const user = getActiveUser(socket.id);
-
-    //     io.to(user.room).emit('message', formatMessage(user.username, msg));
-    // });
-
     // Runs when client disconnects
     socket.on('disconnect', () => {
         console.log("disconnect")
     });
+
+    socket.on('attack', ( { gameID, userID, attackingCard, attackedCard }) => {
+        attack(gameID, userID, attackingCard, attackedCard)
+    });
+
+    socket.on('endTurn', ( { gameID, userID }) => {
+        endTurn(gameID, userID)
+    });
+
 });
 
 // L'utilisateur rejoint la liste d'attente
@@ -117,17 +88,69 @@ function startNewPlay(usersPlaying){
             "name": user2.username,
             "actionPoint" : user2.actionPoint,
             "cards" : user2.cards
-        }
+        },
+        "nextTurn": user1.id
     }   
     currentGames.push(game)
-    // Avertit les utilisateurs séléctionnés encore dans la liste d'attente qu'ils vont jouer 
+    // Avertit les utilisateurs séléctionnés, encore dans la liste d'attente, qu'ils vont jouer 
     // accompagné des informations 
     io.to("waitingRoom").emit('startingPlay', { game, usersPlaying });
 }
 
+function attack(gameID, userID, attackedCard, attackingCard){
+    let currentGame = getGameById(gameID)
+    let userPlaying, userAttacked;
 
-function play(id, user, action){
+    if(userID == currentGame.user1.id){ userPlaying = "user1"; userAttacked = "user2"}
+    else{ userPlaying = "user2"; userAttacked = "user1"}
+        
+    if(currentGame.nextTurn == userID){
+
+        // On enlève les points d'actions du joueur 
+
+        //TODO: Implémenter les actions d'attaques, esquives etc
+
+        // Change le tour
+        if(userID == currentGame.user1.id) currentGame.nextTurn = currentGame.user2.id
+        else currentGame.nextTurn = currentGame.user1.id
+
+        // On sauvegarde le jeu 
+        updateGame(currentGame)
+    }
+
+}
+
+
+function getGameById(gameID){
+    for(let game of currentGames){
+        if(game.id == gameID) return game;
+    }
+}
+
+function updateGame(currentGame){
+    //TODO: Sauvegarder les modifications
+
     
+    //TODO: Avertir des modifs
+    sendPlayActions(currentGame)
+}
+
+function endTurn(gameID, userID){
+    let currentGame = getGameById(gameID)
+    if(userID == currentGame.user1.id) currentGame.nextTurn = currentGame.user2.id
+    else currentGame.nextTurn = currentGame.user1.id
+    updateGame(currentGame);
+
+}
+
+//TODO: 
+function endGame(currentGame){
+
+}
+
+//TODO:
+function sendPlayActions(game){
+    io.emit('playAction', { game, usersPlaying });
 }
 
 // ---------------------------------

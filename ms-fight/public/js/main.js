@@ -34,17 +34,45 @@ socket.on('startingPlay', ({ game, usersPlaying }) => {
         if(game.user1.id == user.id)
             alert("You are player 1\nSTARTING TO PLAY WITH "  + game.user2.name)
         else alert("You are player 2\nSTARTING TO PLAY WITH "  + game.user1.name)
-        console.log("Starting to play !!! ")
-        console.log(game)
-        console.log(users)
+        
+        if(game.nextTurn == user.id){
+            //TODO
+            alert("It's your turn"); 
+        }else{
+            //TODO
+            alert("Waiting for your turn"); 
+        }
+        
     }
     
 });
 
+
+socket.on('playAction', ({ game, usersPlaying }) => {
+
+    // On vérifie si l'info concerne les bons utilisateurs dans la bonne partie
+    if(usersPlaying.includes(user.id) && game.id == gameID){
+
+        if(game.nextTurn == user.id){
+            //TODO
+            alert("It's your turn"); 
+        }else{
+            //TODO
+            alert("Waiting for your turn"); 
+        }
+    }
+    
+});
+
+
 function attack(){
-    let attackedCard = 1;
+    let attackedCard = 1; //TODO: Récupérer les cartes sélectionnées
     let attackingCard = 1;
-    socket.emit('play', { gameID, userID, attackingCard, attackedCard });
+    socket.emit('attack', { gameID, userID, attackingCard, attackedCard });
+}
+
+function endTurn(){
+    socket.emit('endTurn', { gameID, userID });
 }
 
 // Add room name to DOM
