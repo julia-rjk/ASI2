@@ -56,4 +56,14 @@ public class CardController {
             return null;
         }
     }
+
+    @DeleteMapping("/{id}")
+    public Boolean deleteCard(@PathVariable Long id) {
+        try {
+            return cardService.deleteCard(id);
+        } catch (Exception e) {
+            log.error("An error occurred when deleting the card : {}", e.getMessage());
+            return Boolean.FALSE;
+        }
+    }
 }

@@ -11,4 +11,7 @@ public interface CardService {
     CardDTO findById(Long id);
 
     CardDTO generateCard(UserDTO userDTO);
+
+    Boolean deleteCard(Long id);
+
 }
