@@ -6,6 +6,261 @@
 	},
 	"item": [
 		{
+			"name": "MS-CardBasic",
+			"item": [
+				{
+					"name": "Create  Card Basic",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"GigaCha\",\r\n    \"description\":\"Juste le boss en faite\",\r\n    \"family\":\"Giga\",\r\n    \"imgUrl\":\"https://i.kym-cdn.com/entries/icons/original/000/026/152/gigachad.jpg\",\r\n    \"smallImgUrl\":\"https://i.kym-cdn.com/entries/icons/original/000/026/152/gigachad.jpg\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8083/api/cardbasics/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8083",
+							"path": [
+								"api",
+								"cardbasics",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Cards Basics",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8083/api/cardbasics",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8083",
+							"path": [
+								"api",
+								"cardbasics"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Card Basic",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8083/api/cardbasics/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8083",
+							"path": [
+								"api",
+								"cardbasics",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Card Basic",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8083/api/cardbasics/33",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8083",
+							"path": [
+								"api",
+								"cardbasics",
+								"33"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "MS-User",
+			"item": [
+				{
+					"name": "Register User 1",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"login\":\"charle@gmail.com\",\r\n    \"password\":\"12345678\",\r\n    \"account\":\"1000000\",\r\n    \"lastName\":\"BOYER\",\r\n    \"surName\":\"Charlie\",\r\n    \"email\":\"charle@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/api/users/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"users",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/api/users/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modify User 1",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"login\":\"charles@gmail.com\",\r\n    \"password\":\"1234567\",\r\n    \"account\":\"1000000\",\r\n    \"lastName\":\"BOYER\",\r\n    \"surName\":\"Charlie\",\r\n    \"email\":\"charle@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/api/users/34",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"users",
+								"34"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/api/users/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/api/users/34",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"users",
+								"34"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login User 1",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"login\":\"charle@gmail.com\",\r\n    \"password\":\"12345678\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/api/users/ogin",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"users",
+								"ogin"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "MS-Card",
 			"item": [
 				{
@@ -15,7 +270,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"login\":\"Atma\",\r\n    \"password\":\"testtest\",\r\n    \"account\":\"1\",\r\n    \"lastName\":\"BOYER\",\r\n    \"surName\":\"Charlie\",\r\n    \"email\":\"test@cpe.fr\"\r\n}",
+							"raw": "{\r\n    \"id\":1\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -32,27 +287,6 @@
 							"path": [
 								"api",
 								"cards"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Carte By ID",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8085/api/cards/1",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8085",
-							"path": [
-								"api",
-								"cards",
-								"1"
 							]
 						}
 					},
@@ -82,24 +316,11 @@
 				{
 					"name": "Update card",
 					"request": {
-						"method": "GET",
-						"header": []
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "MS-CardBasic",
-			"item": [
-				{
-					"name": "Create model card",
-					"request": {
-						"method": "POST",
+						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\":\"Atma\",\r\n    \"description\":\"test\",\r\n    \"family\":\"test\",\r\n    \"imgUrl\":\"test\",\r\n    \"smallImgUrl\":\"test\"\r\n}",
+							"raw": "{\r\n    \"userId\": null,\r\n    \"energy\": 757.84357,\r\n    \"hp\": 582.66223,\r\n    \"defence\": 9.342299,\r\n    \"attack\": 49.1559,\r\n    \"price\": 100.0\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -107,36 +328,58 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8083/api/cardbasics/",
+							"raw": "http://localhost:8085/api/cards/7",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8083",
+							"port": "8085",
 							"path": [
 								"api",
-								"cardbasics",
-								""
+								"cards",
+								"7"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Get All Models",
+					"name": "Get Carte By ID",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8083/api/cardbasics",
+							"raw": "http://localhost:8085/api/cards/7",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8083",
+							"port": "8085",
 							"path": [
 								"api",
-								"cardbasics"
+								"cards",
+								"7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete card",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8085/api/cards/6",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8085",
+							"path": [
+								"api",
+								"cards",
+								"6"
 							]
 						}
 					},
@@ -148,34 +391,13 @@
 			"name": "MS-Store",
 			"item": [
 				{
-					"name": "Get All Transactions",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8084/api/store/",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8084",
-							"path": [
-								"api",
-								"store",
-								""
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Sell",
+					"name": "Buy",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"user_id\": 1,\r\n  \"card_id\": 1\r\n}",
+							"raw": "{\r\n  \"user_id\": 1,\r\n  \"card_id\": 7\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -199,145 +421,51 @@
 					"response": []
 				},
 				{
-					"name": "Buy",
+					"name": "Sell",
 					"request": {
-						"method": "GET",
-						"header": []
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "MS-User",
-			"item": [
-				{
-					"name": "Get All Users",
-					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"user_id\": 1,\r\n  \"card_id\": 7\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "http://localhost:8081/api/users/",
+							"raw": "http://localhost:8084/api/store/sell",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8081",
+							"port": "8084",
 							"path": [
 								"api",
-								"users",
+								"store",
+								"sell"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Transactions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8084/api/store/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8084",
+							"path": [
+								"api",
+								"store",
 								""
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Register User 1",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"login\":\"Atma\",\r\n    \"password\":\"testtest\",\r\n    \"account\":\"1\",\r\n    \"lastName\":\"BOYER\",\r\n    \"surName\":\"Charlie\",\r\n    \"email\":\"test@cpe.fr\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8081/api/users/register",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8081",
-							"path": [
-								"api",
-								"users",
-								"register"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Register User 2",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"login\":\"AfromSamurai\",\r\n    \"motdepasse\":\"negro\",\r\n    \"nom\":\"CARUSSO\",\r\n    \"prenom\":\"Yohan\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8086/api/users/register",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8086",
-							"path": [
-								"api",
-								"users",
-								"register"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get User by ID",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8081/api/users/1",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8081",
-							"path": [
-								"api",
-								"users",
-								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Login User 1",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"login\":\"Atma\",\r\n    \"motdepasse\":\"testtest\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8081/api/users/ogin",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8081",
-							"path": [
-								"api",
-								"users",
-								"ogin"
 							]
 						}
 					},
