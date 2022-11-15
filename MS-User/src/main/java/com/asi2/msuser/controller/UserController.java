@@ -45,6 +45,26 @@ public class UserController {
         }
     }
 
+    @PutMapping("/{id}")
+    public UserDTO updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
+        try {
+            return userService.update(id, userDTO);
+        } catch (Exception e) {
+            log.error("Error when login user : {}", e.getMessage());
+            return null;
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public Boolean deleteUser(@PathVariable Long id) {
+        try {
+            return userService.delete(id);
+        } catch (Exception e) {
+            log.error("An error occurred when deleting the user : {}", e.getMessage());
+            return Boolean.FALSE;
+        }
+    }
+
     @ApiOperation(value = "", nickname = "register")
     @PostMapping(Router.REGISTER)
     public UserDTO register(@RequestBody @Validated UserDTO userDto) {
