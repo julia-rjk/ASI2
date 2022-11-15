@@ -14,4 +14,6 @@ public interface CardService {
 
     Boolean deleteCard(Long id);
 
+    CardDTO update(Long id, CardDTO cardDTO);
+
 }

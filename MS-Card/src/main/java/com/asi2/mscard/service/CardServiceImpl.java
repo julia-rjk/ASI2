@@ -119,6 +119,27 @@ public class CardServiceImpl implements CardService {
         }
     }
 
+    @Override
+    public CardDTO update(Long id, CardDTO cardDTO) {
+        if(cardDAO.findById(id).isPresent()) {
+            Card card = cardDAO.findById(id).get();
+
+            // Mapping
+            card.setAttack(cardDTO.getAttack());
+            card.setDefence(cardDTO.getDefence());
+            card.setEnergy(cardDTO.getEnergy());
+            card.setHp(cardDTO.getHp());
+            card.setPrice(cardDTO.getPrice());
+            card.setIdUser(cardDTO.getIdUser());
+            cardDTO.setId(card.getId());
+            save(card);
+        } else {
+            log.info("The card does not exist");
+        }
+
+        return cardDTO;
+    }
+
     private Boolean save(Card card) {
         try {
             cardDAO.save(card);

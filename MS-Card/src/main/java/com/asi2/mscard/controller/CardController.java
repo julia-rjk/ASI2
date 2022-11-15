@@ -42,9 +42,14 @@ public class CardController {
         }
     }
 
-    @PutMapping()
-    public CardDTO updateCard(@RequestBody @Validated CardDTO cardDTO) {
-        return null;
+    @PutMapping("/{id}")
+    public CardDTO updateCard(@PathVariable Long id, @RequestBody @Validated CardDTO cardDTO) {
+        try {
+            return cardService.update(id, cardDTO);
+        } catch (Exception e) {
+            log.error("Error when login card : {}", e.getMessage());
+            return null;
+        }
     }
 
     @PostMapping()
