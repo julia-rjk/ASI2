@@ -13,7 +13,7 @@ public interface UserService {
 
     Boolean register(UserDTO userDto);
 
-    void delete(UserDTO userDto);
+    Boolean delete(Long id);
 
-    void update(UserDTO userDto);
+    UserDTO update(Long id, UserDTO userDTO);
 }

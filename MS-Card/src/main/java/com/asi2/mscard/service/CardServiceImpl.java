@@ -108,6 +108,17 @@ public class CardServiceImpl implements CardService {
         return null;
     }
 
+    @Override
+    public Boolean deleteCard(Long id) {
+        if(cardDAO.findById(id).isPresent()) {
+            cardDAO.delete(cardDAO.findById(id).get());
+            return Boolean.TRUE;
+        } else {
+            log.info("The card id[{}] does not exist", id);
+            return Boolean.FALSE;
+        }
+    }
+
     private Boolean save(Card card) {
         try {
             cardDAO.save(card);

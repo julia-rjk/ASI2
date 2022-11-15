@@ -122,13 +122,42 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void delete(UserDTO userDto) {
-        // TODO When it'll be useful
+    public Boolean delete(Long id){
+        if(userDao.findById(id).isPresent()) {
+            userDao.delete(userDao.findById(id).get());
+            return Boolean.TRUE;
+        } else {
+            log.info("The user id[{}] does not exist", id);
+            return Boolean.FALSE;
+        }
     }
 
     @Override
-    public void update(UserDTO userDto) {
-        // TODO When it'll be useful
+    public UserDTO update(Long id, UserDTO userDTO) {
+        if(userDao.findById(id).isPresent()) {
+            User user = userDao.findById(id).get();
+
+            // Mapping
+            user.setAccount(userDTO.getAccount());
+            user.setEmail(userDTO.getEmail());
+            user.setLastName(userDTO.getLastName());
+            user.setLogin(userDTO.getLogin());
+            user.setPassword(userDTO.getPassword());
+            user.setSurName(userDTO.getSurName());
+            userDTO.setId(user.getId());
+            if(userDTO.getCards() != null && userDTO.getCards().size() != 0) {
+                List<Long> idCards = new ArrayList<>();
+                for(CardDTO cardDTO : userDTO.getCards()) {
+                    idCards.add(cardDTO.getId());
+                }
+            }
+
+            save(user);
+        } else {
+            log.info("The user does not exist");
+        }
+
+        return userDTO;
     }
 
     private Boolean save(User user) {

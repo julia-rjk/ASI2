@@ -13,6 +13,7 @@ import com.asi2.msuser.service.UserService;
 import java.util.List;
 
 @Slf4j
+@CrossOrigin
 @RestController
 @RequestMapping(Router.URL_USERS)
 public class UserController {
@@ -41,6 +42,26 @@ public class UserController {
         } catch (Exception e) {
             log.error("Error when retrieving user[{}]", e.getMessage());
             return null;
+        }
+    }
+
+    @PutMapping("/{id}")
+    public UserDTO updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
+        try {
+            return userService.update(id, userDTO);
+        } catch (Exception e) {
+            log.error("Error when login user : {}", e.getMessage());
+            return null;
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public Boolean deleteUser(@PathVariable Long id) {
+        try {
+            return userService.delete(id);
+        } catch (Exception e) {
+            log.error("An error occurred when deleting the user : {}", e.getMessage());
+            return Boolean.FALSE;
         }
     }
 
