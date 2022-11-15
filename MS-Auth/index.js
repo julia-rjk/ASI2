@@ -11,15 +11,16 @@ app.use(bodyParser.urlencoded({ extended: true }))
 // Set up Global configuration access
 dotenv.config();
 
-let PORT = process.env.PORT || 5000;
+let PORT = process.env.PORT || 8082;
 app.listen(PORT, () => {
     console.log(`Server is up and running on ${PORT} ...`);
 });
 
-app.post("/user/generateToken", async (req, res) => {
-    console.log(req.body)
-    return await axios.get(process.env.URL_MS_USER_GET, { login: req.body.login, password: req.body.password }).then(res => {
-        if (res.data) {
+// Generate Token
+app.post("/", async (req, res) => {
+    console.log(process.env.URL_MS_USER_GET)
+    axios.get(process.env.URL_MS_USER_GET, { login: req.body.login, password: req.body.password }).then(resp => {
+        if (resp.data) {
             // Then generate JWT Token
             let jwtSecretKey = process.env.JWT_SECRET_KEY;
             let data = {
@@ -43,8 +44,8 @@ app.post("/user/generateToken", async (req, res) => {
     })
 });
 
-// Verification of JWT
-app.get("/user/validateToken", (req, res) => {
+// Verify Token
+app.get("/", (req, res) => {
     let tokenHeaderKey = process.env.TOKEN_HEADER_KEY;
     let jwtSecretKey = process.env.JWT_SECRET_KEY;
     try {
