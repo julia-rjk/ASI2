@@ -78,7 +78,8 @@ public class CardServiceImpl implements CardService {
             List<CardBasicsDTO> cardModelsList;
             try {
                 ObjectMapper mapper = new ObjectMapper();
-                cardModelsList = mapper.readValue(response, new TypeReference<>() {});
+                cardModelsList = mapper.readValue(response, new TypeReference<>() {
+                });
             } catch (JsonProcessingException e) {
                 log.error("Error when mapping card models : {}", e.getMessage());
                 return null;
@@ -97,10 +98,13 @@ public class CardServiceImpl implements CardService {
                 card.setAttack(generateRandomFloatValue(Game.ATTACK_MIN, Game.ATTACK_MAX));
                 card.setPrice(generateRandomFloatValue(Game.PRICE_MIN, Game.PRICE_MAX));
 
-                // Update user if id is present
+                // Set userID if id is present
                 if (id.isPresent()) {
                     card.setUserId(id.get());
-                    
+                }
+                Card createdCard = save(card);
+                // Update user if id is present and card is created
+                if (id.isPresent()) {
                     // Get user
                     UserDTO user;
                     String userResponse = WebService.get(globalProperty.getUrlUser() + "/" + id.get());
@@ -127,13 +131,10 @@ public class CardServiceImpl implements CardService {
                     if (WebService.put(globalProperty.getUrlUser() + "/" + user.getId(), user) == null) {
                         return null;
                     }
-                }
-                if (save(card)) {
-                    CardDTO cardDTO = Mapper.map(card, CardDTO.class);
-                    cardDTO.setModel(cardBasicsDTO);
-                    return cardDTO;
+                    return Mapper.map(createdCard, CardDTO.class);
                 } else {
                     log.error("Error when generating a card");
+                    return null;
                 }
             }
         }
@@ -173,13 +174,13 @@ public class CardServiceImpl implements CardService {
         return cardDTO;
     }
 
-    private Boolean save(Card card) {
+    private Card save(Card card) {
         try {
-            cardDAO.save(card);
-            return Boolean.TRUE;
+            Card res = cardDAO.save(card);
+            return res;
         } catch (Exception e) {
             log.error("Error when saving entity to database : {}", e.getMessage());
-            return Boolean.FALSE;
+            return null;
         }
     }
 
