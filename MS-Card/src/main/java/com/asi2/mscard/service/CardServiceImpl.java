@@ -88,7 +88,7 @@ public class CardServiceImpl implements CardService {
                 CardBasicsDTO cardBasicsDTO = cardModelsList.get(generateRandomIntegerValue(0, cardModelsList.size() - 1));
 
                 card.setIdCardBasics(cardBasicsDTO.getId());
-                card.setIdUser(userDTO.getId());
+                card.setUserId(userDTO.getId());
                 card.setEnergy(generateRandomFloatValue(Game.ENERGY_MIN, Game.ENERGY_MAX));
                 card.setHp(generateRandomFloatValue(Game.HP_MIN, Game.HP_MAX));
                 card.setDefence(generateRandomFloatValue(Game.DEFENCE_MIN, Game.DEFENCE_MAX));
@@ -130,7 +130,7 @@ public class CardServiceImpl implements CardService {
             card.setEnergy(cardDTO.getEnergy());
             card.setHp(cardDTO.getHp());
             card.setPrice(cardDTO.getPrice());
-            card.setIdUser(cardDTO.getIdUser());
+            card.setUserId(cardDTO.getUserId());
             cardDTO.setId(card.getId());
             save(card);
         } else {

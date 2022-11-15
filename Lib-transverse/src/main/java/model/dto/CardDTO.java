@@ -6,7 +6,7 @@ import lombok.Data;
 public class CardDTO {
     private Long id;
     private CardBasicsDTO model;
-    private Long idUser;
+    private Long userId;
     private Float energy;
     private Float hp;
     private Float defence;

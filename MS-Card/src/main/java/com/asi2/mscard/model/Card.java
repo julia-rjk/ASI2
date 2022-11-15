@@ -16,7 +16,7 @@ public class Card {
     private Long idCardBasics;
 
     @Column(name = "id_user")
-    private Long idUser;
+    private Long userId;
 
     @Column(name = "energy")
     private Float energy;

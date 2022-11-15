@@ -71,6 +71,7 @@ public class StoreService {
 			log.error("An error occured with the User Service or the service is not available");
 			return false;
 		}
+		
 		if (user.getAccount() > card.getPrice() && !user.getCards().contains(card)) {
 			// Update user account
 			List<CardDTO> userCards = user.getCards();
@@ -82,7 +83,7 @@ public class StoreService {
 			}
 			
 			// Update card owner
-			card.setIdUser(Long.valueOf(user_id));
+			card.setUserId(Long.valueOf(user_id));
 			if(WebService.put(globalProperty.getUrlCard() + "/" + card_id, card) == null) {
 				return false;
 			}
@@ -145,7 +146,7 @@ public class StoreService {
 			}
 
 			// Update card
-			card.setIdUser(null);
+			card.setUserId(null);
 			if(WebService.put(globalProperty.getUrlCard() + "/" + card_id, card) == null) {
 				return false;
 			}
