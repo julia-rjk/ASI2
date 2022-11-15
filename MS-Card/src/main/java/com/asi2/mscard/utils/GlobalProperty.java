@@ -11,5 +11,11 @@ public class GlobalProperty {
     public String getUrlCardBasics() {
         return urlCardBasics;
     }
+    
+    @Value("${webservice.url.users}")
+    private String urlUser;
 
+    public String getUrlUser() {
+        return urlUser;
+    }
 }

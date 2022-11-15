@@ -11,6 +11,7 @@ import com.asi2.mscard.constant.Router;
 import com.asi2.mscard.service.CardService;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -53,9 +54,9 @@ public class CardController {
     }
 
     @PostMapping()
-    public CardDTO generateCard(@RequestBody @Validated UserDTO userDTO) {
+    public CardDTO generateCard(@RequestParam Optional<Long> id) {
         try {
-            return cardService.generateCard(userDTO);
+            return cardService.generateCard(id);
         } catch (Exception e) {
             log.error("An error occured during the generation of the card : {}", e.getMessage());
             return null;
