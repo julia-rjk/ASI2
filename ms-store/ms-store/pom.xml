@@ -14,7 +14,7 @@
 	<name>ms-store</name>
 	<description>Micro-service for the store. With this service you can buy and sell cards</description>
 	<properties>
-		<java.version>17</java.version>
+		<java.version>11</java.version>
 	</properties>
 	<dependencies>
 
