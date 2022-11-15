@@ -13,6 +13,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import ch.qos.logback.core.util.SystemInfo;
 import lombok.extern.slf4j.Slf4j;
 import model.dto.CardDTO;
 import com.asi2.msstorepublic.model.StoreAction;
@@ -70,13 +71,21 @@ public class StoreService {
 			log.error("An error occured with the User Service or the service is not available");
 			return false;
 		}
-		if (user.getAccount() > card.getPrice()) {
+		if (user.getAccount() > card.getPrice() && !user.getCards().contains(card)) {
 			// Update user account
 			List<CardDTO> userCards = user.getCards();
 			userCards.add(card);
 			user.setCards(userCards);
 			user.setAccount(user.getAccount() - card.getPrice());
-			WebService.put(globalProperty.getUrlUser() + "/" + user_id, user);
+			if(WebService.put(globalProperty.getUrlUser() + "/" + user_id, user) == null) {
+				return false;
+			}
+			
+			// Update card owner
+			card.setIdUser(Long.valueOf(user_id));
+			if(WebService.put(globalProperty.getUrlCard() + "/" + card_id, card) == null) {
+				return false;
+			}
 
 			// Add transaction
 			StoreTransaction sT = new StoreTransaction(user_id, card_id, StoreAction.BUY);
@@ -131,11 +140,15 @@ public class StoreService {
 			userCards.remove(card);
 			user.setCards(userCards);
 			user.setAccount(user.getAccount() + card.getPrice());
-			WebService.put(globalProperty.getUrlUser() + "/" + user_id, user);
+			if(WebService.put(globalProperty.getUrlUser() + "/" + user_id, user) == null) {
+				return false;
+			}
 
 			// Update card
 			card.setIdUser(null);
-			WebService.put(globalProperty.getUrlCard() + "/" + card_id, card);
+			if(WebService.put(globalProperty.getUrlCard() + "/" + card_id, card) == null) {
+				return false;
+			}
 
 			// Add transaction
 			StoreTransaction sT = new StoreTransaction(user_id, card_id, StoreAction.SELL);
