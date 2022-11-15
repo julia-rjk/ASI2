@@ -83,8 +83,13 @@ public class CardBasicsServiceImpl implements CardBasicsService {
 
     @Override
     public Boolean delete(Long id) {
-        // TODO When it will be useful
-        return null;
+        if(cardBasicsDAO.findById(id).isPresent()) {
+            cardBasicsDAO.delete(cardBasicsDAO.findById(id).get());
+            return Boolean.TRUE;
+        } else {
+            log.info("The user id[{}] does not exist", id);
+            return Boolean.FALSE;
+        }
     }
 
     private Boolean save(CardBasics cardBasics) {
