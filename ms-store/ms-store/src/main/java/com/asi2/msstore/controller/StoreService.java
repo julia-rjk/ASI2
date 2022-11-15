@@ -3,6 +3,7 @@ package com.asi2.msstore.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import model.dto.UserDTO;
@@ -26,14 +27,15 @@ public class StoreService {
 
 	private final StoreRepository storeRepository;
 
-	public StoreService(StoreRepository storeRepository) {
+	public StoreService(StoreRepository storeRepository, GlobalProperty globalProperty) {
 		this.storeRepository = storeRepository;
+		this.globalProperty = globalProperty;
 	}
 
 	public boolean buyCard(Integer user_id, Integer card_id) {
 		// Get card
 		CardDTO card;
-		String cardResponse = WebService.get(globalProperty.getUrlCard() + "/" + card_id);
+		String cardResponse = WebService.get(this.globalProperty.getUrlCard() + "/" + card_id);
 		// Mapping from JSON to DTO
 		if (cardResponse != null) {
 			try {
