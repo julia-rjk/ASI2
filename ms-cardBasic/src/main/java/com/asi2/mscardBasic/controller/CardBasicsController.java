@@ -12,6 +12,7 @@ import com.asi2.mscardBasic.service.CardBasicsService;
 import java.util.List;
 
 @Slf4j
+@CrossOrigin
 @RestController
 @RequestMapping(Router.URL_CARDBASICS)
 public class CardBasicsController {

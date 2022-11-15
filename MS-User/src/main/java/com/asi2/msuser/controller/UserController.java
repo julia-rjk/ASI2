@@ -13,6 +13,7 @@ import com.asi2.msuser.service.UserService;
 import java.util.List;
 
 @Slf4j
+@CrossOrigin
 @RestController
 @RequestMapping(Router.URL_USERS)
 public class UserController {
