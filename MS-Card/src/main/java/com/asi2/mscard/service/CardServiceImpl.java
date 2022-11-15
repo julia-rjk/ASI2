@@ -6,6 +6,7 @@ import com.asi2.mscard.repository.CardDAO;
 import com.asi2.mscard.utils.GlobalProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import model.dto.CardBasicsDTO;
@@ -17,6 +18,7 @@ import utils.Mapper;
 import utils.WebService;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 @Slf4j
@@ -65,18 +67,19 @@ public class CardServiceImpl implements CardService {
      * @return the card generated
      */
     @Override
-    public CardDTO generateCard(UserDTO userDTO) {
+    public CardDTO generateCard(Optional<Long> id) {
 
         // Get all card model from CardBasics service
         String request = globalProperty.getUrlCardBasics();
         String response = WebService.get(request);
 
-        if(response != null && response.length() != 0) {
+        if (response != null && response.length() != 0) {
             // Mapping all card models
             List<CardBasicsDTO> cardModelsList;
             try {
                 ObjectMapper mapper = new ObjectMapper();
-                cardModelsList = mapper.readValue(response, new TypeReference<>() {});
+                cardModelsList = mapper.readValue(response, new TypeReference<>() {
+                });
             } catch (JsonProcessingException e) {
                 log.error("Error when mapping card models : {}", e.getMessage());
                 return null;
@@ -85,22 +88,53 @@ public class CardServiceImpl implements CardService {
             // Generate card from models with random stats
             if (cardModelsList != null) {
                 Card card = new Card();
-                CardBasicsDTO cardBasicsDTO = cardModelsList.get(generateRandomIntegerValue(0, cardModelsList.size() - 1));
+                CardBasicsDTO cardBasicsDTO = cardModelsList
+                        .get(generateRandomIntegerValue(0, cardModelsList.size() - 1));
 
                 card.setIdCardBasics(cardBasicsDTO.getId());
-                card.setIdUser(userDTO.getId());
                 card.setEnergy(generateRandomFloatValue(Game.ENERGY_MIN, Game.ENERGY_MAX));
                 card.setHp(generateRandomFloatValue(Game.HP_MIN, Game.HP_MAX));
                 card.setDefence(generateRandomFloatValue(Game.DEFENCE_MIN, Game.DEFENCE_MAX));
                 card.setAttack(generateRandomFloatValue(Game.ATTACK_MIN, Game.ATTACK_MAX));
                 card.setPrice(generateRandomFloatValue(Game.PRICE_MIN, Game.PRICE_MAX));
 
-                if(save(card)) {
-                    CardDTO cardDTO = Mapper.map(card, CardDTO.class);
-                    cardDTO.setModel(cardBasicsDTO);
-                    return cardDTO;
+                // Set userID if id is present
+                if (id.isPresent()) {
+                    card.setUserId(id.get());
+                }
+                Card createdCard = save(card);
+                // Update user if id is present and card is created
+                if (id.isPresent()) {
+                    // Get user
+                    UserDTO user;
+                    String userResponse = WebService.get(globalProperty.getUrlUser() + "/" + id.get());
+                    // Mapping from JSON to DTO
+                    if (userResponse != null) {
+                        try {
+                            ObjectMapper mapper = new ObjectMapper();
+                            user = mapper.readValue(userResponse, UserDTO.class);
+                        } catch (JsonMappingException e) {
+                            log.error("Error when mapping JSON to DTO : {}", e.getMessage());
+                            return null;
+                        } catch (JsonProcessingException e) {
+                            log.error("Error when processing JSON : {}", e.getMessage());
+                            return null;
+                        }
+                    } else {
+                        log.error("An error occured with the User Service or the service is not available");
+                        return null;
+                    }
+
+                    List<CardDTO> userCards = user.getCards();
+                    userCards.add(Mapper.map(card, CardDTO.class));
+                    user.setCards(userCards);
+                    if (WebService.put(globalProperty.getUrlUser() + "/" + user.getId(), user) == null) {
+                        return null;
+                    }
+                    return Mapper.map(createdCard, CardDTO.class);
                 } else {
                     log.error("Error when generating a card");
+                    return null;
                 }
             }
         }
@@ -110,7 +144,7 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public Boolean deleteCard(Long id) {
-        if(cardDAO.findById(id).isPresent()) {
+        if (cardDAO.findById(id).isPresent()) {
             cardDAO.delete(cardDAO.findById(id).get());
             return Boolean.TRUE;
         } else {
@@ -121,7 +155,7 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public CardDTO update(Long id, CardDTO cardDTO) {
-        if(cardDAO.findById(id).isPresent()) {
+        if (cardDAO.findById(id).isPresent()) {
             Card card = cardDAO.findById(id).get();
 
             // Mapping
@@ -130,7 +164,7 @@ public class CardServiceImpl implements CardService {
             card.setEnergy(cardDTO.getEnergy());
             card.setHp(cardDTO.getHp());
             card.setPrice(cardDTO.getPrice());
-            card.setIdUser(cardDTO.getIdUser());
+            card.setUserId(cardDTO.getUserId());
             cardDTO.setId(card.getId());
             save(card);
         } else {
@@ -140,13 +174,13 @@ public class CardServiceImpl implements CardService {
         return cardDTO;
     }
 
-    private Boolean save(Card card) {
+    private Card save(Card card) {
         try {
-            cardDAO.save(card);
-            return Boolean.TRUE;
+            Card res = cardDAO.save(card);
+            return res;
         } catch (Exception e) {
             log.error("Error when saving entity to database : {}", e.getMessage());
-            return Boolean.FALSE;
+            return null;
         }
     }
 
@@ -164,7 +198,7 @@ public class CardServiceImpl implements CardService {
         String request = globalProperty.getUrlCardBasics() + "/" + card.getIdCardBasics();
         String response = WebService.get(request);
 
-        if(response != null) {
+        if (response != null) {
             CardBasicsDTO cardBasicsDTO;
             try {
                 ObjectMapper mapper = new ObjectMapper();

@@ -13,7 +13,7 @@ export interface CardDTO {
   energy?: number;
   hp?: number;
   id?: number;
-  idUser?: number;
+  userId?: number;
   model?: CardBasicsDTO;
   price?: number;
 }

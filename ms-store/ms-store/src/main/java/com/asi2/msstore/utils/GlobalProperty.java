@@ -7,13 +7,13 @@ import org.springframework.stereotype.Component;
 public class GlobalProperty {
     @Value("${webservice.url.cards}")
     private String urlCard;
-
-    @Value("${webservice.url.users}")
-    private String urlUser;
-
+    
     public String getUrlCard() {
         return urlCard;
     }
+
+    @Value("${webservice.url.users}")
+    private String urlUser;
 
     public String getUrlUser() {
         return urlUser;

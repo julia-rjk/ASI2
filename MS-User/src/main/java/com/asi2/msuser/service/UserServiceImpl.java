@@ -23,7 +23,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    private UserDAO userDao;
+    private UserDAO userDAO;
 
     @Autowired
     private GlobalProperty globalProperty;
@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDTO> findAll() {
         try {
-            return Mapper.mapList(userDao.findAll(), UserDTO.class);
+            return Mapper.mapList(userDAO.findAll(), UserDTO.class);
         } catch (Exception e) {
             log.error("Error when finding all Users : {}", e.getMessage());
             return null;
@@ -41,8 +41,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO findById(Long id) {
         try {
-            if (userDao.findById(id).isPresent()) {
-                User user = userDao.findById(id).get();
+            if (userDAO.findById(id).isPresent()) {
+                User user = userDAO.findById(id).get();
                 UserDTO userDTO = Mapper.map(user, UserDTO.class);
                 userDTO.setCards(getAllCardsOfUser(user));
                 return userDTO;
@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO login(String login, String password) {
         try {
-            User user = userDao.findByLoginAndPassword(login, password);
+            User user = userDAO.findByLoginAndPassword(login, password);
             if (user != null) {
                 // TODO Generate Token from Auth Service
                 return Mapper.map(user, UserDTO.class);
@@ -82,7 +82,7 @@ public class UserServiceImpl implements UserService {
                 // Set up the default deck of the user
                 String response;
                 ObjectMapper mapper = new ObjectMapper();
-                List<Long> idUserCards = new ArrayList<>();
+                List<Long> userIdCards = new ArrayList<>();
                 for (int i = 0; i < Game.MINIMUM_CARD; i++) {
                     // Call Card Service to set up default card for the user
                     response = WebService.post(globalProperty.getUrlCard(), user);
@@ -90,17 +90,17 @@ public class UserServiceImpl implements UserService {
                     // Mapping from JSON to DTO
                     if (response != null) {
                         CardDTO card = mapper.readValue(response, CardDTO.class);
-                        idUserCards.add(card.getId());
+                        userIdCards.add(card.getId());
                     } else {
                         log.error("An error occured with the Card Service or the service is not available");
-                        userDao.delete(user);
+                        userDAO.delete(user);
                         return Boolean.FALSE;
                     }
                 }
 
                 // Set all id of cards to user
                 user.setAccount(Game.BASE_ACCOUNT);
-                user.setIdCardList(idUserCards);
+                user.setIdCardList(userIdCards);
 
                 if (save(user)) {
                     userDto.setId(user.getId());
@@ -108,13 +108,13 @@ public class UserServiceImpl implements UserService {
                 }
             } else {
                 log.error("An error occured during the creation of the user");
-                userDao.delete(user);
+                userDAO.delete(user);
             }
         } catch (JsonMappingException e) {
-            userDao.delete(user);
+            userDAO.delete(user);
             log.error("Error when mapping the card for user: {} ", e.getMessage());
         } catch (Exception e) {
-            userDao.delete(user);
+            userDAO.delete(user);
             log.error("Error when register the user : {} ", e.getMessage());
         }
 
@@ -123,8 +123,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Boolean delete(Long id){
-        if(userDao.findById(id).isPresent()) {
-            userDao.delete(userDao.findById(id).get());
+        if(userDAO.findById(id).isPresent()) {
+            userDAO.delete(userDAO.findById(id).get());
             return Boolean.TRUE;
         } else {
             log.info("The user id[{}] does not exist", id);
@@ -134,8 +134,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO update(Long id, UserDTO userDTO) {
-        if(userDao.findById(id).isPresent()) {
-            User user = userDao.findById(id).get();
+        if(userDAO.findById(id).isPresent()) {
+            User user = userDAO.findById(id).get();
 
             // Mapping
             user.setAccount(userDTO.getAccount());
@@ -150,6 +150,10 @@ public class UserServiceImpl implements UserService {
                 for(CardDTO cardDTO : userDTO.getCards()) {
                     idCards.add(cardDTO.getId());
                 }
+                user.setIdCardList(idCards);
+            }
+            else{
+                user.setIdCardList(null);
             }
 
             save(user);
@@ -162,7 +166,7 @@ public class UserServiceImpl implements UserService {
 
     private Boolean save(User user) {
         try {
-            userDao.save(user);
+            userDAO.save(user);
             return Boolean.TRUE;
         } catch (Exception e) {
             log.error("Error when saving entity to database : {}", e.getMessage());
