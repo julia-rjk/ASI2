@@ -152,6 +152,9 @@ public class UserServiceImpl implements UserService {
                 }
                 user.setIdCardList(idCards);
             }
+            else{
+                user.setIdCardList(null);
+            }
 
             save(user);
         } else {
