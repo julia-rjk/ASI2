@@ -5,6 +5,11 @@ services:
     networks:
       - app-network
 
+  cardbasicservice:
+    build: ./ms-cardBasic
+    networks:
+      - app-network
+
   userservice:
     build: ./MS-User
     networks:
@@ -15,7 +20,7 @@ services:
   #   networks:
   #     - app-network
 
-  authentificationservice:
+  authservice:
     build: ./MS-Auth
     networks:
       - app-network

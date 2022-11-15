@@ -1,0 +1,6 @@
+model/dto/UserDTO.class
+utils/Mapper.class
+model/dto/StoreAction.class
+utils/WebService.class
+model/dto/CardBasicsDTO.class
+model/dto/CardDTO.class
