@@ -1,0 +1,48 @@
+version: '3.7'
+services:
+  cardservice:
+    build: ./MS-Card
+    networks:
+      - app-network
+
+  userservice:
+    build: ./MS-User
+    networks:
+      - app-network
+
+  # storeservice:
+  #   build: ../ms-store/ms-store
+  #   networks:
+  #     - app-network
+
+  authentificationservice:
+    build: ./MS-Auth
+    networks:
+      - app-network
+
+  # notificationservice:
+  #   build: ../MS-Notification
+  #   networks:
+  #     - app-network
+
+  # frontend:
+  #   build: ./Front
+  #   networks:
+  #     - app-network
+
+  # activemq:
+  #   container_name: activemq
+  #   image: codingpuss/activemq:5.17.2-jre-19-alpine
+  #   ports:
+  #     - 8161:8161
+  #     - 61616:61616
+      
+  httpd:
+    build: ./ReverseProxy
+    ports:
+      - "80:80"
+    networks:
+      - app-network
+
+networks:
+  app-network:
