@@ -11,13 +11,7 @@ export const Game = () => {
   const user = useSelector(selectUser);
   useEffect(() => {
     socket.on("connect", () => {
-      socket.emit("connected", (res:any) => {
-        console.log('res : ',res);
-        if ("error" in res) {
-          // handle the error
-          return;
-        }
-      })
+      socket.emit('joinWaitingList', { user });
       console.log('connected')
     });
   }, [])

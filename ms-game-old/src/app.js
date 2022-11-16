@@ -8,13 +8,19 @@ const socketio = require('socket.io');
 const dotenv = require('dotenv');
 const app = express();
 const server = http.createServer(app);
-const io = socketio(server);
+const io = socketio(server, {
+    cors: {
+      origin: ["http://localhost:3001"],
+    },
+  });
 const uuid = require('uuid')
 
 dotenv.config();
 
-app.use(express.static(path.join(__dirname, 'public')));
-
+// app.use(express.static(path.join(__dirname, 'public')));
+// app.get('/', (req, res) => {
+//     res.send("This is the server for the game");
+// });
 let usersWaiting = []
 let users = {}
 let currentGames = {}
@@ -164,4 +170,4 @@ function sendPlayActions(game){
 const PORT = process.env.PORT || 8087;
 server.listen(PORT, () => { 
     console.log(`Test:\nhttp://localhost:8087/chat.html?id=1&username=Charles\nhttp://localhost:8087/chat.html?id=2&username=Timothee`);
-    console.log(`\nFight Server running on port ${PORT}`); });
+    console.log(`\nGame Server running on port ${PORT}`); });
