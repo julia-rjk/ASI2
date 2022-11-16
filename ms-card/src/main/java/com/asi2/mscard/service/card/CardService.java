@@ -1,9 +1,10 @@
-package com.asi2.mscard.service;
+package com.asi2.mscard.service.card;
 
 import model.dto.CardDTO;
 import model.dto.UserDTO;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CardService {
     List<CardDTO> findAll();
@@ -14,6 +15,6 @@ public interface CardService {
 
     Boolean deleteCard(Long id);
 
-    CardDTO update(Long id, CardDTO cardDTO);
+    CardDTO update(CardDTO cardDTO);
 
 }

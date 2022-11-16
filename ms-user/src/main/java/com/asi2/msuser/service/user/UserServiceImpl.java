@@ -1,7 +1,7 @@
-package com.asi2.msuser.service;
+package com.asi2.msuser.service.user;
 
 import com.asi2.msuser.constant.Game;
-import com.asi2.msuser.model.User;
+import com.asi2.msuser.model.entity.User;
 import com.asi2.msuser.repository.UserDAO;
 import com.asi2.msuser.utils.GlobalProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -31,6 +31,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDTO> findAll() {
         try {
+            List<User> users = userDAO.findAll();
+            List<UserDTO> userDTOS = new ArrayList<>();
+
+            for(User user : users) {
+                    
+            }
+
             return Mapper.mapList(userDAO.findAll(), UserDTO.class);
         } catch (Exception e) {
             log.error("Error when finding all Users : {}", e.getMessage());
@@ -77,7 +84,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Boolean register(UserDTO userDto) {
+    public Boolean register(UserDTO userDto, String callback) {
         User user = Mapper.map(userDto, User.class);
         try {
             // Needed to have an id
@@ -95,7 +102,7 @@ public class UserServiceImpl implements UserService {
                         CardDTO card = mapper.readValue(response, CardDTO.class);
                         userIdCards.add(card.getId());
                     } else {
-                        log.error("An error occured with the Card Service or the service is not available");
+                        log.error("An error occurred with the Card Service or the service is not available");
                         userDAO.delete(user);
                         return Boolean.FALSE;
                     }
@@ -125,8 +132,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Boolean delete(Long id){
-        if(userDAO.findById(id).isPresent()) {
+    public Boolean delete(Long id) {
+        if (userDAO.findById(id).isPresent()) {
             userDAO.delete(userDAO.findById(id).get());
             return Boolean.TRUE;
         } else {
@@ -136,9 +143,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO update(Long id, UserDTO userDTO) {
-        if(userDAO.findById(id).isPresent()) {
-            User user = userDAO.findById(id).get();
+    public UserDTO update(UserDTO userDTO) {
+        if (userDAO.findById(userDTO.getId()).isPresent()) {
+            User user = userDAO.findById(userDTO.getId()).get();
 
             // Mapping
             user.setAccount(userDTO.getAccount());
@@ -148,14 +155,13 @@ public class UserServiceImpl implements UserService {
             user.setPassword(userDTO.getPassword());
             user.setSurName(userDTO.getSurName());
             userDTO.setId(user.getId());
-            if(userDTO.getCards() != null && userDTO.getCards().size() != 0) {
+            if (userDTO.getCards() != null && userDTO.getCards().size() != 0) {
                 List<Long> idCards = new ArrayList<>();
-                for(CardDTO cardDTO : userDTO.getCards()) {
+                for (CardDTO cardDTO : userDTO.getCards()) {
                     idCards.add(cardDTO.getId());
                 }
                 user.setIdCardList(idCards);
-            }
-            else{
+            } else {
                 user.setIdCardList(null);
             }
 

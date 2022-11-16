@@ -3,7 +3,7 @@ package com.asi2.msuser.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.asi2.msuser.model.User;
+import com.asi2.msuser.model.entity.User;
 
 import java.util.List;
 

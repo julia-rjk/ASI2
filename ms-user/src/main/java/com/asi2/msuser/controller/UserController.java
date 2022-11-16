@@ -1,16 +1,21 @@
 package com.asi2.msuser.controller;
 
+import com.asi2.msuser.constant.Router;
+import com.asi2.msuser.service.user.UserService;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import model.action.ActionBasic;
 import model.dto.UserDTO;
+import model.message.CustomMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import service.SenderService;
 
-import com.asi2.msuser.constant.Router;
-import com.asi2.msuser.service.UserService;
-
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 @Slf4j
 @CrossOrigin
@@ -20,6 +25,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private SenderService<UserDTO, ActionBasic> senderService;
 
     @ApiOperation(value = "", nickname = "getAllUsers")
     @GetMapping()
@@ -46,13 +54,21 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public UserDTO updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
+    public UserDTO updateUserAsync(@RequestBody UserDTO userDTO) {
         try {
-            return userService.update(id, userDTO);
+            senderService.sendMessage(new CustomMessage<>(
+                    new Random().nextLong(),
+                    ActionBasic.UPDATE,
+                    ServletUriComponentsBuilder.fromCurrentContextPath().toUriString(),
+                    String.valueOf(new Date()),
+                    userDTO
+            ));
+
         } catch (Exception e) {
-            log.error("Error when login user : {}", e.getMessage());
-            return null;
+            log.error("Error when creating the message for the queue : {}", e.getMessage());
         }
+
+        return null;
     }
 
     @DeleteMapping("/{id}")
@@ -67,13 +83,18 @@ public class UserController {
 
     @ApiOperation(value = "", nickname = "register")
     @PostMapping(Router.REGISTER)
-    public UserDTO register(@RequestBody @Validated UserDTO userDto) {
+    public UserDTO registerAsync(@RequestBody @Validated UserDTO userDto) {
         try {
-            if(userService.register(userDto)) {
-                return userDto;
-            }
+            senderService.sendMessage(new CustomMessage<>(
+                    new Random().nextLong(),
+                    ActionBasic.ADD,
+                    ServletUriComponentsBuilder.fromCurrentContextPath().toUriString(),
+                    String.valueOf(new Date()),
+                    userDto
+            ));
+
         } catch (Exception e) {
-            log.error("Error when registered the user : {}", e.getMessage());
+            log.error("Error when creating the message for the queue : {}", e.getMessage());
         }
 
         return null;

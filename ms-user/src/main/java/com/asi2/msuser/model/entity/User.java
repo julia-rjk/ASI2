@@ -1,4 +1,4 @@
-package com.asi2.msuser.model;
+package com.asi2.msuser.model.entity;
 
 import lombok.Data;
 

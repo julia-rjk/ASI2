@@ -1,4 +1,4 @@
-package com.asi2.msuser.service;
+package com.asi2.msuser.service.user;
 
 import model.dto.UserDTO;
 
@@ -11,9 +11,9 @@ public interface UserService {
 
     UserDTO login(String login, String password);
 
-    Boolean register(UserDTO userDto);
+    Boolean register(UserDTO userDto, String callback);
+
+    UserDTO update(UserDTO userDTO);
 
     Boolean delete(Long id);
-
-    UserDTO update(Long id, UserDTO userDTO);
 }

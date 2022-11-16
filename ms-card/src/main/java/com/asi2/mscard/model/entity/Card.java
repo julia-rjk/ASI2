@@ -1,4 +1,4 @@
-package com.asi2.mscard.model;
+package com.asi2.mscard.model.entity;
 
 import lombok.Data;
 

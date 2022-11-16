@@ -1,7 +1,7 @@
-package com.asi2.mscard.service;
+package com.asi2.mscard.service.card;
 
 import com.asi2.mscard.constant.Game;
-import com.asi2.mscard.model.Card;
+import com.asi2.mscard.model.entity.Card;
 import com.asi2.mscard.repository.CardDAO;
 import com.asi2.mscard.utils.GlobalProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -18,7 +18,6 @@ import utils.Mapper;
 import utils.WebService;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 
 @Slf4j
@@ -99,7 +98,7 @@ public class CardServiceImpl implements CardService {
                 card.setPrice(generateRandomFloatValue(Game.PRICE_MIN, Game.PRICE_MAX));
 
                 // Set userID if id is present
-                if (id != null ) {
+                if (id != null) {
                     card.setUserId(id);
                 }
                 Card createdCard = save(card);
@@ -122,23 +121,14 @@ public class CardServiceImpl implements CardService {
                         }
                     } else {
                         log.error("An error occured with the User Service or the service is not available");
-                        return null;
                     }
 
-                    List<CardDTO> userCards = user.getCards();
-                    userCards.add(Mapper.map(card, CardDTO.class));
-                    user.setCards(userCards);
-                    if (WebService.put(globalProperty.getUrlUser() + "/" + user.getId(), user) == null) {
-                        return null;
-                    }
                     return Mapper.map(createdCard, CardDTO.class);
                 } else {
                     log.error("Error when generating a card");
-                    return null;
                 }
             }
         }
-
         return null;
     }
 
@@ -154,9 +144,9 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public CardDTO update(Long id, CardDTO cardDTO) {
-        if (cardDAO.findById(id).isPresent()) {
-            Card card = cardDAO.findById(id).get();
+    public CardDTO update(CardDTO cardDTO) {
+        if (cardDAO.findById(cardDTO.getId()).isPresent()) {
+            Card card = cardDAO.findById(cardDTO.getId()).get();
 
             // Mapping
             card.setAttack(cardDTO.getAttack());
@@ -165,7 +155,6 @@ public class CardServiceImpl implements CardService {
             card.setHp(cardDTO.getHp());
             card.setPrice(cardDTO.getPrice());
             card.setUserId(cardDTO.getUserId());
-            cardDTO.setId(card.getId());
             save(card);
         } else {
             log.info("The card does not exist");

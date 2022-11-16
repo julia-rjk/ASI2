@@ -8,12 +8,12 @@ public class GlobalProperty {
     @Value("${webservice.url.cardbasics}")
     private String urlCardBasics;
 
+    @Value("${webservice.url.users}")
+    private String urlUser;
+
     public String getUrlCardBasics() {
         return urlCardBasics;
     }
-    
-    @Value("${webservice.url.users}")
-    private String urlUser;
 
     public String getUrlUser() {
         return urlUser;
