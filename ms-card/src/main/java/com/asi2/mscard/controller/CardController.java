@@ -48,7 +48,7 @@ public class CardController {
     @GetMapping("/onSell")
     public List<CardDTO> getAllCardsOnSell() {
         try {
-            return cardService.findAll().stream().filter(cardDTO -> cardDTO.getUserId() == null).collect(Collectors.toList());
+            return cardService.findAllCardIdUserNull();
         } catch (Exception e) {
             log.error("Error when retrieving all cards : {}", e.getMessage());
             return null;

@@ -17,8 +17,10 @@ import org.springframework.stereotype.Service;
 import utils.Mapper;
 import utils.WebService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -33,7 +35,34 @@ public class CardServiceImpl implements CardService {
     @Override
     public List<CardDTO> findAll() {
         try {
-            return Mapper.mapList(cardDAO.findAll(), CardDTO.class);
+            List<Card> listCard = cardDAO.findAll();
+            List<CardDTO> cardDTOList = new ArrayList<>();
+            for(Card card : listCard) {
+                CardDTO cardDTO = Mapper.map(card, CardDTO.class);
+                cardDTO.setModel(getModelOfCard(card));
+                cardDTOList.add(cardDTO);
+            }
+
+            return cardDTOList;
+        } catch (Exception e) {
+            log.error("Error when finding all Cards : {}", e.getMessage());
+            return null;
+        }
+    }
+
+    // TODO Upgrade that sh*t (-> MS Store)
+    @Override
+    public List<CardDTO> findAllCardIdUserNull() {
+        try {
+            List<Card> listCard = cardDAO.findAll();
+            List<CardDTO> cardDTOList = new ArrayList<>();
+            for(Card card : listCard) {
+                CardDTO cardDTO = Mapper.map(card, CardDTO.class);
+                cardDTO.setModel(getModelOfCard(card));
+                cardDTOList.add(cardDTO);
+            }
+
+            return cardDTOList.stream().filter(cardDTO -> cardDTO.getUserId() == null).collect(Collectors.toList());
         } catch (Exception e) {
             log.error("Error when finding all Cards : {}", e.getMessage());
             return null;

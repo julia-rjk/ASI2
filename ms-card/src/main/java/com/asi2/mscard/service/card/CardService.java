@@ -9,6 +9,8 @@ import java.util.Optional;
 public interface CardService {
     List<CardDTO> findAll();
 
+    List<CardDTO> findAllCardIdUserNull();
+
     CardDTO findById(Long id);
 
     CardDTO generateCard(Long id);
