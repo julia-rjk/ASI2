@@ -54,7 +54,7 @@ public class CardController {
     }
 
     @PostMapping()
-    public CardDTO generateCard(@RequestParam Optional<Long> id) {
+    public CardDTO generateCard(@RequestParam(required=false) Long id) {
         try {
             return cardService.generateCard(id);
         } catch (Exception e) {

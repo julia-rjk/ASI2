@@ -88,7 +88,7 @@ public class UserServiceImpl implements UserService {
                 List<Long> userIdCards = new ArrayList<>();
                 for (int i = 0; i < Game.MINIMUM_CARD; i++) {
                     // Call Card Service to set up default card for the user
-                    response = WebService.post(globalProperty.getUrlCard(), user);
+                    response = WebService.post(globalProperty.getUrlCard() + "?id=" + user.getId(), user);
 
                     // Mapping from JSON to DTO
                     if (response != null) {
