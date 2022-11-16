@@ -6,11 +6,40 @@ module.exports = {
       mode: 'split',
       schemas: 'src/entities',
       prettier: true,
-      clean: true,
       override: {
         mutator: {
-          path: 'src/api/api.ts',
-          name: 'api',
+          path: 'src/api/userApi.ts',
+          name: 'userApi',
+        },
+      },
+    },
+  },
+  store: {
+    input: 'http://localhost:8084/v3/api-docs',
+    output: {
+      target: 'src/services/storeService.ts',
+      mode: 'split',
+      schemas: 'src/entities',
+      prettier: true,
+      override: {
+        mutator: {
+          path: 'src/api/storeApi.ts',
+          name: 'storeApi',
+        },
+      },
+    },
+  },
+  cards: {
+    input: 'http://localhost:8084/v3/api-docs',
+    output: {
+      target: 'src/services/storeService.ts',
+      mode: 'split',
+      schemas: 'src/entities',
+      prettier: true,
+      override: {
+        mutator: {
+          path: 'src/api/storeApi.ts',
+          name: 'storeApi',
         },
       },
     },

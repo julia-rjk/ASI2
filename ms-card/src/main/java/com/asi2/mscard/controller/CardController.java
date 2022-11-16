@@ -12,6 +12,7 @@ import com.asi2.mscard.service.CardService;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -23,9 +24,18 @@ public class CardController {
 
     @GetMapping()
     public List<CardDTO> getAllCards() {
-        List<CardDTO> cards = null;
         try {
             return cardService.findAll();
+        } catch (Exception e) {
+            log.error("Error when retrieving all cards : {}", e.getMessage());
+            return null;
+        }
+    }
+
+    @GetMapping()
+    public List<CardDTO> getAllCardsOnSell() {
+        try {
+            return cardService.findAll().stream().filter(cardDTO -> cardDTO.getUserId() == null).collect(Collectors.toList());
         } catch (Exception e) {
             log.error("Error when retrieving all cards : {}", e.getMessage());
             return null;

@@ -6,7 +6,7 @@ export const getInstance = () => {
   if (instance) return instance;
 
   instance = Axios.create({
-    baseURL: 'http://localhost',
+    baseURL: 'http://localhost:8084',
   });
   // instance.interceptors.request.use(async (config) => {
   //   let token = getStoredSynapseToken();
@@ -45,11 +45,9 @@ export const getInstance = () => {
   return instance;
 };
 
-export const api = async <T>(config: AxiosRequestConfig): Promise<T> => {
+export const storeApi = async <T>(config: AxiosRequestConfig): Promise<T> => {
   const { data } = await getInstance()(config);
   return data;
 };
 
-export default api;
-
-export const nodeURL = 'http://localhost:8087';
+export default storeApi;

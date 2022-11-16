@@ -6,20 +6,20 @@
  * OpenAPI spec version: 1.0
  */
 import type { UserDTO } from '../entities';
-import { api } from '../api/api';
+import { userApi } from '../api/userApi';
 
 /**
  * @summary getAllUsers
  */
 export const getAllUsers = () => {
-  return api<UserDTO[]>({ url: `/api/users`, method: 'get' });
+  return userApi<UserDTO[]>({ url: `/api/users`, method: 'get' });
 };
 
 /**
  * @summary login
  */
 export const login = (userDTO: UserDTO) => {
-  return api<UserDTO | void>({
+  return userApi<UserDTO | void>({
     url: `/api/users/login`,
     method: 'put',
     headers: { 'Content-Type': 'application/json' },
@@ -31,7 +31,7 @@ export const login = (userDTO: UserDTO) => {
  * @summary register
  */
 export const register = (userDTO: UserDTO) => {
-  return api<UserDTO | void>({
+  return userApi<UserDTO | void>({
     url: `/api/users/register`,
     method: 'post',
     headers: { 'Content-Type': 'application/json' },
@@ -43,7 +43,26 @@ export const register = (userDTO: UserDTO) => {
  * @summary getUserByid
  */
 export const getUserByid = (id: number) => {
-  return api<UserDTO>({ url: `/api/users/${id}`, method: 'get' });
+  return userApi<UserDTO>({ url: `/api/users/${id}`, method: 'get' });
+};
+
+/**
+ * @summary updateUser
+ */
+export const updateUserUsingPUT = (id: number, userDTO: UserDTO) => {
+  return userApi<UserDTO | void>({
+    url: `/api/users/${id}`,
+    method: 'put',
+    headers: { 'Content-Type': 'application/json' },
+    data: userDTO,
+  });
+};
+
+/**
+ * @summary deleteUser
+ */
+export const deleteUserUsingDELETE = (id: number) => {
+  return userApi<boolean | void>({ url: `/api/users/${id}`, method: 'delete' });
 };
 
 export type GetAllUsersResult = NonNullable<
@@ -53,4 +72,10 @@ export type LoginResult = NonNullable<Awaited<ReturnType<typeof login>>>;
 export type RegisterResult = NonNullable<Awaited<ReturnType<typeof register>>>;
 export type GetUserByidResult = NonNullable<
   Awaited<ReturnType<typeof getUserByid>>
+>;
+export type UpdateUserUsingPUTResult = NonNullable<
+  Awaited<ReturnType<typeof updateUserUsingPUT>>
+>;
+export type DeleteUserUsingDELETEResult = NonNullable<
+  Awaited<ReturnType<typeof deleteUserUsingDELETE>>
 >;
