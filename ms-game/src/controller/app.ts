@@ -11,11 +11,11 @@ export function createApplication(
   serverOptions: Partial<ServerOptions> = {}
 ): Server {
   const io = new Server(httpServer, serverOptions);
-  const servive = new GameService();
+  const service = new GameService();
 
   io.on("connection", (socket) => {
     socket.on('joinWaitingList', ({ user }:any) => {
-      servive.joinWaitingList(io, socket, user);
+      service.joinWaitingList(io, socket, user);
     });
   });
 

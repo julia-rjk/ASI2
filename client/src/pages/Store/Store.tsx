@@ -94,11 +94,7 @@ export const Store = () => {
         <Grid.Col span={4}>
           <Card shadow="sm" p="lg" radius="md" withBorder>
             <Card.Section>
-              <Image
-                src={selectedCard.model?.imgUrl}
-                height={160}
-                alt=""
-              />
+              <Image src={selectedCard.model?.imgUrl} height={160} alt="" />
             </Card.Section>
 
             <Group position="apart" mt="md" mb="xs">
