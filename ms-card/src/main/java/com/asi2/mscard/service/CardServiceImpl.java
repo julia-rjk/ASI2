@@ -67,7 +67,7 @@ public class CardServiceImpl implements CardService {
      * @return the card generated
      */
     @Override
-    public CardDTO generateCard(Optional<Long> id) {
+    public CardDTO generateCard(Long id) {
 
         // Get all card model from CardBasics service
         String request = globalProperty.getUrlCardBasics();
@@ -99,15 +99,15 @@ public class CardServiceImpl implements CardService {
                 card.setPrice(generateRandomFloatValue(Game.PRICE_MIN, Game.PRICE_MAX));
 
                 // Set userID if id is present
-                if (id.isPresent()) {
-                    card.setUserId(id.get());
+                if (id != null ) {
+                    card.setUserId(id);
                 }
                 Card createdCard = save(card);
                 // Update user if id is present and card is created
-                if (id.isPresent()) {
+                if (id != null) {
                     // Get user
                     UserDTO user;
-                    String userResponse = WebService.get(globalProperty.getUrlUser() + "/" + id.get());
+                    String userResponse = WebService.get(globalProperty.getUrlUser() + "/" + id);
                     // Mapping from JSON to DTO
                     if (userResponse != null) {
                         try {
