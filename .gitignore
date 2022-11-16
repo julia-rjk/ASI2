@@ -8,6 +8,4 @@
 *.class
 
 ### NodeJS ###
-MS-Auth/node_modules
-Chat/node_modules
-ms-fight/node_modules
+**/node_modules
