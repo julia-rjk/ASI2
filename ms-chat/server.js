@@ -15,17 +15,24 @@ const {
     getIndividualRoomUsers
 } = require('./helpers/userHelper');
 
-
 const dotenv = require('dotenv');
 dotenv.config();
 
 
 const app = express();
 const server = http.createServer(app);
-const io = socketio(server);
+
+var cors = require('cors');
+app.use(cors());
+
+
+const io = require('socket.io')(server, {cors: {origin: "*"}});
 let users = []
 // Set public folder
 app.use(express.static(path.join(__dirname, 'public')));
+
+
+
 
 
 // Récupération des utilisateurs via HTTP 
@@ -101,6 +108,13 @@ io.on('connection', socket => {
         }
     });
 });
+
+
+app.use(function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  });
 
 
 async function saveText(user, room, message){

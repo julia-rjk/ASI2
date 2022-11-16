@@ -6,7 +6,7 @@ export const getInstance = () => {
   if (instance) return instance;
 
   instance = Axios.create({
-    baseURL: 'http://localhost:8081',
+    baseURL: 'http://localhost',
   });
   // instance.interceptors.request.use(async (config) => {
   //   let token = getStoredSynapseToken();

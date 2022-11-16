@@ -13,7 +13,7 @@ export const App = () => {
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />
         <Route path="store/:type" element={<Store />} />
-        <Route path="game" element={<Game />} />
+        <Route path="game" element={<Game/>} />
       </Route>
       <Route path="/public" element={<UserForm />} />
       <Route path="*" element={<div>Not found</div>} />
