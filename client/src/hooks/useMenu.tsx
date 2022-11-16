@@ -20,8 +20,8 @@ export const useMenu = () => {
       icon: <PigMoney size={48} color="black" />,
     },
     {
-      name: 'FIGHT',
-      path: '/fight',
+      name: 'GAME',
+      path: '/game',
       icon: <DeviceGamepad size={48} color="black" />,
     },
   ] as MenuItem[];
