@@ -13,9 +13,10 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { CardDTO } from '../../entities';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from '../../redux/user.selector';
-import { useAsyncFn } from 'react-use';
+import { useAsync, useAsyncFn } from 'react-use';
 import { setUser } from '../../redux/user.action';
 import { buy, sell } from '../../services/storeService';
+import { getAllCardsOnSell } from '../../services/cardService';
 
 export const Store = () => {
   const { type } = useParams();
@@ -31,7 +32,10 @@ export const Store = () => {
     }
   }, [type, navigate]);
 
-  const elements: CardDTO[] = type === 'sell' ? cardsUser : [];
+  const cardsToSell = useAsync(() => getAllCardsOnSell(), []);
+
+  const elements: CardDTO[] =
+    type === 'sell' ? cardsUser : cardsToSell.value ?? [];
 
   const rows = elements?.map((element, index) => (
     <tr onClick={() => setSelectedCard(element)} key={index}>
