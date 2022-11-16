@@ -10,18 +10,15 @@ import {
 } from '@mantine/core';
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-
-interface Card {
-  position: number;
-  mass: number;
-  symbol: string;
-  name: string;
-}
+import { CardDTO } from '../../entities';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../redux/user.selector';
 
 export const Store = () => {
   const { type } = useParams();
   const navigate = useNavigate();
   const [selectedCardId, setSelectedCardId] = useState<number>();
+  const { cards } = useSelector(selectUser);
 
   useEffect(() => {
     if (type !== 'buy' && type !== 'sell') {
@@ -29,20 +26,17 @@ export const Store = () => {
     }
   }, [type, navigate]);
 
-  const elements: Card[] = [
-    { position: 6, mass: 12.011, symbol: 'C', name: 'Carbon' },
-    { position: 7, mass: 14.007, symbol: 'N', name: 'Nitrogen' },
-    { position: 39, mass: 88.906, symbol: 'Y', name: 'Yttrium' },
-    { position: 56, mass: 137.33, symbol: 'Ba', name: 'Barium' },
-    { position: 58, mass: 140.12, symbol: 'Ce', name: 'Cerium' },
-  ];
+  const elements: CardDTO[] = type === 'sell' ? cards ?? [] : [];
 
-  const rows = elements.map((element, index) => (
+  const rows = elements?.map((element, index) => (
     <tr onClick={() => setSelectedCardId(index)} key={index}>
-      <td>{element.position}</td>
-      <td>{element.name}</td>
-      <td>{element.symbol}</td>
-      <td>{element.mass}</td>
+      <td>{element.model?.name}</td>
+      <td>{element.model?.description}</td>
+      <td>{element.model?.family}</td>
+      <td>{element.attack}</td>
+      <td>{element.defence}</td>
+      <td>{element.hp}</td>
+      <td>{element.price}</td>
     </tr>
   ));
 
@@ -52,10 +46,13 @@ export const Store = () => {
         <Table striped highlightOnHover withBorder withColumnBorders>
           <thead>
             <tr>
-              <th>Element position</th>
-              <th>Element name</th>
-              <th>Symbol</th>
-              <th>Atomic mass</th>
+              <th>Name</th>
+              <th>Description</th>
+              <th>Family</th>
+              <th>Attack</th>
+              <th>Defence</th>
+              <th>HP</th>
+              <th>Price</th>
             </tr>
           </thead>
           <tbody>{rows}</tbody>

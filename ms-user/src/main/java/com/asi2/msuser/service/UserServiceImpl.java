@@ -62,7 +62,10 @@ public class UserServiceImpl implements UserService {
             User user = userDAO.findByLoginAndPassword(login, password);
             if (user != null) {
                 // TODO Generate Token from Auth Service
-                return Mapper.map(user, UserDTO.class);
+
+                UserDTO userDTO = Mapper.map(user, UserDTO.class);
+                userDTO.setCards(getAllCardsOfUser(user));
+                return userDTO;
             } else {
                 log.info("The user does not exist");
             }
