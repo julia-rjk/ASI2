@@ -2,11 +2,11 @@
 
 // Source : https://www.cometchat.com/tutorials/how-to-build-a-chat-app-with-websockets-and-node-js 
 
-
 const path = require('path');
 const http = require('http');
 const express = require('express');
 const socketio = require('socket.io');
+const axios = require('axios');
 const formatMessage = require('./helpers/formatDate')
 const {
     getActiveUser,
@@ -28,7 +28,7 @@ const users = []
 app.use(express.static(path.join(__dirname, 'public')));
 
 async function getUsers(){
-    axios.get(process.env.URL_MS_USER_GET).then(resp => {
+    axios.get(process.env.URL_MS_USER).then(resp => {
         if (resp.data) {
             users = resp.data
         } else {
@@ -38,11 +38,6 @@ async function getUsers(){
         console.log(err)
     })
 }
-
-
-
-
-
 
 // this block will run when the client connects
 io.on('connection', socket => {
@@ -83,7 +78,7 @@ io.on('connection', socket => {
         if (user) {
             io.to(user.room).emit(
                 'message',
-                formatMessage("WebCage", `${user.username} has left the room`)
+                formatMessage("WebCage", `${user.username} a quitté la discussion`)
             );
 
             // Current active users and room name
@@ -96,5 +91,5 @@ io.on('connection', socket => {
 });
 
 // ---------------------------------
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8086;
 server.listen(PORT, () =>{ getUsers(); console.log(`Server running on port ${PORT}`)});
