@@ -6,16 +6,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from '../../redux/user.selector';
 import { UserDTO } from '../../entities';
 import GameDTO from '../../entities/gameDTO';
+import { Button } from '@mantine/core';
 
 export const Game = () => {
   const socket = io('http://localhost:8087');
   const user = useSelector(selectUser);
   const selectedCards = user.cards?.slice(0, 4);
+  user.cards = selectedCards;
   const [game, setGame] = React.useState<GameDTO>();
   const [player1, setPlayer1] = React.useState<UserDTO>();
   const [player2, setPlayer2] = React.useState<UserDTO>();
-  
-  
+
+
   useEffect(() => {
     setPlayer1(user);
     socket.on("connect", () => {
@@ -24,8 +26,6 @@ export const Game = () => {
     });
     socket.on('startingPlay', (game) => {
       setGame(game);
-      console.log(game.player1)
-      console.log(player1)
       if (game.player1.id == user.id) {
         setPlayer1(game.player1);
         setPlayer2(game.player2);
@@ -50,21 +50,21 @@ export const Game = () => {
     return () => {
       socket.disconnect();
     }
-  }, [])
-
-  console.log(player2)
+  }, []);
 
   return (
+    // TODO: Use https://mantine.dev/core/modal/ to select the card to play
     <div id="gameContainer">
-      <div id="chat">Chat (TODO)</div>
-        <div id='game'>
-          <Player playerName={player1?.surName + " " + player1?.lastName} playerActionPoints={player1? player1.actionPoints:0} ></Player>
-          <div id='controls'>
-            <button className='control'>End turn</button>
-            <button className='control'>Attack ⚔️</button>
-          </div>
-          <Player playerName={player2?player2?.surName + " " + player2?.lastName : "Waiting for player..."} playerActionPoints={player2? player2.actionPoints:0} ></Player> :
+      <div id="chat" className='gameSubContainer'>Chat (TODO)</div>
+      <div id='game' className='gameSubContainer'>
+        <Player playerName={player1?.surName + " " + player1?.lastName} playerActionPoints={player1?.actionPoints} player={player1}></Player>
+        <div id='controls'>
+          <Button className='control'>End turn</Button>
+          <hr />
+          <Button className='control'>Attack ⚔️</Button>
         </div>
+        <Player playerName={player2 ? player2?.surName + " " + player2?.lastName : "Waiting for player..."} playerActionPoints={player1?.actionPoints} player={player2}></Player> :
+      </div>
     </div>
   );
 };
