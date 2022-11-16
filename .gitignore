@@ -6,6 +6,7 @@
 
 ### Java ###
 *.class
+**/target
 
 ### NodeJS ###
 **/node_modules
