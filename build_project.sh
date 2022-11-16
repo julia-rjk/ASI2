@@ -1,10 +1,10 @@
-cd ./Lib-transverse
+cd ./lib-transverse
 mvn clean install
-cd ../MS-User 
+cd ../ms-user
 mvn clean install 
-cd ../ms-cardBasic
+cd ../ms-cardbasic
 mvn clean install
-cd ../MS-Card 
+cd ../ms-card 
 mvn clean install 
 cd ../ms-store/ms-store-public
 mvn clean install 

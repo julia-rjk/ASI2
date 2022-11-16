@@ -1,27 +1,27 @@
 version: '3.7'
 services:
   cardservice:
-    build: ./MS-Card
+    build: ./ms-card
     networks:
       - app-network
 
   cardbasicservice:
-    build: ./ms-cardBasic
+    build: ./ms-cardbasic
     networks:
       - app-network
 
   userservice:
-    build: ./MS-User
+    build: ./ms-user
     networks:
       - app-network
 
   # storeservice:
-  #   build: ../ms-store/ms-store
+  #   build: ./ms-store/ms-store
   #   networks:
   #     - app-network
 
   authservice:
-    build: ./MS-Auth
+    build: ./ms-auth
     networks:
       - app-network
 
@@ -42,8 +42,8 @@ services:
   #     - 8161:8161
   #     - 61616:61616
       
-  httpd:
-    build: ./ReverseProxy
+  reverseproxy:
+    build: ./reverseproxy
     ports:
       - "80:80"
     networks:
