@@ -16,4 +16,5 @@ export interface UserDTO {
   login?: string;
   password?: string;
   surName?: string;
+  actionPoints?: number;
 }

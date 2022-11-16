@@ -17,7 +17,6 @@ const root = ReactDOM.createRoot(
 const store = createStore(userReducer as any);
 
 root.render(
-  <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
         <MantineProvider withGlobalStyles withNormalizeCSS>
@@ -25,5 +24,4 @@ root.render(
         </MantineProvider>
       </BrowserRouter>
     </Provider>
-  </React.StrictMode>,
 );

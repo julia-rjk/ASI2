@@ -3,7 +3,7 @@ import './Player.css';
 
 interface Props {
   playerName: string;
-  playerActionPoints: number;
+  playerActionPoints: number | undefined;
 }
 
 export const Player = ({ playerName, playerActionPoints }: Props) => {
@@ -12,7 +12,7 @@ export const Player = ({ playerName, playerActionPoints }: Props) => {
     <div className='playerContainer'>
       <div className="playerInfo">
         <div className="playerName">Player : {playerName}</div>
-        <div className="playerActionPoints">Action points :{playerActionPoints}</div>
+        <div className="playerActionPoints">Action points : {playerActionPoints}</div>
       </div>
       <div className="playerCards">
 

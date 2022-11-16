@@ -14,9 +14,8 @@ export function createApplication(
   const servive = new GameService();
 
   io.on("connection", (socket) => {
-    console.log("New client connected");
     socket.on('joinWaitingList', ({ user }:any) => {
-      servive.joinWaitingList(socket, user);
+      servive.joinWaitingList(io, socket, user);
     });
   });
 
