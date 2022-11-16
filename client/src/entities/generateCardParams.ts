@@ -6,11 +6,4 @@
  * OpenAPI spec version: 1.0
  */
 
-export interface CardBasicsDTO {
-  id?: number;
-  name?: string;
-  description?: string;
-  family?: string;
-  imgUrl?: string;
-  smallImgUrl?: string;
-}
+export type GenerateCardParams = { id?: number };

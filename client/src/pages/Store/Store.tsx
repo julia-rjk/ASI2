@@ -11,14 +11,19 @@ import {
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { CardDTO } from '../../entities';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from '../../redux/user.selector';
+import { useAsyncFn } from 'react-use';
+import { setUser } from '../../redux/user.action';
+import { buy, sell } from '../../services/storeService';
 
 export const Store = () => {
   const { type } = useParams();
   const navigate = useNavigate();
-  const [selectedCardId, setSelectedCardId] = useState<number>();
-  const { cards } = useSelector(selectUser);
+  const [selectedCard, setSelectedCard] = useState<CardDTO>();
+  const user = useSelector(selectUser);
+  const { cards } = user;
+  const cardsUser = cards ?? [];
 
   useEffect(() => {
     if (type !== 'buy' && type !== 'sell') {
@@ -26,10 +31,10 @@ export const Store = () => {
     }
   }, [type, navigate]);
 
-  const elements: CardDTO[] = type === 'sell' ? cards ?? [] : [];
+  const elements: CardDTO[] = type === 'sell' ? cardsUser : [];
 
   const rows = elements?.map((element, index) => (
-    <tr onClick={() => setSelectedCardId(index)} key={index}>
+    <tr onClick={() => setSelectedCard(element)} key={index}>
       <td>{element.model?.name}</td>
       <td>{element.model?.description}</td>
       <td>{element.model?.family}</td>
@@ -39,6 +44,29 @@ export const Store = () => {
       <td>{element.price}</td>
     </tr>
   ));
+
+  const dispatch = useDispatch();
+
+  const [buyState, onBuy] = useAsyncFn(async (card_id: number) => {
+    const res = await buy({ user_id: user.id, card_id });
+
+    const newCards = [...cardsUser];
+    const newCard = elements.find((id) => id === card_id);
+    if (newCard) {
+      newCards.push(newCard);
+    }
+    dispatch(setUser({ ...user, cards: newCards }));
+    return res;
+  }, []);
+
+  const [sellState, onSell] = useAsyncFn(async (card_id: number) => {
+    const res = await sell({ user_id: user.id, card_id });
+
+    dispatch(
+      setUser({ ...user, cards: cardsUser.filter((id) => id === card_id) }),
+    );
+    return res;
+  }, []);
 
   return (
     <Grid>
@@ -58,7 +86,7 @@ export const Store = () => {
           <tbody>{rows}</tbody>
         </Table>
       </Grid.Col>
-      {selectedCardId !== undefined && (
+      {selectedCard && (
         <Grid.Col span={4}>
           <Card shadow="sm" p="lg" radius="md" withBorder>
             <Card.Section>
@@ -70,20 +98,30 @@ export const Store = () => {
             </Card.Section>
 
             <Group position="apart" mt="md" mb="xs">
-              <Text weight={500}>Norway Fjord Adventures</Text>
+              <Text weight={500}>{selectedCard.model?.name}</Text>
               <Badge color="pink" variant="light">
-                On Sale
+                Own
               </Badge>
             </Group>
 
             <Text size="sm" color="dimmed">
-              With Fjord Tours you can explore more of the magical fjord
-              landscapes with tours and activities on and around the fjords of
-              Norway
+              {selectedCard.model?.description}
             </Text>
 
-            <Button variant="light" color="blue" fullWidth mt="md" radius="md">
-              Book classic tour now
+            <Button
+              variant="light"
+              color="blue"
+              fullWidth
+              mt="md"
+              radius="md"
+              loading={buyState.loading || sellState.loading}
+              onClick={() =>
+                selectedCard.id &&
+                (type === 'buy'
+                  ? onBuy(selectedCard.id)
+                  : onSell(selectedCard.id))
+              }>
+              {type === 'buy' ? 'Buy' : 'Sell'}
             </Button>
           </Card>
         </Grid.Col>
