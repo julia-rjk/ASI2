@@ -1,41 +1,39 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Grid, Tabs } from '@mantine/core';
-import { useDispatch, useSelector } from 'react-redux';
-import { Navigate } from 'react-router-dom';
-import { selectUser } from '../../redux/user.selector';
-import { Chat } from '../../components/Chat';
+import React, { useEffect } from 'react';
+import { Player } from '../../components/Player/Player';
+import { io } from 'socket.io-client';
 import './Game.css';
-import { connect } from "../../api";
-
-import socketIOClient from "socket.io-client";
-const ENDPOINT = "http://127.0.0.1:8086";
+import { nodeURL } from '../../api/api';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectUser } from '../../redux/user.selector';
 
 export const Game = () => {
-  const dispatch = useDispatch();
-  
+  const socket = io(nodeURL);
+  const user = useSelector(selectUser);
   useEffect(() => {
-    const socket = socketIOClient(ENDPOINT);
-
-    socket.emit('joinRoom', { "username":"julia", "room":"waitingRoom" });
-
-    socket.on("FromAPI", data => {
-      console.log(data)
+    socket.on("connect", () => {
+      socket.emit("connected", (res:any) => {
+        console.log('res : ',res);
+        if ("error" in res) {
+          // handle the error
+          return;
+        }
+      })
+      console.log('connected')
     });
-  }, []);
+  }, [])
 
   return (
-    <Grid>
-      <Grid.Col>
-        
-      </Grid.Col>
-      <Grid.Col span="auto">
-        <Chat />
-      </Grid.Col>
-      <Grid.Col span="auto">
-        <div>
-          <h1>Hello World!</h1>
+    <div id='gameContainer'>
+      <div id="chat">Chat (TODO)</div>
+      <div id='game'>
+        <Player playerName={`${user.lastName} ${user.surName}`} playerActionPoints={100} ></Player>
+        <div id='controls'>
+          <button className='control'>End turn</button>
+          <button className='control'>Attack ⚔️</button>
         </div>
-      </Grid.Col>
-    </Grid>
+        {/* {cond ? <A /> : <B />} */}
+        <Player playerName={'Julia'} playerActionPoints={100} ></Player>
+      </div>
+    </div>
   );
 };

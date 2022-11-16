@@ -51,3 +51,5 @@ export const api = async <T>(config: AxiosRequestConfig): Promise<T> => {
 };
 
 export default api;
+
+export const nodeURL = 'http://localhost:8087';

@@ -2,10 +2,10 @@ import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import { Layout } from './components/Layout';
+import { Game } from './pages/Game';
 import { Home } from './pages/Home';
 import { Store } from './pages/Store';
 import { UserForm } from './pages/UserForm';
-import { Game } from './pages/Game';
 
 export const App = () => {
   return (
