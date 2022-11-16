@@ -30,16 +30,16 @@ module.exports = {
     },
   },
   cards: {
-    input: 'http://localhost:8084/v3/api-docs',
+    input: 'http://localhost:8085/v3/api-docs',
     output: {
-      target: 'src/services/storeService.ts',
+      target: 'src/services/cardService.ts',
       mode: 'split',
       schemas: 'src/entities',
       prettier: true,
       override: {
         mutator: {
-          path: 'src/api/storeApi.ts',
-          name: 'storeApi',
+          path: 'src/api/cardApi.ts',
+          name: 'cardApi',
         },
       },
     },
