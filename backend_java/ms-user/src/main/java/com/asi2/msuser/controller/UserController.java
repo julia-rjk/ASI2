@@ -53,8 +53,9 @@ public class UserController {
         }
     }
 
-    @PutMapping("/{id}")
-    public UserDTO updateUserAsync(@RequestBody UserDTO userDTO) {
+    @ApiOperation(value = "", nickname = "updateUserAsync")
+    @PutMapping()
+    public Boolean updateUserAsync(@RequestBody UserDTO userDTO) {
         try {
             senderService.sendMessage(new CustomMessage<>(
                     new Random().nextLong(),
@@ -64,13 +65,15 @@ public class UserController {
                     userDTO
             ));
 
+            return Boolean.TRUE;
         } catch (Exception e) {
             log.error("Error when creating the message for the queue : {}", e.getMessage());
         }
 
-        return null;
+        return Boolean.FALSE;
     }
 
+    @ApiOperation(value = "", nickname = "deleteUser")
     @DeleteMapping("/{id}")
     public Boolean deleteUser(@PathVariable Long id) {
         try {
@@ -83,7 +86,7 @@ public class UserController {
 
     @ApiOperation(value = "", nickname = "register")
     @PostMapping(Router.REGISTER)
-    public UserDTO registerAsync(@RequestBody @Validated UserDTO userDto) {
+    public Boolean registerAsync(@RequestBody @Validated UserDTO userDto) {
         try {
             senderService.sendMessage(new CustomMessage<>(
                     new Random().nextLong(),
@@ -92,12 +95,12 @@ public class UserController {
                     String.valueOf(new Date()),
                     userDto
             ));
+            return Boolean.TRUE;
 
         } catch (Exception e) {
             log.error("Error when creating the message for the queue : {}", e.getMessage());
         }
-
-        return null;
+        return Boolean.FALSE;
     }
 
     @ApiOperation(value = "", nickname = "login")

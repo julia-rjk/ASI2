@@ -8,7 +8,7 @@
 import type { StoreOrder, StoreTransaction } from '../entities';
 import { storeApi } from '../api/storeApi';
 
-export const sell = (storeOrder: StoreOrder) => {
+export const sellCardAsync = (storeOrder: StoreOrder) => {
   return storeApi<boolean>({
     url: `/api/store/sell`,
     method: 'post',
@@ -17,7 +17,7 @@ export const sell = (storeOrder: StoreOrder) => {
   });
 };
 
-export const buy = (storeOrder: StoreOrder) => {
+export const buyCardAsync = (storeOrder: StoreOrder) => {
   return storeApi<boolean>({
     url: `/api/store/buy`,
     method: 'post',
@@ -26,12 +26,14 @@ export const buy = (storeOrder: StoreOrder) => {
   });
 };
 
-export const getAllTransactions = () => {
+export const getCard = () => {
   return storeApi<StoreTransaction[]>({ url: `/api/store`, method: 'get' });
 };
 
-export type SellResult = NonNullable<Awaited<ReturnType<typeof sell>>>;
-export type BuyResult = NonNullable<Awaited<ReturnType<typeof buy>>>;
-export type GetAllTransactionsResult = NonNullable<
-  Awaited<ReturnType<typeof getAllTransactions>>
+export type SellCardAsyncResult = NonNullable<
+  Awaited<ReturnType<typeof sellCardAsync>>
 >;
+export type BuyCardAsyncResult = NonNullable<
+  Awaited<ReturnType<typeof buyCardAsync>>
+>;
+export type GetCardResult = NonNullable<Awaited<ReturnType<typeof getCard>>>;

@@ -16,6 +16,18 @@ export const getAllUsers = () => {
 };
 
 /**
+ * @summary updateUserAsync
+ */
+export const updateUserAsync = (userDTO: UserDTO) => {
+  return userApi<boolean | void>({
+    url: `/api/users`,
+    method: 'put',
+    headers: { 'Content-Type': 'application/json' },
+    data: userDTO,
+  });
+};
+
+/**
  * @summary login
  */
 export const login = (userDTO: UserDTO) => {
@@ -28,10 +40,10 @@ export const login = (userDTO: UserDTO) => {
 };
 
 /**
- * @summary register
+ * @summary registerAsync
  */
 export const register = (userDTO: UserDTO) => {
-  return userApi<UserDTO | void>({
+  return userApi<boolean | void>({
     url: `/api/users/register`,
     method: 'post',
     headers: { 'Content-Type': 'application/json' },
@@ -47,35 +59,23 @@ export const getUserByid = (id: number) => {
 };
 
 /**
- * @summary updateUser
- */
-export const updateUserUsingPUT = (id: number, userDTO: UserDTO) => {
-  return userApi<UserDTO | void>({
-    url: `/api/users/${id}`,
-    method: 'put',
-    headers: { 'Content-Type': 'application/json' },
-    data: userDTO,
-  });
-};
-
-/**
  * @summary deleteUser
  */
-export const deleteUserUsingDELETE = (id: number) => {
+export const deleteUser = (id: number) => {
   return userApi<boolean | void>({ url: `/api/users/${id}`, method: 'delete' });
 };
 
 export type GetAllUsersResult = NonNullable<
   Awaited<ReturnType<typeof getAllUsers>>
 >;
+export type UpdateUserAsyncResult = NonNullable<
+  Awaited<ReturnType<typeof updateUserAsync>>
+>;
 export type LoginResult = NonNullable<Awaited<ReturnType<typeof login>>>;
 export type RegisterResult = NonNullable<Awaited<ReturnType<typeof register>>>;
 export type GetUserByidResult = NonNullable<
   Awaited<ReturnType<typeof getUserByid>>
 >;
-export type UpdateUserUsingPUTResult = NonNullable<
-  Awaited<ReturnType<typeof updateUserUsingPUT>>
->;
-export type DeleteUserUsingDELETEResult = NonNullable<
-  Awaited<ReturnType<typeof deleteUserUsingDELETE>>
+export type DeleteUserResult = NonNullable<
+  Awaited<ReturnType<typeof deleteUser>>
 >;
