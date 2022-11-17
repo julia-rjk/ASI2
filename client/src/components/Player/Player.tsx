@@ -3,11 +3,15 @@ import './Player.css';
 import { Card, Badge, Button, Group, Text, Image } from '@mantine/core';
 import { CardDTO } from '../../entities';
 import { GameUserDTO } from '../../entities/gameDTO';
+import { AttackCardSelection } from '../../pages/Game/Game';
 interface Props {
   player: GameUserDTO;
+  attacker: boolean;
+  attackCardSelection: AttackCardSelection | undefined;
+  setAttackCardSelection: (attackCardSelection: AttackCardSelection) => void;
 }
 
-export const Player = ({ player }: Props) => {
+export const Player = ({ player, attacker, attackCardSelection, setAttackCardSelection }: Props) => {
   return (
     <div className="playerContainer">
       <div className="playerInfo">
@@ -20,15 +24,9 @@ export const Player = ({ player }: Props) => {
           <span className="playerName">{`${player.surName} ${player.lastName}`}</span>
         </section>
         <section>
-          <label htmlFor="playerActionPoints">
-            Action points : {player.actionPoints}
-          </label>
-          <progress
-            id="playerActionPoints"
-            max="100"
-            value={player.actionPoints}>
-            {player.actionPoints}
-          </progress>
+          <div className="playerActionPoints">
+            Action points (TODO) : {player.actionPoints}
+          </div>
         </section>
       </div>
       {player && (
@@ -37,7 +35,7 @@ export const Player = ({ player }: Props) => {
             return (
               <Card
                 key={card.id}
-                className="gameCard"
+                className={`gameCard ${attacker ? attackCardSelection?.attacker?.id == card.id && 'selectedCard' : attackCardSelection?.defender?.id == card.id && 'selectedCard'}`}
                 shadow="sm"
                 p="lg"
                 radius="md"
@@ -73,8 +71,18 @@ export const Player = ({ player }: Props) => {
                   fullWidth
                   mt="md"
                   radius="md"
-                  onClick={() => null}>
-                  Select
+                  disabled={attacker && card.energy!==undefined && Math.round(card.energy) === 0}
+                  onClick={() => {
+                    if (attacker) {
+                      attackCardSelection && setAttackCardSelection({...attackCardSelection, attacker: card});
+                    } else {
+                      attackCardSelection && setAttackCardSelection({...attackCardSelection, defender: card});
+                    }
+                    console.log(attackCardSelection);
+                  }}>
+                    {/* attacker? (attackCardSelection? setAttackCardSelection({...attackCardSelection, attacker:card}):null):(attackCardSelection? setAttackCardSelection({...attackCardSelection, defender:card}):null)}
+                    }> */}
+                  {card.energy && Math.round(card.energy) > 0 ?  (attacker?'Use':'Attack') : 'No energy'}
                 </Button>
               </Card>
             );

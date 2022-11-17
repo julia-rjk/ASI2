@@ -10,7 +10,7 @@ export default class ChatService {
     users: ChatUser[] = [];
 
     public joinRoom(io: Server, socket: Socket, userId: any, room: string) {
-        console.log(room)
+        // console.log(room)
         const user = this.newUser(socket.id, userId, room);
         socket.join(user.room);
 
