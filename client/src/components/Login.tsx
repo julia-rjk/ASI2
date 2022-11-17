@@ -2,13 +2,12 @@ import React from 'react';
 import { TextInput, Button, Group, Stack, PasswordInput } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useForm } from '@mantine/form';
+import { useDispatch } from 'react-redux';
+import { useAsyncFn } from 'react-use';
+import { login } from '../services/userService';
+import { setUser } from '../redux/user.action';
 
-interface Props {
-  onLogin: (loginValue: string, passwordValue: string) => void;
-  loading: boolean;
-}
-
-export const Login = ({ onLogin, loading }: Props) => {
+export const Login = () => {
   const form = useForm({
     initialValues: { loginValue: '', passwordValue: '' },
     validate: {
@@ -18,6 +17,21 @@ export const Login = ({ onLogin, loading }: Props) => {
     },
   });
   const [visible, { toggle }] = useDisclosure(false);
+
+  const dispatch = useDispatch();
+
+  const [loginState, onLogin] = useAsyncFn(
+    async (loginValue: string, passwordValue: string) => {
+      const res = await login({ login: loginValue, password: passwordValue });
+
+      if (res) {
+        dispatch(setUser(res));
+        return res;
+      }
+      throw new Error('Error');
+    },
+    [],
+  );
 
   return (
     <Stack sx={{ maxWidth: 380 }} mx="auto">
@@ -40,11 +54,14 @@ export const Login = ({ onLogin, loading }: Props) => {
         />
 
         <Group position="right" mt="md">
-          <Button type="submit" loading={loading}>
+          <Button type="submit" loading={loginState.loading}>
             Connect
           </Button>
         </Group>
       </form>
+      {loginState.error && (
+        <div style={{ color: 'red' }}>{loginState.error.message}</div>
+      )}
     </Stack>
   );
 };

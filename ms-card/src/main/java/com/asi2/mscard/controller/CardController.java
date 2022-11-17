@@ -35,7 +35,6 @@ public class CardController {
     @ApiOperation(value = "", nickname = "getAllCards")
     @GetMapping()
     public List<CardDTO> getAllCards() {
-        List<CardDTO> cards = null;
         try {
             return cardService.findAll();
         } catch (Exception e) {
@@ -58,7 +57,6 @@ public class CardController {
     @ApiOperation(value = "", nickname = "getCardById")
     @GetMapping("/{id}")
     public CardDTO getCardById(@PathVariable Long id) {
-        CardDTO card = null;
         try {
             return cardService.findById(id);
         } catch (Exception e) {
@@ -69,7 +67,7 @@ public class CardController {
 
     @ApiOperation(value = "", nickname = "updateCard")
     @PutMapping()
-    public CardDTO updateCardAsync(@RequestBody @Validated CardDTO cardDTO) {
+    public Boolean updateCardAsync(@RequestBody @Validated CardDTO cardDTO) {
         try {
             senderService.sendMessage(new CustomMessage<>(
                     new Random().nextLong(),
@@ -78,12 +76,12 @@ public class CardController {
                     String.valueOf(new Date()),
                     cardDTO
             ));
-
+            return Boolean.TRUE;
         } catch (Exception e) {
             log.error("Error when creating the message for the queue : {}", e.getMessage());
         }
 
-        return null;
+        return Boolean.FALSE;
     }
 
     @ApiOperation(value = "", nickname = "generateCard")

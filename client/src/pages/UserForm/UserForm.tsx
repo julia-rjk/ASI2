@@ -1,50 +1,15 @@
-import React from 'react';
-import { Box, Tabs } from '@mantine/core';
+import React, { useState } from 'react';
+import { Box, Tabs, Notification } from '@mantine/core';
 import { Login } from '../../components/Login';
 import { Register } from '../../components/Register';
-import { useAsyncFn } from 'react-use';
-import { setUser } from '../../redux/user.action';
-import { login, register } from '../../services/userService';
-import { useDispatch, useSelector } from 'react-redux';
-import { UserDTO } from '../../entities/userDTO';
+import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 import { selectUser } from '../../redux/user.selector';
+import { Check } from 'tabler-icons-react';
 
 export const UserForm = () => {
-  const dispatch = useDispatch();
-
-  const [connectState, onConnect] = useAsyncFn(
-    async (fn: Promise<UserDTO | void>) => {
-      const res = await fn;
-
-      if (res) {
-        dispatch(setUser(res));
-        return res;
-      }
-      throw new Error('Error');
-    },
-    [],
-  );
-
-  const onLogin = (loginValue: string, passwordValue: string) =>
-    onConnect(login({ login: loginValue, password: passwordValue }));
-
-  const onRegister = (
-    login: string,
-    password: string,
-    email: string,
-    lastName: string,
-    surName: string,
-  ) =>
-    onConnect(
-      register({
-        login: login,
-        password: password,
-        email: email,
-        lastName: lastName,
-        surName: surName,
-      }),
-    );
+  const [registerSuccess, setRegisterSuccess] = useState(false);
+  const [activeTab, setActiveTab] = useState<string>('login');
 
   const user = useSelector(selectUser);
 
@@ -54,20 +19,37 @@ export const UserForm = () => {
 
   return (
     <Box sx={{ maxWidth: 380 }} mx="auto">
-      <Tabs defaultValue="login">
+      {registerSuccess && (
+        <Notification
+          onClose={() => {
+            setRegisterSuccess(false);
+          }}
+          icon={<Check size={18} />}
+          color="teal"
+          title="Success">
+          You successfully registered, you can now login
+        </Notification>
+      )}
+      <Tabs
+        value={activeTab}
+        onTabChange={(tab) => setActiveTab(tab ?? 'login')}>
         <Tabs.List>
           <Tabs.Tab value="login">Login</Tabs.Tab>
           <Tabs.Tab value="register">Register</Tabs.Tab>
         </Tabs.List>
 
         <Tabs.Panel value="login">
-          <Login onLogin={onLogin} loading={connectState.loading} />
+          <Login />
         </Tabs.Panel>
         <Tabs.Panel value="register">
-          <Register onRegister={onRegister} loading={connectState.loading} />
+          <Register
+            onRegisterSuccess={() => {
+              setRegisterSuccess(true);
+              setActiveTab('login');
+            }}
+          />
         </Tabs.Panel>
       </Tabs>
-      {connectState.error && <div>{connectState.error.message}</div>}
     </Box>
   );
 };

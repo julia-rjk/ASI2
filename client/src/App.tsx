@@ -2,8 +2,9 @@ import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import { Layout } from './components/Layout';
+import { Buy } from './pages/Buy';
 import { Home } from './pages/Home';
-import { Store } from './pages/Store';
+import { Sell } from './pages/Sell';
 import { UserForm } from './pages/UserForm';
 
 export const App = () => {
@@ -11,8 +12,9 @@ export const App = () => {
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />
-        <Route path="store/:type" element={<Store />} />
-        <Route path="game" element={<div> COMINING SOON!!! </div>} />
+        <Route path="store/buy" element={<Buy />} />
+        <Route path="store/sell" element={<Sell />} />
+        <Route path="game" element={<div> COMING SOON!!! </div>} />
       </Route>
       <Route path="/public" element={<UserForm />} />
       <Route path="*" element={<div>Not found</div>} />
