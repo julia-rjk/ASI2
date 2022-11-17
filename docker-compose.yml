@@ -21,7 +21,7 @@ services:
   #     - app-network
 
   authservice:
-    build: ./ms-auth
+    build: backend_java/ms-auth
     networks:
       - app-network
 
