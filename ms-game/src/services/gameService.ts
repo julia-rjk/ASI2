@@ -1,14 +1,13 @@
-import { UserDTO } from "../../../client/src/entities/userDTO";
-import * as uuid from 'uuid';
+import { GameUserDTO } from "../../../client/src/entities/gameDTO";
 import Game from "../models/game";
 import { Server, Socket } from "socket.io";
 
 export default class GameService {
-    usersWaiting: UserDTO[] = []
+    usersWaiting: GameUserDTO[] = []
     currentGames:Game[] = []
     finishedGames:Game[] = []
 
-    public joinWaitingList(io:Server, socket: Socket, user: UserDTO) {
+    public joinWaitingList(io:Server, socket: Socket, user: GameUserDTO) {
         socket.join("waitingRoom");
         console.log('User', user.id, "joinded waiting list");
         user.actionPoints = 100;
@@ -22,10 +21,10 @@ export default class GameService {
 
         // On sélectionne les 2 joueurs de la liste, on lance un nouveau jeu et on vide la liste d'attente
         let usersPlaying = [this.usersWaiting[0], this.usersWaiting[1]]
-        this.startNewPlay(io,socket,usersPlaying)
+        this.startNewPlay(io,usersPlaying)
         this.usersWaiting = []
     }
-    startNewPlay(io:Server, socket: Socket, usersPlaying: UserDTO[]) {
+    startNewPlay(io:Server, usersPlaying: GameUserDTO[]) {
         // Création de la partie 
         let game = new Game(usersPlaying);
         this.currentGames.push(game);

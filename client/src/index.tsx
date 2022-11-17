@@ -17,11 +17,11 @@ const root = ReactDOM.createRoot(
 const store = createStore(userReducer as any);
 
 root.render(
-    <Provider store={store}>
-      <BrowserRouter>
-        <MantineProvider withGlobalStyles withNormalizeCSS>
-          <App />
-        </MantineProvider>
-      </BrowserRouter>
-    </Provider>
+  <Provider store={store}>
+    <BrowserRouter>
+      <MantineProvider withGlobalStyles withNormalizeCSS>
+        <App />
+      </MantineProvider>
+    </BrowserRouter>
+  </Provider>,
 );

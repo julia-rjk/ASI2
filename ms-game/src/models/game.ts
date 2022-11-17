@@ -1,13 +1,13 @@
 import * as uuid from 'uuid';
-import { UserDTO } from "../../../client/src/entities/userDTO";
+import { GameUserDTO } from "../../../client/src/entities/gameDTO";
 
 export default class Game {
-    gameId!: string;
-    player1!: UserDTO;
-    player2!: UserDTO;
-    nextTurn!: UserDTO;
+    gameId: string;
+    player1: GameUserDTO;
+    player2: GameUserDTO;
+    nextTurn: GameUserDTO;
 
-    constructor(players: UserDTO[]) {
+    constructor(players: GameUserDTO[]) {
         this.gameId = uuid.v4();
         this.player1 = players[0];
         this.player2 = players[1];
