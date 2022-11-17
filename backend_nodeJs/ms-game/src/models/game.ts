@@ -1,5 +1,5 @@
 import * as uuid from 'uuid';
-import { GameUserDTO } from "../../../client/src/entities/gameDTO";
+import { GameUserDTO } from "../../../../client/src/entities/gameDTO";
 
 export default class Game {
     gameId: string;

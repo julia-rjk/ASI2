@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import { selectUser } from '../../redux/user.selector';
 import GameDTO from '../../entities/gameDTO';
 import { Button } from '@mantine/core';
+import { Chat } from '../../components/Chat';
 
 export const Game = () => {
   const socket = io('http://localhost:8087');
@@ -56,7 +57,7 @@ export const Game = () => {
     // TODO: Use https://mantine.dev/core/modal/ to select the card to play
     <div id="gameContainer">
       <div id="chat" className="gameSubContainer">
-        Chat (TODO)
+        <Chat />
       </div>
       <div id="game" className="gameSubContainer">
         <Player player={game ? (game.player1.id === user.id ? game.player1 : game.player2) : user} />

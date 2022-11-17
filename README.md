@@ -13,6 +13,6 @@ Informations :
     - 8085 : Card Service
 
 Docker : 
-- Pour tout installer automatiquement, il faut lancer le script : ````sudo sh build_project.sh``
+- Pour tout installer automatiquement, il faut lancer le script : ``sudo sh build_project.sh``
 - Avant de lancer docker il faut faire un ```mvn clean install``` de chaque projet maven
 - Exemple pour lancer un container : ```sudo docker build --tag userservice . && sudo docker run userservice ```

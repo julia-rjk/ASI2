@@ -1,22 +1,27 @@
 version: '3.7'
 services:
   cardservice:
-    build: ./ms-card
+    build: backend_java/ms-card
     networks:
       - app-network
 
   cardbasicservice:
-    build: ./ms-cardbasic
+    build: backend_java/ms-cardbasic
     networks:
       - app-network
 
   userservice:
-    build: ./ms-user
+    build: backend_java/ms-user
+    networks:
+      - app-network
+
+  chathistory:
+    build: backend_java/ms-chathistory
     networks:
       - app-network
 
   # storeservice:
-  #   build: ./ms-store/ms-store
+  #   build: backend_java/ms-store/ms-store
   #   networks:
   #     - app-network
 
@@ -26,12 +31,12 @@ services:
       - app-network
 
   # notificationservice:
-  #   build: ../MS-Notification
+  #   build: .backend_java/MS-Notification
   #   networks:
   #     - app-network
 
   # frontend:
-  #   build: ./Front
+  #   build: ./client
   #   networks:
   #     - app-network
 
