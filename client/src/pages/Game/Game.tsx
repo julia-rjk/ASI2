@@ -26,7 +26,7 @@ export const Game = () => {
     return () => {
       socket.disconnect();
     };
-  }, [socket, user]);
+  }, []);
 
   useEffect(() => {
     if (game) {
@@ -48,6 +48,10 @@ export const Game = () => {
     //TODO: implement endTurn
   };
 
+  useEffect(() => {
+    console.log(game);
+  }, [game]);
+
   return (
     // TODO: Use https://mantine.dev/core/modal/ to select the card to play
     <div id="gameContainer">
@@ -55,8 +59,8 @@ export const Game = () => {
         Chat (TODO)
       </div>
       <div id="game" className="gameSubContainer">
-        <Player player={user} />
-        {game?.nextTurn === user.id && (
+        <Player player={game ? (game.player1.id === user.id ? game.player1 : game.player2) : user} />
+        {game?.nextTurn.id === user.id && (
           <div id="controls">
             <Button className="control" onClick={() => endTurn()}>
               End turn
@@ -69,7 +73,7 @@ export const Game = () => {
         )}
         {game ? (
           <Player
-            player={game.player1 === user.id ? game.player2 : game.player1}
+            player={game.player1.id === user.id ? game.player2 : game.player1}
           />
         ) : (
           <div>Waiting for opponent</div>
