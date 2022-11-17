@@ -81,7 +81,6 @@ export const Player = ({ player }: Props) => {
           })}
         </div>
       )}
-      <div className="selectedCard"></div>
     </div>
   );
 };
