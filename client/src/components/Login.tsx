@@ -1,5 +1,12 @@
 import React from 'react';
-import { TextInput, Button, Group, Stack, PasswordInput } from '@mantine/core';
+import {
+  TextInput,
+  Button,
+  Group,
+  Stack,
+  PasswordInput,
+  Text,
+} from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useForm } from '@mantine/form';
 import { useDispatch } from 'react-redux';
@@ -59,9 +66,7 @@ export const Login = () => {
           </Button>
         </Group>
       </form>
-      {loginState.error && (
-        <div style={{ color: 'red' }}>{loginState.error.message}</div>
-      )}
+      {loginState.error && <Text color="red">{loginState.error.message}</Text>}
     </Stack>
   );
 };

@@ -7,7 +7,6 @@ const initialState = {
 };
 
 const userReducer = (state = initialState, action: Action) => {
-  console.log('userReducer', action);
   switch (action.type) {
     case UPDATE_USER:
       action.user === null
