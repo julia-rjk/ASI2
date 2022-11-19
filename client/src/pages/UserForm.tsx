@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Box, Tabs, Notification } from '@mantine/core';
-import { Login } from '../../components/Login';
-import { Register } from '../../components/Register';
+import { Login } from '../components/Login';
+import { Register } from '../components/Register';
 import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
-import { selectUser } from '../../redux/user.selector';
+import { selectUser } from '../redux/user.selector';
 import { Check } from 'tabler-icons-react';
 
 export const UserForm = () => {

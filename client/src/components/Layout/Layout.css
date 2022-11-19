@@ -1,0 +1,7 @@
+.money {
+  cursor: initial;
+}
+
+.money[data-hovered] {
+  background-color: transparent;
+}

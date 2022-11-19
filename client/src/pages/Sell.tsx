@@ -1,10 +1,10 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAsyncFn } from 'react-use';
-import { StoreLayout } from '../../components/StoreLayout';
-import { setUser } from '../../redux/user.action';
-import { selectUser } from '../../redux/user.selector';
-import { sellCardAsync } from '../../services/storeService';
+import { StoreLayout } from '../components/StoreLayout';
+import { setUser } from '../redux/user.action';
+import { selectUser } from '../redux/user.selector';
+import { sellCardAsync } from '../services/storeService';
 
 export const Sell = () => {
   const user = useSelector(selectUser);

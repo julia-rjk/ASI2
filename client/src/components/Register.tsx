@@ -1,5 +1,12 @@
 import React from 'react';
-import { TextInput, Button, Group, Stack, PasswordInput } from '@mantine/core';
+import {
+  TextInput,
+  Button,
+  Group,
+  Stack,
+  PasswordInput,
+  Text,
+} from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useForm } from '@mantine/form';
 import { useAsyncFn } from 'react-use';
@@ -121,7 +128,7 @@ export const Register = ({ onRegisterSuccess }: Props) => {
         </Group>
       </form>
       {registerState.error && (
-        <div style={{ color: 'red' }}>{registerState.error.message}</div>
+        <Text color="red">{registerState.error.message}</Text>
       )}
     </Stack>
   );

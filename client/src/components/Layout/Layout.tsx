@@ -7,13 +7,15 @@ import {
   Avatar,
   Title,
   Menu,
+  UnstyledButton,
 } from '@mantine/core';
 import { Link, Navigate, Outlet, useLocation } from 'react-router-dom';
-import { useMenu } from '../hooks/useMenu';
+import { useMenu } from '../../hooks/useMenu';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectUser } from '../redux/user.selector';
+import { selectUser } from '../../redux/user.selector';
 import { CurrencyDollar, Home, Logout } from 'tabler-icons-react';
-import { setUser } from '../redux/user.action';
+import { setUser } from '../../redux/user.action';
+import './Layout.css';
 
 export const Layout = () => {
   const pathName = useLocation().pathname;
@@ -37,16 +39,20 @@ export const Layout = () => {
               </Link>
             )}
             <Title>{title}</Title>
-            <Menu shadow="md" width={200}>
+            <Menu shadow="md" width={200} trigger="hover">
               <Menu.Target>
-                <Group>
-                  <Avatar />
-                  <Text>{`${user.lastName} ${user.surName}`}</Text>
-                </Group>
+                <UnstyledButton>
+                  <Group>
+                    <Avatar />
+                    <Text>{`${user.lastName} ${user.surName}`}</Text>
+                  </Group>
+                </UnstyledButton>
               </Menu.Target>
 
               <Menu.Dropdown>
-                <Menu.Item icon={<CurrencyDollar size={14} color="black" />}>
+                <Menu.Item
+                  className="money"
+                  icon={<CurrencyDollar size={14} color="black" />}>
                   {user.account}
                 </Menu.Item>
                 <Menu.Divider />
