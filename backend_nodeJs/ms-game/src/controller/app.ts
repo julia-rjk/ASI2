@@ -27,10 +27,11 @@ export function createApplication(
       chatService.getUsers(io, socket);
    });
 
-    // // Listen for client message
-    // socket.on('chatMessage', msg => {
-    //   chatService.chatMessage(io, msg)
-    // });
+    // Listen for client message
+    socket.on('chat:sendMessage', msg => {
+      console.log(msg)
+      chatService.sendMessage(io, socket, msg);
+    });
 
     // socket.on('sendEveryone', msg => {
     //   const user = getActiveUser(socket.id);

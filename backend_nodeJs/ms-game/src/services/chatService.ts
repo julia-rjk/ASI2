@@ -26,12 +26,14 @@ export default class ChatService {
         });
     }
 
+    public sendMessage(io: Server, socket: Socket, msg: string){
+        const user = this.getActiveUser(socket.id);
+        console.log("Sending message to everyone in the room : " + msg)
+        io.to(user?.room).emit('chat:getMessage', this.formatMessage(user?.userId, msg));
+        console.log(msg);
+    }
+
     public getUsers(io: Server, socket: Socket) {
-
-        // const user = this.getActiveUser(socket.id);
-        // console.log(this.getActiveUser(socket.id))
-        // io.sockets.emit('chat:sendUsers', this.formatMessage("", this.getIndividualRoomUsers(user?.room)))
-
         io.sockets.emit('chat:sendUsers', this.formatMessage("", this.getActiveUser(socket.id)))
     }
 

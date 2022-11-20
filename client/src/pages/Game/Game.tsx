@@ -73,7 +73,7 @@ export const Game = () => {
 
   return (
     <>
-      <Modal
+      {/* <Modal
         opened={opened}
         onClose={() => setOpened(false)}
         title="Select up to 4 cards 🃏 end click on play ▶️"
@@ -135,9 +135,9 @@ export const Game = () => {
           </div>
           <Button disabled={selectedCards?.length == 0} onClick={() => {setOpened(false); connect()}}>Play</Button>
         </div>
-      </Modal>
+      </Modal> */}
       <div id="gameContainer">
-        <div id="game" className="gameSubContainer">
+        {/* <div id="game" className="gameSubContainer">
           <Player player={game !== undefined? (game.player1.id === user.id ? game.player1 : game.player2) : { ...user, cards: [] }} attacker={true} attackCardSelection={attackCardSelection} setAttackCardSelection={setAttackCardSelection}/>
           {game?.nextTurn.id === user.id? (
             <div id="controls">
@@ -158,10 +158,10 @@ export const Game = () => {
           ) : (
             <div>Waiting for opponent</div>
           )}
-        </div>
-        {/* <div id="chat" className="gameSubContainer">
-          <Chat />
         </div> */}
+        <div id="chat" className="gameSubContainer">
+          <Chat />
+        </div>
       </div>
     </>
   );

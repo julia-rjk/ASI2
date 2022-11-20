@@ -32,9 +32,6 @@ let users = []
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-
-
-
 // Récupération des utilisateurs via HTTP 
 async function getUsers(){
     axios.get(process.env.URL_MS_USER).then(resp => {
@@ -72,11 +69,7 @@ io.on('connection', socket => {
     socket.on('chatMessage', msg => {
         const user = getActiveUser(socket.id);
         io.to(user.room).emit('message', formatMessage(user.username, msg));
-
-
         // METTRE LA SAUVEGARDE DES MESSAGES ICI
-
-
     });
 
     socket.on('sendEveryone', msg => {
