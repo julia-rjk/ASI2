@@ -15,23 +15,28 @@ export function createApplication(
   const service = new GameService();
   const chatService = new ChatService();
   io.on("connection", (socket) => {
-    socket.on('joinWaitingList', (user:any) => {
+    socket.on('joinWaitingList', (user: any) => {
       service.joinWaitingList(io, socket, user);
     });
 
-    socket.on('chat:joinRoom', ({ userId, room }) => {
-       chatService.joinRoom(io, socket, userId, room);
+    socket.on('chat:joinRoom', ({ userId, userName, room }) => {
+      chatService.joinRoom(io, socket, userId, userName, room);
     });
 
     socket.on('chat:getUsers', () => {
       chatService.getUsers(io, socket);
-   });
+    });
 
     // Listen for client message
     socket.on('chat:sendMessage', msg => {
-      console.log(msg)
       chatService.sendMessage(io, socket, msg);
     });
+
+    // Listen for client message
+    socket.on('chat:sendBroadcast', msg => {
+      chatService.sendBroadcast(io, socket, msg);
+    });
+
 
     // socket.on('sendEveryone', msg => {
     //   const user = getActiveUser(socket.id);

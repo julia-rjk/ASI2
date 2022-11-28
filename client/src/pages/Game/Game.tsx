@@ -8,7 +8,7 @@ import GameDTO from '../../entities/gameDTO';
 import { Button, Card, Group, Modal, Image, Badge, Text } from '@mantine/core';
 import { CardDTO } from '../../entities';
 import { Socket } from 'socket.io';
-import { Chat } from '../../components/Chat';
+import { Chat } from '../../components/Chat/Chat';
 
 export class AttackCardSelection {
   attacker!: CardDTO;

@@ -9,40 +9,47 @@ const URL_MS_USER = "http://localhost:8081/api/users"
 export default class ChatService {
     users: ChatUser[] = [];
 
-    public joinRoom(io: Server, socket: Socket, userId: any, room: string) {
+    public joinRoom(io: Server, socket: Socket, userId: any, userName:any, room: string) {
         // console.log(room)
-        const user = this.newUser(socket.id, userId, room);
-        socket.join(user.room);
+        const user = this.newUser(socket.id, userId, userName, room);
+        if (user != null) {
+            socket.join(user.room);
 
-        socket.emit('message', this.formatMessage("", 'Bienvenue '));
+            socket.emit('message', this.formatMessage("", null , 'Bienvenue '));
 
-        // Broadcast everytime users connects
-        socket.broadcast.to(user.room).emit('message', this.formatMessage("--", `${user.userId} a rejoint la discussion`));
+            // Broadcast everytime users connects
+            socket.broadcast.to(user.room).emit('message', this.formatMessage("--", null, `${user.userId} a rejoint la discussion`));
 
-        // Current active users and room name
-        io.to(user.room).emit('roomUsers', {
-            room: user.room,
-            users: this.getIndividualRoomUsers(user.room)
-        });
+            // Current active users and room name
+            io.to(user.room).emit('roomUsers', {
+                room: user.room,
+                users: this.getIndividualRoomUsers(user.room)
+            });
+        }
     }
 
-    public sendMessage(io: Server, socket: Socket, msg: string){
+    public sendMessage(io: Server, socket: Socket, msg: string) {
         const user = this.getActiveUser(socket.id);
-        console.log("Sending message to everyone in the room : " + msg)
-        io.to(user?.room).emit('chat:getMessage', this.formatMessage(user?.userId, msg));
-        console.log(msg);
+        io.to(user?.room).emit('chat:getMessage', this.formatMessage(user?.userId,user?.userName, msg));
     }
 
     public getUsers(io: Server, socket: Socket) {
-        io.sockets.emit('chat:sendUsers', this.formatMessage("", this.getActiveUser(socket.id)))
+        io.sockets.emit('chat:sendUsers', this.formatMessage("", null, this.users))
+    }
+
+    public sendBroadcast(io: Server, socket: Socket, msg: string) {
+        const user = this.getActiveUser(socket.id);
+        io.emit('chat:getBroadcast', this.formatMessage("Broadcast from " + user?.userId, "Broadcast from " + user?.userName, msg));
     }
 
 
     // Join user to chat
-    public newUser(id: any, userId: any, room: any) {
-        const user = new ChatUser(id, userId, room);
-        this.users.push(user);
-        return user;
+    public newUser(id: any, userId: any, userName:any, room: any) {
+        const user = new ChatUser(id, userId, userName, room);
+        if (this.users.find(user => user.id === id) == undefined) {
+            this.users.push(user);
+            return user;
+        } else return null;
     }
 
     // Get current user
@@ -63,11 +70,16 @@ export default class ChatService {
         return this.users.filter(user => user.room === room);
     }
 
-    public formatMessage(userId: any, text: any) {
+    public formatMessage(userId: any, userName: any,  text: any) {
+        let current = new Date();
+        let cDate = current.getFullYear() + '-' + (current.getMonth() + 1) + '-' + current.getDate();
+        let cTime = current.getHours() + ":" + current.getMinutes() + ":" + current.getSeconds();
+        let dateTime = cDate + ' ' + cTime;
         return {
             userId,
+            userName,
             text,
-            time: "now"
+            time: dateTime
         };
     }
 }
