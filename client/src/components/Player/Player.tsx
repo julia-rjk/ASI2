@@ -11,7 +11,12 @@ interface Props {
   setAttackCardSelection: (attackCardSelection: AttackCardSelection) => void;
 }
 
-export const Player = ({ player, attacker, attackCardSelection, setAttackCardSelection }: Props) => {
+export const Player = ({
+  player,
+  attacker,
+  attackCardSelection,
+  setAttackCardSelection,
+}: Props) => {
   return (
     <div className="playerContainer">
       <div className="playerInfo">
@@ -35,7 +40,13 @@ export const Player = ({ player, attacker, attackCardSelection, setAttackCardSel
             return (
               <Card
                 key={card.id}
-                className={`gameCard ${attacker ? attackCardSelection?.attacker?.id == card.id && 'selectedCard' : attackCardSelection?.defender?.id == card.id && 'selectedCard'}`}
+                className={`gameCard ${
+                  attacker
+                    ? attackCardSelection?.attacker?.id == card.id &&
+                      'selectedCard'
+                    : attackCardSelection?.defender?.id == card.id &&
+                      'selectedCard'
+                }`}
                 shadow="sm"
                 p="lg"
                 radius="md"
@@ -71,18 +82,34 @@ export const Player = ({ player, attacker, attackCardSelection, setAttackCardSel
                   fullWidth
                   mt="md"
                   radius="md"
-                  disabled={attacker && card.energy!==undefined && Math.round(card.energy) === 0}
+                  disabled={
+                    attacker &&
+                    card.energy !== undefined &&
+                    Math.round(card.energy) === 0
+                  }
                   onClick={() => {
                     if (attacker) {
-                      attackCardSelection && setAttackCardSelection({...attackCardSelection, attacker: card});
+                      attackCardSelection &&
+                        setAttackCardSelection({
+                          ...attackCardSelection,
+                          attacker: card,
+                        });
                     } else {
-                      attackCardSelection && setAttackCardSelection({...attackCardSelection, defender: card});
+                      attackCardSelection &&
+                        setAttackCardSelection({
+                          ...attackCardSelection,
+                          defender: card,
+                        });
                     }
                     console.log(attackCardSelection);
                   }}>
-                    {/* attacker? (attackCardSelection? setAttackCardSelection({...attackCardSelection, attacker:card}):null):(attackCardSelection? setAttackCardSelection({...attackCardSelection, defender:card}):null)}
+                  {/* attacker? (attackCardSelection? setAttackCardSelection({...attackCardSelection, attacker:card}):null):(attackCardSelection? setAttackCardSelection({...attackCardSelection, defender:card}):null)}
                     }> */}
-                  {card.energy && Math.round(card.energy) > 0 ?  (attacker?'Use':'Attack') : 'No energy'}
+                  {card.energy && Math.round(card.energy) > 0
+                    ? attacker
+                      ? 'Use'
+                      : 'Attack'
+                    : 'No energy'}
                 </Button>
               </Card>
             );

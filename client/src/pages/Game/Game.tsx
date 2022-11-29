@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Player } from '../../components/Player/Player';
+import { Player } from '../../components/Player';
 import { io } from 'socket.io-client';
 import './Game.css';
 import { useSelector } from 'react-redux';
@@ -7,49 +7,43 @@ import { selectUser } from '../../redux/user.selector';
 import GameDTO from '../../entities/gameDTO';
 import { Button, Card, Group, Modal, Image, Badge, Text } from '@mantine/core';
 import { CardDTO } from '../../entities';
-import { Socket } from 'socket.io';
-import { Chat } from '../../components/Chat/Chat';
 
 export class AttackCardSelection {
   attacker!: CardDTO;
   defender!: CardDTO;
 }
 
+const socket = io('http://localhost:8087');
+
 export const Game = () => {
   const user = useSelector(selectUser);
-  const [socket, setSocket] = useState<any>();
   const [game, setGame] = useState<GameDTO>();
-  const [opened, setOpened] = useState(false);
-  const [selectedCards, setSelectedCards] = useState<CardDTO[]>();
-  const [attackCardSelection, setAttackCardSelection] = useState<AttackCardSelection>();
-  
-  const addOrRemove = (arr:any, item:any, rm?:boolean) => {
+  const [opened, setOpened] = useState(true);
+  const [selectedCards, setSelectedCards] = useState<CardDTO[]>([]);
+  const [attackCardSelection, setAttackCardSelection] =
+    useState<AttackCardSelection>(new AttackCardSelection());
+
+  const addOrRemove = (arr: CardDTO[], item: CardDTO, rm: boolean) => {
     if (rm) {
-      return arr.filter((i:any) => i !== item);
+      return arr.filter((i) => i !== item);
     } else {
-      return arr.includes(item) ? arr.filter((i: any) => i !== item) : [ ...arr, item ]
+      return arr.includes(item)
+        ? arr.filter((i) => i !== item)
+        : [...arr, item];
     }
   };
 
   useEffect(() => {
-    setSocket(io('http://localhost:8087'))
-    setOpened(true)
-    setSelectedCards([]);
-    setAttackCardSelection(new AttackCardSelection());
-    socket?.on('connect', () => {
+    socket.on('connect', () => {
       console.log('connected');
     });
-    return () => {
-      socket?.disconnect();
-    };
-
-  }, []); 
-  function connect() {
-    socket?.emit('joinWaitingList', {...user, cards:selectedCards});
-    socket?.on('startingPlay', (game:any) => {
+    socket.on('startingPlay', (game: GameDTO) => {
       setGame(game);
     });
-  }
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
 
   useEffect(() => {
     if (game) {
@@ -59,36 +53,41 @@ export const Game = () => {
         console.log('Waiting for your turn');
       }
     }
-  }, [game]);
+  }, [game, user.id]);
+
+  const connect = () => {
+    socket.emit('joinWaitingList', { ...user, cards: selectedCards });
+  };
 
   const attack = () => {
-    socket?.emit('attack', { user, game });
+    socket.emit('attack', { user, game });
     // TODO: implement attack
   };
 
   const endTurn = () => {
-    socket?.emit('endTurn', { user, game });
+    socket.emit('endTurn', { user, game });
     // TODO: implement endTurn
   };
 
   return (
     <>
-      {/* <Modal
+      <Modal
         opened={opened}
         onClose={() => setOpened(false)}
         title="Select up to 4 cards 🃏 end click on play ▶️"
         size="fit-content"
         closeOnClickOutside={false}
         closeOnEscape={false}
-        withCloseButton={false}
-      >
+        withCloseButton={false}>
         <div className="selectCardsContainer">
           <div className="playerCards">
             {user.cards?.map((card: CardDTO) => {
               return (
-                <Card 
+                <Card
                   key={card.id}
-                  className={`${selectedCards?.includes(card) && "selectedCard"} gameCard`}
+                  className={`${
+                    selectedCards.includes(card) && 'selectedCard'
+                  } gameCard`}
                   shadow="sm"
                   p="lg"
                   radius="md"
@@ -124,22 +123,45 @@ export const Game = () => {
                     fullWidth
                     mt="md"
                     radius="md"
-                    disabled={selectedCards && selectedCards?.length >= 4 && !selectedCards?.includes(card)}
-                    onClick={() => selectedCards && selectedCards.length < 4 ? setSelectedCards(addOrRemove(selectedCards,card)):setSelectedCards(addOrRemove(selectedCards,card, true))}
-                    >
-                    {selectedCards?.includes(card)? "Remove" : "Select"}
+                    disabled={
+                      selectedCards.length >= 4 && !selectedCards.includes(card)
+                    }
+                    onClick={() =>
+                      setSelectedCards((prev) =>
+                        addOrRemove(prev, card, !(selectedCards.length < 4)),
+                      )
+                    }>
+                    {selectedCards.includes(card) ? 'Remove' : 'Select'}
                   </Button>
                 </Card>
               );
             })}
           </div>
-          <Button disabled={selectedCards?.length == 0} onClick={() => {setOpened(false); connect()}}>Play</Button>
+          <Button
+            disabled={selectedCards?.length == 0}
+            onClick={() => {
+              setOpened(false);
+              connect();
+            }}>
+            Play
+          </Button>
         </div>
-      </Modal> */}
+      </Modal>
       <div id="gameContainer">
-        {/* <div id="game" className="gameSubContainer">
-          <Player player={game !== undefined? (game.player1.id === user.id ? game.player1 : game.player2) : { ...user, cards: [] }} attacker={true} attackCardSelection={attackCardSelection} setAttackCardSelection={setAttackCardSelection}/>
-          {game?.nextTurn.id === user.id? (
+        <div id="game" className="gameSubContainer">
+          <Player
+            player={
+              game !== undefined
+                ? game.player1.id === user.id
+                  ? game.player1
+                  : game.player2
+                : { ...user, cards: [] }
+            }
+            attacker={true}
+            attackCardSelection={attackCardSelection}
+            setAttackCardSelection={setAttackCardSelection}
+          />
+          {game?.nextTurn.id === user.id ? (
             <div id="controls">
               <Button className="control" onClick={() => endTurn()}>
                 End turn
@@ -149,19 +171,23 @@ export const Game = () => {
                 Attack ⚔️
               </Button>
             </div>
-          ):<hr></hr>}
+          ) : (
+            <hr></hr>
+          )}
           {game ? (
             <Player
-              attacker={false} attackCardSelection={attackCardSelection} setAttackCardSelection={setAttackCardSelection}
+              attacker={false}
+              attackCardSelection={attackCardSelection}
+              setAttackCardSelection={setAttackCardSelection}
               player={game.player1.id === user.id ? game.player2 : game.player1}
             />
           ) : (
             <div>Waiting for opponent</div>
           )}
-        </div> */}
-        <div id="chat" className="gameSubContainer">
-          <Chat />
         </div>
+        {/* <div id="chat" className="gameSubContainer">
+          <Chat />
+        </div> */}
       </div>
     </>
   );
