@@ -4,7 +4,7 @@ VALUES (
         'Bulbasaur',
         'I am Bulbasaur',
         'Grass',
-        'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/cards/xy7/1.png'
+        'https://assets.pokemon.com/assets/cms2/img/pokedex/full/001.png'
     );
 INSERT INTO PUBLIC.CARD_BASICS (ID, NAME, DESCRIPTION, FAMILY, IMG_URL)
 VALUES (
@@ -28,7 +28,7 @@ VALUES (
         'Crocodile',
         'Je suis un croco',
         'Animal',
-        'https://www.monbeaujardin.fr/wp-content/uploads/2017/03/crocodile-du-nil-1.jpg'
+        'https://www.larousse.fr/encyclopedie/data/images/1309518-Crocodile.jpg'
     );
 INSERT INTO PUBLIC.CARD_BASICS (ID, NAME, DESCRIPTION, FAMILY, IMG_URL)
 VALUES (
@@ -36,7 +36,7 @@ VALUES (
         'Girafe',
         'J aime les feuilles',
         'Animal',
-        'https://www.worldwildlife.org/content/dam/ WWF/assets/photos/00/imported/WWFBinaryAsset/original/110311_giraffe-2_WCS_9673.jpg'
+        'https://animals.sandiegozoo.org/sites/default/files/2016-11/animals_hero_giraffe_1_0.jpg'
     );
 INSERT INTO PUBLIC.CARD_BASICS (ID, NAME, DESCRIPTION, FAMILY, IMG_URL)
 VALUES (
@@ -44,7 +44,7 @@ VALUES (
         'Panda',
         'Le banbou c est délicieux',
         'Animal',
-        'https://www.monbeaujardin.fr/wp-content/uploads/2017/03/crocodile-du-nil-1.jpg'
+        'https://i.natgeofe.com/k/75ac774d-e6c7-44fa-b787-d0e20742f797/giant-panda-eating_3x2.jpg'
     );
 INSERT INTO PUBLIC.CARD_BASICS (ID, NAME, DESCRIPTION, FAMILY, IMG_URL)
 VALUES (
@@ -52,7 +52,7 @@ VALUES (
         'Lion',
         'Roar',
         'Animal',
-        'https://www.monbeaujardin.fr/wp-content/uploads/2017/03/crocodile-du-nil-1.jpg'
+        'https://upload.chatsdumonde.com/img_global/24-cousins-du-chat/_light-1290-le-lion-morphologie-alimentation-mode-de-vie.jpg'
     );
 INSERT INTO PUBLIC.CARD_BASICS (ID, NAME, DESCRIPTION, FAMILY, IMG_URL)
 VALUES (
@@ -60,7 +60,7 @@ VALUES (
         'Cheval',
         'Pfff',
         'Animal',
-        'https://www.monbeaujardin.fr/wp-content/uploads/2017/03/crocodile-du-nil-1.jpg'
+        'https://www.radiofrance.fr/s3/cruiser-production/2021/03/e51f683c-1f29-4136-8e62-31baa8fbf95a/870x489_origines-equides-cheval.jpg'
     );
 INSERT INTO PUBLIC.CARD_BASICS (ID, NAME, DESCRIPTION, FAMILY, IMG_URL)
 VALUES (
@@ -68,7 +68,7 @@ VALUES (
         'Tigre',
         'Je suis un tigre',
         'Animal',
-        'https://www.monbeaujardin.fr/wp-content/uploads/2017/03/crocodile-du-nil-1.jpg'
+        'https://static.nationalgeographic.fr/files/styles/image_3200/public/12782.jpg?w=1600&h=900'
     );
 
     
