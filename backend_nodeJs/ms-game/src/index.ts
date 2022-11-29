@@ -1,5 +1,5 @@
 import { createServer } from "http";
-import { createApplication } from "./controller/app";
+import { createApplication } from "./controllers/app";
 import * as dotenv from "dotenv";
 
 dotenv.config();
