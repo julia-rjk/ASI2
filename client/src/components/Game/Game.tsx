@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Player } from '../../components/Player';
+import { Player } from '../Player';
 import { io } from 'socket.io-client';
 import './Game.css';
 import { useSelector } from 'react-redux';
@@ -172,7 +172,7 @@ export const Game = () => {
               </Button>
             </div>
           ) : (
-            <hr></hr>
+            <hr />
           )}
           {game ? (
             <Player

@@ -3,7 +3,7 @@ import './Player.css';
 import { Card, Badge, Button, Group, Text, Image } from '@mantine/core';
 import { CardDTO } from '../../entities';
 import { GameUserDTO } from '../../entities/gameDTO';
-import { AttackCardSelection } from '../../pages/Game/Game';
+import { AttackCardSelection } from '../Game/Game';
 interface Props {
   player: GameUserDTO;
   attacker: boolean;
