@@ -39,6 +39,12 @@ export const Game = () => {
     });
     socket.on('startingPlay', (game: GameDTO) => {
       setGame(game);
+      const gameId = game.gameId;
+      socket.emit("joinGame", gameId);
+    });
+    socket.on('updateGame', (game: GameDTO) => {
+      console.log('updateGame');
+      setGame(game);
     });
     return () => {
       socket.disconnect();
@@ -60,8 +66,10 @@ export const Game = () => {
   };
 
   const attack = () => {
-    socket.emit('attack', { user, game });
-    // TODO: implement attack
+    const gameId = game?.gameId;
+    const attackerId = attackCardSelection.attacker.id;
+    const defenderId = attackCardSelection.defender.id;
+    socket.emit('attack', { gameId, attackerId, defenderId });
   };
 
   const endTurn = () => {
@@ -167,7 +175,7 @@ export const Game = () => {
                 End turn
               </Button>
               <hr />
-              <Button className="control" onClick={() => attack()}>
+              <Button disabled={attackCardSelection.attacker==undefined || attackCardSelection.defender==undefined } className="control" onClick={() => attack()}>
                 Attack ⚔️
               </Button>
             </div>

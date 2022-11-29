@@ -15,10 +15,22 @@ export function createApplication(
   const service = new GameService();
   const chatService = new ChatService();
   io.on("connection", (socket) => {
+    // ------------------ Game ------------------
     socket.on('joinWaitingList', (user: any) => {
       service.joinWaitingList(io, socket, user);
     });
 
+    socket.on('joinGame', (gameId: string) => {
+      service.joinGame(socket, gameId);
+    });
+
+    socket.on('attack', (details:any) => {
+      service.attack(io, socket, details.gameId, details.attackerId, details.defenderId);
+    });
+
+    
+    
+    // ----------------- Chat -----------------
     socket.on('chat:joinRoom', ({ userId, userName, room }) => {
       chatService.joinRoom(io, socket, userId, userName, room);
     });
