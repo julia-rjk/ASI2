@@ -6,6 +6,7 @@ import ChatUser from "../models/chatUser";
 import axios from "axios";
 
 const URL_MS_USER = "http://localhost:8081/api/users"
+const URL_MS_CHATHISTORY = "http://localhost:8087/api/messages"
 export default class ChatService {
     users: ChatUser[] = [];
     allUsers: any = [];
@@ -30,7 +31,10 @@ export default class ChatService {
 
     public sendMessage(io: Server, socket: Socket, msg: string) {
         const user = this.getActiveUser(socket.id);
-        io.to(user?.room).emit('chat:getMessage', this.formatMessage(user?.userId,user?.userName, msg));
+        let formattedMessage =  this.formatMessage(user?.userId,user?.userName, msg)
+        this.saveMessage(user?.id, user?.room, formattedMessage.text, formattedMessage.time);
+        io.to(user?.room).emit('chat:getMessage', formattedMessage);
+
     }
 
     public getUsers(io: Server, socket: Socket) {
@@ -39,10 +43,11 @@ export default class ChatService {
 
     public sendBroadcast(io: Server, socket: Socket, username: string, msg: string) {
         const user = this.getActiveUser(socket.id);
+        let formattedMessage = this.formatMessage("Broadcast from " + user?.userName, "Broadcast from " + user?.userName, msg)
+        this.saveMessage(user?.id, user?.room, formattedMessage.text, formattedMessage.time);
         console.log(user, socket.id)
-        io.emit('chat:getBroadcast', this.formatMessage("Broadcast from " + user?.userName, "Broadcast from " + user?.userName, msg));
+        io.emit('chat:getBroadcast', formattedMessage);
     }
-
 
     // Join user to chat
     public newUser(id: any, userId: any, userName:any, room: any) {
@@ -106,5 +111,14 @@ export default class ChatService {
             this.allUsers = data; 
         })
         return this.allUsers; 
+    }
+
+    public saveMessage(userId: any, room: any, message: any, time: any){
+        axios.put(URL_MS_CHATHISTORY, {
+            "userId": userId, 
+            "room": room,
+            "text": message, 
+            "timestamp" : time
+        })
     }
 }
