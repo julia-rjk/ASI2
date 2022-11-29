@@ -1,3 +1,4 @@
+cd backend_java
 cd ./lib-transverse
 mvn clean install
 cd ../ms-user
@@ -10,6 +11,8 @@ cd ../ms-store/ms-store-public
 mvn clean install 
 cd ../ms-store
 mvn clean install 
-cd ..
+cd ../ms-chathistory
+mvn clean install 
+cd ../..
 sudo docker-compose build
 sudo docker-compose up

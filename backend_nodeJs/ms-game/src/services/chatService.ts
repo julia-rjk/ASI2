@@ -8,7 +8,7 @@ import axios from "axios";
 const URL_MS_USER = "http://localhost:8081/api/users"
 export default class ChatService {
     users: ChatUser[] = [];
-
+    allUsers: any = [];
     public joinRoom(io: Server, socket: Socket, userId: any, userName:any, room: string) {
         // console.log(room)
         const user = this.newUser(socket.id, userId, userName, room);
@@ -34,12 +34,13 @@ export default class ChatService {
     }
 
     public getUsers(io: Server, socket: Socket) {
-        io.sockets.emit('chat:sendUsers', this.formatMessage("", null, this.users))
+        io.sockets.emit('chat:sendUsers', this.formatMessage("", null, this.allUsers))
     }
 
-    public sendBroadcast(io: Server, socket: Socket, msg: string) {
+    public sendBroadcast(io: Server, socket: Socket, username: string, msg: string) {
         const user = this.getActiveUser(socket.id);
-        io.emit('chat:getBroadcast', this.formatMessage("Broadcast from " + user?.userId, "Broadcast from " + user?.userName, msg));
+        console.log(user, socket.id)
+        io.emit('chat:getBroadcast', this.formatMessage("Broadcast from " + user?.userName, "Broadcast from " + user?.userName, msg));
     }
 
 
@@ -81,5 +82,29 @@ export default class ChatService {
             text,
             time: dateTime
         };
+    }
+
+    public disconnect(io: Server, socket: Socket){
+        const user = this.exitRoom(socket.id);
+
+        if (user) {
+          io.to(user.room).emit(
+            'message',
+            this.formatMessage("", "", `${user.userName}  a quitté la discussion`)
+          );
+  
+        //   // Current active users and room name
+        //   io.to(user.room).emit('roomUsers', {
+        //     room: user.room,
+        //     users: getIndividualRoomUsers(user.room)
+        //   });
+        }
+    }
+
+    public getAllUsers(){
+        axios.get(URL_MS_USER).then(data =>{
+            this.allUsers = data; 
+        })
+        return this.allUsers; 
     }
 }

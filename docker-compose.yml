@@ -25,10 +25,10 @@ services:
   #   networks:
   #     - app-network
 
-  authservice:
-    build: backend_java/ms-auth
-    networks:
-      - app-network
+  # authservice:
+  #   build: backend_java/ms-auth
+  #   networks:
+  #     - app-network
 
   # notificationservice:
   #   build: .backend_java/MS-Notification

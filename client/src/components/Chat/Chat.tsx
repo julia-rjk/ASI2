@@ -44,21 +44,18 @@ export const Chat = () => {
 
         socket.on('connect', () => {
             socket.emit('chat:getUsers')
-
-            const names = ["user1", "user2"]
-            names.sort((a, b) => a.localeCompare(b));
-            const actualRoomName = names[0] + "-vs-" + names[1]
-
-            // Join chatroom
-            socket.emit('chat:joinRoom', { "userId": user.id, "userName": user.login, "room": actualRoomName });
-
-
+            joinRoom(socket, "everyone");
             socket.on('chat:sendUsers', (message) => {
                 const select = document.getElementById("availableUsers");
                 for (const user of message.text) {
                     const option = document.createElement("option");
-                    option.text = user.userId;
-                    option.value = user.userId;
+                    option.text = user.userName;
+                    option.value = user.userName;
+                    option.onclick = e => {
+                        setTimeout(() => {
+                          joinRoom(socket, option.value);
+                        }, 100);
+                      };
                     select?.appendChild(option);
                 }
             });
@@ -71,6 +68,7 @@ export const Chat = () => {
             });
 
             socket.on('chat:getBroadcast', (message) => {
+                console.log(message)
                 outputMessage(message);
                 const chatMessages2 = document.querySelector('.chat-messages')
                 if (chatMessages2?.scrollTop != undefined) chatMessages2.scrollTop = chatMessages2?.scrollHeight;
@@ -98,7 +96,6 @@ export const Chat = () => {
         document?.querySelector('.chat-messages')?.appendChild(div);
     }
     
-    //TODO: Fonction pour envoyer un message
     function sendMessage(socket: any, message: any) {
         console.log("Sending message : " + message);
         socket.emit('chat:sendMessage', (message));
@@ -106,12 +103,17 @@ export const Chat = () => {
 
     function sendBroadcast(socket: any, message: any) {
         console.log("Sending broadcast : " + message);
-        socket.emit('chat:sendBroadcast', (message));
+        socket.emit('chat:sendBroadcast', (user.login, message));
     }
 
-    function joinRoom(socket: any, message: any) {
-        console.log("Sending broadcast : " + message);
-        socket.emit('chat:sendBroadcast', (message));
+    function joinRoom(socket: any, user2: any) {
+       
+        const names = [ user.login, user2]; 
+        names.sort((a, b) => a.localeCompare(b));
+        const actualRoomName = names[0] + "-vs-" + names[1];
+        console.log("Joining room : " + actualRoomName);
+        socket.emit('chat:joinRoom', { "userId": user.id, "userName": user.login, "room": actualRoomName });
+
     }
 
 

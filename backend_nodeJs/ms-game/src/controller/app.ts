@@ -33,39 +33,14 @@ export function createApplication(
     });
 
     // Listen for client message
-    socket.on('chat:sendBroadcast', msg => {
-      chatService.sendBroadcast(io, socket, msg);
+    socket.on('chat:sendBroadcast',({username, msg}) => {
+      chatService.sendBroadcast(io, socket, username, msg);
     });
 
-
-    // socket.on('sendEveryone', msg => {
-    //   const user = getActiveUser(socket.id);
-    //   io.sockets.emit('broadcast', formatMessage(user.username, msg))
-
-
-    //   // METTRE LA SAUVEGARDE DES MESSAGES ICI
-    //   saveText(user.username, user.room, msg);
-
-
-    // });
-
-    // // Runs when client disconnects
-    // socket.on('disconnect', () => {
-    //   const user = exitRoom(socket.id);
-
-    //   if (user) {
-    //     io.to(user.room).emit(
-    //       'message',
-    //       formatMessage("", `${user.username}  a quitté la discussion`)
-    //     );
-
-    //     // Current active users and room name
-    //     io.to(user.room).emit('roomUsers', {
-    //       room: user.room,
-    //       users: getIndividualRoomUsers(user.room)
-    //     });
-    //   }
-    // });
+    // Runs when client disconnects
+    socket.on('disconnect', () => {
+      
+    });
 
 
 
