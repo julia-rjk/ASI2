@@ -11,12 +11,9 @@
 ### NodeJS ###
 **/node_modules
 
-<<<<<<< HEAD
 ### Maven ###
 **/.mvn
 
 ### bin ###
 **/bin
-=======
 backend_nodeJs/ms-chat/node_modules
->>>>>>> db067ecb18287709fb1b91b500b8b8ee43728c0b
