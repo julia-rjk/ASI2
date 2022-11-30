@@ -69,21 +69,17 @@ public class StoreServiceImpl implements StoreService {
             return false;
         }
 
-        if (!(user.getAccount()-card.getPrice()<=0) && !user.getCards().contains(card)) {
+        if (!(user.getAccount() - card.getPrice() <= 0) && !user.getCards().contains(card)) {
             // Update user account
             List<CardDTO> userCards = user.getCards();
             userCards.add(card);
             user.setCards(userCards);
             user.setAccount(user.getAccount() - card.getPrice());
-            if (WebService.put(globalProperty.getUrlUser() + "/" + user_id, user) == null) {
-                return false;
-            }
+            WebService.put(globalProperty.getUrlUser() + "/" + user_id, user);
 
-            // Update card owner
+            // Update card owner with cardService
             card.setUserId(Long.valueOf(user_id));
-            if (WebService.put(globalProperty.getUrlCard(), card) == null) {
-                return false;
-            }
+            WebService.put(globalProperty.getUrlCard(), card);
 
             // Add transaction
             StoreTransaction sT = new StoreTransaction(user_id, card_id, StoreAction.BUY);
