@@ -1,0 +1,74 @@
+{
+    "configurations": [
+        {
+            "type": "node-terminal",
+            "name": "Launch ActiveMq",
+            "request": "launch",
+            "command": "./activemq start",
+            "cwd": "C:\\Program Files\\apache-activemq-5.17.2\\bin"
+        },
+        {
+            "type": "java",
+            "name": "Launch MsStoreApplication",
+            "request": "launch",
+            "mainClass": "com.asi2.msstore.MsStoreApplication",
+            "projectName": "ms-store"
+        },
+        {
+            "type": "java",
+            "name": "Launch MsUserApplication",
+            "request": "launch",
+            "mainClass": "com.asi2.msuser.MsUserApplication",
+            "projectName": "ms-user"
+        },
+        {
+            "type": "java",
+            "name": "Launch MsCardApplication",
+            "request": "launch",
+            "mainClass": "com.asi2.mscard.MsCardApplication",
+            "projectName": "ms-card"
+        },
+        {
+            "type": "java",
+            "name": "Launch MsCardBasicApplication",
+            "request": "launch",
+            "mainClass": "com.asi2.mscardBasic.MsCardBasicApplication",
+            "projectName": "ms-cardBasic"
+        },
+        {
+            "type": "node-terminal",
+            "name": "Launch MsGameApplication",
+            "request": "launch",
+            "command": "npm start",
+            "cwd": "${workspaceFolder}\\backend_nodeJs\\ms-game"
+        },
+        {
+            "type": "node-terminal",
+            "name": "Launch Client",
+            "request": "launch",
+            "command": "npm start",
+            "cwd": "${workspaceFolder}/client"
+        },
+        {
+            "type": "chrome",
+            "name": "Attach Client",
+            "request": "launch",
+            "url": "http://localhost:3000",
+            "webRoot": "${workspaceFolder}"
+          }
+    ],
+    "compounds": [
+        {
+            "name": "Launch Backend",
+            "configurations": ["Launch ActiveMq", "Launch MsGameApplication", "Launch MsCardApplication","Launch MsCardBasicApplication","Launch MsStoreApplication","Launch MsUserApplication"]
+        },
+        {
+            "name": "Launch Frontend",
+            "configurations": ["Launch Client","Attach Client"]
+        },
+        {
+            "name": "Launch All",
+            "configurations": ["Launch ActiveMq", "Launch Client","Attach Client", "Launch MsGameApplication", "Launch MsCardApplication","Launch MsCardBasicApplication","Launch MsStoreApplication","Launch MsUserApplication"]
+        },
+    ]
+}
