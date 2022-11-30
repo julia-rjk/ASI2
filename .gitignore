@@ -2,7 +2,7 @@
 .idea/
 
 ### VsCode ###
-# .vscode/
+.vscode/
 
 ### Java ###
 *.class
