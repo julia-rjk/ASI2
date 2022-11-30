@@ -11,6 +11,10 @@ Informations :
     - 8083 : CardBasic Service
     - 8084 : Store Service
     - 8085 : Card Service
+    - 8086 : Conversation Service
+    - 8087 : Game & Chat Service
+    - 8088 : LogESB Service
+    - 3000 : Client
 
 Docker : 
 - Pour tout installer automatiquement, il faut lancer le script : ``sudo sh build_project.sh``

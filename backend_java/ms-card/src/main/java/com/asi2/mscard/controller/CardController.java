@@ -1,8 +1,8 @@
 package com.asi2.mscard.controller;
 
-import io.swagger.annotations.ApiOperation;
 import com.asi2.mscard.constant.Router;
 import com.asi2.mscard.service.card.CardService;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import model.action.ActionBasic;
 import model.dto.CardDTO;
@@ -15,8 +15,6 @@ import service.SenderService;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.Random;
 
 //ONLY FOR TEST NEED ALSO TO ALLOW CROOS ORIGIN ON WEB BROWSER SIDE
@@ -70,7 +68,7 @@ public class CardController {
     public Boolean updateCardAsync(@RequestBody @Validated CardDTO cardDTO) {
         try {
             senderService.sendMessage(new CustomMessage<>(
-                    new Random().nextLong(),
+                    new Random().nextInt(),
                     ActionBasic.UPDATE,
                     ServletUriComponentsBuilder.fromCurrentContextPath().toUriString(),
                     String.valueOf(new Date()),

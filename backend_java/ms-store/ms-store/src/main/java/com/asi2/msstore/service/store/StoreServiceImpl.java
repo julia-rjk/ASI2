@@ -69,7 +69,7 @@ public class StoreServiceImpl implements StoreService {
             return false;
         }
 
-        if (user.getAccount() >= card.getPrice() && !user.getCards().contains(card)) {
+        if (!(user.getAccount()-card.getPrice()<=0) && !user.getCards().contains(card)) {
             // Update user account
             List<CardDTO> userCards = user.getCards();
             userCards.add(card);

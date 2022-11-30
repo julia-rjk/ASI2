@@ -1,6 +1,7 @@
 package com.asi2.msuser.service.receiver;
 
 import com.asi2.msuser.service.user.UserService;
+import com.asi2.msuser.utils.GlobalProperty;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import model.action.ActionBasic;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Service;
 import service.ReceiverService;
+import utils.WebService;
 
 import java.util.Date;
 
@@ -20,6 +22,9 @@ public class ReceiverServiceImpl implements ReceiverService<UserDTO, ActionBasic
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private GlobalProperty globalProperty;
 
     @Override
     @JmsListener(destination = "${esb.user-messaging.queue.name}")
@@ -36,8 +41,11 @@ public class ReceiverServiceImpl implements ReceiverService<UserDTO, ActionBasic
                 break;
         }
         log.info("Message [{}] from [{}] proceeded at {}: ", customMessage.getId(), customMessage.getCallBack(), new Date());
+        // TODO Gestion erreurs
 
+        // Send to LogESB Service
+        WebService.put(globalProperty.getUrlLogEsb() + "/" + globalProperty.getQueueName(), customMessage);
     }
 
-    // TODO Gestion erreurs
+
 }

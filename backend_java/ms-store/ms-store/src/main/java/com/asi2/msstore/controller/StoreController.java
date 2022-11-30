@@ -37,7 +37,7 @@ public class StoreController {
 	private Boolean buyCardAsync(@RequestBody StoreOrder order) {
 		try {
 			senderService.sendMessage(new CustomMessage<>(
-					new Random().nextLong(),
+					new Random().nextInt(),
 					ActionStore.BUY,
 					ServletUriComponentsBuilder.fromCurrentContextPath().toUriString(),
 					String.valueOf(new Date()),
@@ -56,7 +56,7 @@ public class StoreController {
 	private Boolean sellCardAsync(@RequestBody StoreOrder order) {
 		try {
 			senderService.sendMessage(new CustomMessage<>(
-					new Random().nextLong(),
+					new Random().nextInt(),
 					ActionStore.SELL,
 					ServletUriComponentsBuilder.fromCurrentContextPath().toUriString(),
 					String.valueOf(new Date()),
