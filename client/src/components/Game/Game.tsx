@@ -13,6 +13,7 @@ export class AttackCardSelection {
   defender!: CardDTO;
 }
 
+console.log(process.env.REACT_APP_SERVERURL+':'+ process.env.REACT_APP_GAMEPORT)
 const socket = io(process.env.REACT_APP_SERVERURL+':'+ process.env.REACT_APP_GAMEPORT);
 
 export const Game = () => {
@@ -39,8 +40,8 @@ export const Game = () => {
     });
     socket.on('startingPlay', (game: GameDTO) => {
       setGame(game);
-      const gameId = game.gameId;
-      socket.emit("joinGame", gameId);
+      // const gameId = game.gameId;
+      // socket.emit("joinGame", gameId);
     });
     socket.on('updateGame', (game: GameDTO, damage?: number) => {
       console.log('updateGame');
@@ -179,8 +180,8 @@ export const Game = () => {
         <div id="game" className="gameSubContainer">
           <Player
             player={
-              game !== undefined
-                ? game.player1.id === user.id
+              game?
+                game.player1.id === user.id
                   ? game.player1
                   : game.player2
                 : { ...user, cards: [] }
@@ -189,7 +190,7 @@ export const Game = () => {
             attackCardSelection={attackCardSelection}
             setAttackCardSelection={setAttackCardSelection}
           />
-          {game?.nextTurn.id === user.id ? (
+          {game?.nextTurn?.id === user.id ? (
             <div id="controls">
               <Button className="control" onClick={() => endTurn()}>
                 End turn
@@ -202,7 +203,7 @@ export const Game = () => {
           ) : (
             <hr />
           )}
-          {game ? (
+          {game && game.player2 ? (
             <Player
               attacker={false}
               attackCardSelection={attackCardSelection}
@@ -210,7 +211,7 @@ export const Game = () => {
               player={game.player1.id === user.id ? game.player2 : game.player1}
             />
           ) : (
-            <div>Waiting for opponent</div>
+            <div className='waitingForOpponent'>Waiting for opponent</div>
           )}
         </div>
         {/* <div id="chat" className="gameSubContainer">

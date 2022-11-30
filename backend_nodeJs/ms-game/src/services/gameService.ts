@@ -9,40 +9,31 @@ export default class GameService {
     finishedGames: Game[] = []
 
     public joinWaitingList(io: Server, socket: Socket, user: GameUserDTO) {
-        socket.join("waitingRoom");
-        console.log('User', user.id, "joinded waiting list");
-        user.actionPoints = 2;
-        this.usersWaiting.push(user);
-
-        // S'il n'y a pas 2 utilisateurs en attente
-        if (this.usersWaiting.length < 2) {
-            return;
+        const game = this.currentGames.find(g => !g.player2);
+        if (!game) {
+            user.actionPoints = 1;
+            // create a new game
+            const newGame = new Game(user);
+            this.currentGames.push(newGame);
+            console.log('User', user.id, "created game room", newGame.gameId);
+            socket.join(newGame.gameId);
+            // send the game to the player
+            io.to(newGame.gameId).emit("updateGame", newGame);
+        } else {
+            user.actionPoints = 1;
+            // join the game
+            game.join(user);
+            console.log('User', user.id, "joined game room", game.gameId);
+            socket.join(game.gameId);
+            // send the game to the players
+            io.to(game.gameId).emit("updateGame", game);
         }
-
-        // On sélectionne les 2 joueurs de la liste, on lance un nouveau jeu et on vide la liste d'attente
-        let usersPlaying = [this.usersWaiting[0], this.usersWaiting[1]]
-        this.startNewPlay(io, usersPlaying)
-        this.usersWaiting = []
-    }
-    
-    public startNewPlay(io: Server, usersPlaying: GameUserDTO[]) {
-        // Création de la partie 
-        let game = new Game(usersPlaying);
-        this.currentGames.push(game);
-
-        // Avertit les utilisateurs séléctionnés, encore dans la liste d'attente, qu'ils vont jouer 
-        io.to('waitingRoom').emit("startingPlay", game);
-        console.log("Game as started in game room", game.gameId);
-    }
-
-    public joinGame(socket: Socket, gameId: string) {
-        socket.join(gameId);
     }
 
     public attack(io: Server, socket: Socket, gameId: string, cardAttackerId: number, cardDefenderId: number) {
         // get game
         const game = this.currentGames.find(g => g.gameId === gameId);
-        if (!game || !cardAttackerId || !cardDefenderId) {
+        if (!game || !cardAttackerId || !cardDefenderId || !game.nextTurn || !game.player2) {
             return;
         }
         console.log("Player " + game.nextTurn.surName + " is attacking");
@@ -88,7 +79,7 @@ export default class GameService {
     public endTurn(io: Server, socket: Socket, gameId: string) {
         // get game
         const game = this.currentGames.find(g => g.gameId === gameId);
-        if (!game) {
+        if (!game || !game.nextTurn || !game.player2) {
             return;
         }
         console.log("Player " + game.nextTurn.surName + " is ending his turn");

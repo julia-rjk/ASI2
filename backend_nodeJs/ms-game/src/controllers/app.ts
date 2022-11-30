@@ -22,10 +22,6 @@ export function createApplication(
       service.joinWaitingList(io, socket, user);
     });
 
-    socket.on('joinGame', (gameId: string) => {
-      service.joinGame(socket, gameId);
-    });
-
     socket.on('attack', (gameId:string, attacker:number, defender:number) => {
       service.attack(io, socket, gameId, attacker, defender);
     });

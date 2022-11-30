@@ -68,3 +68,8 @@ hr {
 	bottom: -15px;
 	border: red 2px solid;
 } */
+
+.waitingForOpponent{
+	display: grid;
+	place-items: center;
+}
