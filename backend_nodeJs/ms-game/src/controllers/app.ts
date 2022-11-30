@@ -4,10 +4,7 @@ import { CardDTO } from "../models/cardDTO";
 import Game from "../models/game";
 import ChatService from "../services/chatService";
 import GameService from "../services/gameService";
-
-export interface Components {
-
-}
+import { MessageDTO } from '../../../../client/src/entities/messageDTO';
 
 export function createApplication(
   httpServer: HttpServer,
@@ -33,22 +30,8 @@ export function createApplication(
     
     
     // ----------------- Chat -----------------
-    socket.on('chat:joinRoom', ({ userId, userName, room }) => {
-      chatService.joinRoom(io, socket, userId, userName, room);
-    });
-
-    socket.on('chat:getUsers', () => {
-      chatService.getUsers(io, socket);
-    });
-
-    // Listen for client message
-    socket.on('chat:sendMessage', msg => {
-      chatService.sendMessage(io, socket, msg);
-    });
-
-    // Listen for client message
-    socket.on('chat:sendBroadcast',({username, msg}) => {
-      chatService.sendBroadcast(io, socket, username, msg);
+    socket.on('sendMessage', (msg: MessageDTO) => {
+      chatService.sendMessage(io, msg);
     });
 
     // Runs when client disconnects

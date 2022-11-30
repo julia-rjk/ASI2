@@ -1,6 +1,7 @@
+import { UserDTO } from '../entities';
 import { Action, UPDATE_USER } from './user.action';
 
-const initialState = {
+const initialState: { user: UserDTO } = {
   user: localStorage.getItem('user')
     ? JSON.parse(localStorage.getItem('user') || '')
     : null,

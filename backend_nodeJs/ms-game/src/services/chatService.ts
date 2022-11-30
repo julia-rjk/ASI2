@@ -4,6 +4,7 @@ import { Server, Socket } from "socket.io";
 // import moment from 'moment';
 import ChatUser from "../models/chatUser";
 import axios from "axios";
+import { MessageDTO } from "../../../../client/src/entities/messageDTO";
 
 const URL_MS_USER = process.env.URL + ":" + process.env.USERPORT + "/api/users";
 const URL_MS_CHATHISTORY = process.env.URL + ":" + process.env.PORT + "/api/messages";
@@ -11,7 +12,6 @@ export default class ChatService {
     users: ChatUser[] = [];
     allUsers: any = [];
     public joinRoom(io: Server, socket: Socket, userId: any, userName:any, room: string) {
-        // console.log(room)
         const user = this.newUser(socket.id, userId, userName, room);
         if (user != null) {
             socket.join(user.room);
@@ -29,12 +29,16 @@ export default class ChatService {
         }
     }
 
-    public sendMessage(io: Server, socket: Socket, msg: string) {
-        const user = this.getActiveUser(socket.id);
-        let formattedMessage =  this.formatMessage(user?.userId,user?.userName, msg)
-        this.saveMessage(user?.id, user?.room, formattedMessage.text, formattedMessage.time);
-        io.to(user?.room).emit('chat:getMessage', formattedMessage);
-
+    public sendMessage(io: Server, msg: MessageDTO) {
+        const returnMessage: MessageDTO = {...msg, time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+        if(msg.room){
+            console.log("room", msg.room)
+            io.to(msg.room).emit('chatMessage', returnMessage);
+        }
+        else{
+            console.log("no room")
+            io.emit('chatMessage', returnMessage);
+        }
     }
 
     public getUsers(io: Server, socket: Socket) {
