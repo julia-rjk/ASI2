@@ -5,8 +5,8 @@ import { Server, Socket } from "socket.io";
 import ChatUser from "../models/chatUser";
 import axios from "axios";
 
-const URL_MS_USER = "http://localhost:8081/api/users"
-const URL_MS_CHATHISTORY = "http://localhost:8087/api/messages"
+const URL_MS_USER = process.env.URL + ":" + process.env.USERPORT + "/api/users";
+const URL_MS_CHATHISTORY = process.env.URL + ":" + process.env.PORT + "/api/messages";
 export default class ChatService {
     users: ChatUser[] = [];
     allUsers: any = [];
