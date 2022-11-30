@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CustomMessage<T, E> {
-    private Long id;
+    private Integer id;
     private E action;
     private String callBack;
     private String date;

@@ -1,12 +1,12 @@
 package com.asi2.mschathistory.controller;
 
+import com.asi2.mschathistory.constant.Router;
+import com.asi2.mschathistory.service.message.MessageService;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import model.dto.MessageDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import com.asi2.mschathistory.constant.Router;
-import com.asi2.mschathistory.service.message.MessageService;
 
 import java.util.List;
 

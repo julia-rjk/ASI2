@@ -14,6 +14,9 @@ public class GlobalProperty {
     @Value("${webservice.url.card.generateCard.async}")
     private String urlGenerateCardAsync;
 
+    @Value("${webservice.url.logesb}")
+    private String urlLogEsb;
+
     public String getUrlCard() {
         return urlCard;
     }
@@ -24,5 +27,9 @@ public class GlobalProperty {
 
     public String getUrlGenerateCardAsync() {
         return urlGenerateCardAsync;
+    }
+
+    public String getUrlLogEsb() {
+        return urlLogEsb;
     }
 }

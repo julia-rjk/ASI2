@@ -1,19 +1,13 @@
 package com.asi2.mschathistory.service.message;
 
-import com.asi2.mschathistory.constant.Game;
 import com.asi2.mschathistory.model.entity.Message;
 import com.asi2.mschathistory.repository.MessageDAO;
 import com.asi2.mschathistory.utils.GlobalProperty;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import model.dto.MessageDTO;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import utils.Mapper;
-import utils.WebService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,8 +28,8 @@ public class MessageServiceImpl implements MessageService {
             List<Message> messages = messageDAO.findAll();
             List<MessageDAO> userDTOS = new ArrayList<>();
 
-            for(Message message : messages) {
-                    
+            for (Message message : messages) {
+
             }
 
             return Mapper.mapList(messageDAO.findAll(), MessageDTO.class);
@@ -51,8 +45,8 @@ public class MessageServiceImpl implements MessageService {
             List<Message> messages = messageDAO.findAll();
             List<Message> messagesByUserId = new ArrayList<>();
 
-            for(Message message : messages) {
-                    if(message.getUserId() == userId) messagesByUserId.add(message);
+            for (Message message : messages) {
+                if (message.getUserId() == userId) messagesByUserId.add(message);
             }
 
             return Mapper.mapList(messagesByUserId, MessageDTO.class);
@@ -68,9 +62,9 @@ public class MessageServiceImpl implements MessageService {
             List<Message> messages = messageDAO.findAll();
             List<Message> messagesByRoom = new ArrayList<>();
 
-            for(Message message : messages) {
+            for (Message message : messages) {
                 log.info("room name :  {} compared to {}", message.getRoom(), room);
-                    if(message.getRoom().equals(room)) messagesByRoom.add(message);
+                if (message.getRoom().equals(room)) messagesByRoom.add(message);
             }
 
             return Mapper.mapList(messagesByRoom, MessageDTO.class);
@@ -98,4 +92,4 @@ public class MessageServiceImpl implements MessageService {
         }
     }
 
-   }
+}

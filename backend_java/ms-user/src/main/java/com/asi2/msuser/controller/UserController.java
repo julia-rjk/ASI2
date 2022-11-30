@@ -58,7 +58,7 @@ public class UserController {
     public Boolean updateUserAsync(@RequestBody UserDTO userDTO) {
         try {
             senderService.sendMessage(new CustomMessage<>(
-                    new Random().nextLong(),
+                    new Random().nextInt(),
                     ActionBasic.UPDATE,
                     ServletUriComponentsBuilder.fromCurrentContextPath().toUriString(),
                     String.valueOf(new Date()),
@@ -89,7 +89,7 @@ public class UserController {
     public Boolean registerAsync(@RequestBody @Validated UserDTO userDto) {
         try {
             senderService.sendMessage(new CustomMessage<>(
-                    new Random().nextLong(),
+                    new Random().nextInt(),
                     ActionBasic.ADD,
                     ServletUriComponentsBuilder.fromCurrentContextPath().toUriString(),
                     String.valueOf(new Date()),
