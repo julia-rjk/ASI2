@@ -1,5 +1,7 @@
 import { Server as HttpServer } from "http";
 import { Server, ServerOptions } from "socket.io";
+import { CardDTO } from "../models/cardDTO";
+import Game from "../models/game";
 import ChatService from "../services/chatService";
 import GameService from "../services/gameService";
 
@@ -24,8 +26,12 @@ export function createApplication(
       service.joinGame(socket, gameId);
     });
 
-    socket.on('attack', (details:any) => {
-      service.attack(io, socket, details.gameId, details.attackerId, details.defenderId);
+    socket.on('attack', (gameId:string, attacker:number, defender:number) => {
+      service.attack(io, socket, gameId, attacker, defender);
+    });
+
+    socket.on('endTurn', (gameId: string) => {
+      service.endTurn(io, socket, gameId);
     });
 
     

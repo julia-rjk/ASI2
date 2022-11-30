@@ -11,9 +11,9 @@ export interface CardDTO {
   id?: number;
   model?: CardBasicsDTO;
   userId?: number;
-  energy?: number;
-  hp?: number;
-  defence?: number;
-  attack?: number;
+  energy: number;
+  hp: number;
+  defence: number;
+  attack: number;
   price?: number;
 }

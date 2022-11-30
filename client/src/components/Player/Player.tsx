@@ -30,7 +30,7 @@ export const Player = ({
         </section>
         <section>
           <div className="playerActionPoints">
-            Action points (TODO) : {player.actionPoints}
+            Action points : {player.actionPoints}
           </div>
         </section>
       </div>
@@ -82,11 +82,7 @@ export const Player = ({
                   fullWidth
                   mt="md"
                   radius="md"
-                  disabled={
-                    attacker &&
-                    card.energy !== undefined &&
-                    Math.round(card.energy) === 0
-                  }
+                  disabled={Math.round(card.energy) === 0 || Math.round(card.hp) === 0}
                   onClick={() => {
                     if (attacker) {
                       attackCardSelection &&
@@ -105,11 +101,13 @@ export const Player = ({
                   }}>
                   {/* attacker? (attackCardSelection? setAttackCardSelection({...attackCardSelection, attacker:card}):null):(attackCardSelection? setAttackCardSelection({...attackCardSelection, defender:card}):null)}
                     }> */}
-                  {card.energy && Math.round(card.energy) > 0
-                    ? attacker
-                      ? 'Use'
-                      : 'Attack'
-                    : 'No energy'}
+                  {Math.round(card.hp) > 0 ?
+                    Math.round(card.energy) > 0
+                      ? attacker
+                        ? 'Use'
+                        : 'Attack'
+                      : 'No energy'
+                    : 'Dead'}
                 </Button>
               </Card>
             );

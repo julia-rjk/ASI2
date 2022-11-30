@@ -42,9 +42,19 @@ export const Game = () => {
       const gameId = game.gameId;
       socket.emit("joinGame", gameId);
     });
-    socket.on('updateGame', (game: GameDTO) => {
+    socket.on('updateGame', (game: GameDTO, damage?: number) => {
       console.log('updateGame');
       setGame(game);
+      if (!damage) {
+        return;
+      }
+      if (damage === 0) 
+        printMessage("Missed");
+      else if (damage < 90)
+        printMessage("Hit");
+      else
+        printMessage("Critical Hit");
+      //TODO: afficher l'update de la game (annimation ou alert quand en fonctino des damage [crit, normal, miss])
     });
     return () => {
       socket.disconnect();
@@ -53,10 +63,8 @@ export const Game = () => {
 
   useEffect(() => {
     if (game) {
-      if (game.nextTurn === user.id) {
-        console.log("It's your turn");
-      } else {
-        console.log('Waiting for your turn');
+      if (game.nextTurn === user.id) { 
+        // TODO: Auto selection when only one card can be selected
       }
     }
   }, [game, user.id]);
@@ -69,12 +77,20 @@ export const Game = () => {
     const gameId = game?.gameId;
     const attackerId = attackCardSelection.attacker.id;
     const defenderId = attackCardSelection.defender.id;
-    socket.emit('attack', { gameId, attackerId, defenderId });
+    setAttackCardSelection(new AttackCardSelection());
+    socket.emit('attack', gameId, attackerId, defenderId);
   };
 
   const endTurn = () => {
-    socket.emit('endTurn', { user, game });
-    // TODO: implement endTurn
+    const gameId = game?.gameId;
+    socket.emit('endTurn', gameId);
+  };
+
+  const printMessage = (message: string) => {
+    // TODO: complete
+    const print = document.createElement('p');
+    print.innerHTML = message;
+    document.appendChild(print);
   };
 
   return (
