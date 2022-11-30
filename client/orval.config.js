@@ -1,6 +1,6 @@
 module.exports = {
   users: {
-    input: 'http://localhost:8081/v3/api-docs',
+    input: process.env.REACT_APP_SERVERURL + ':' + process.env.REACT_APP_USERPORT + '/v3/api-docs',
     output: {
       target: 'src/services/userService.ts',
       mode: 'split',
@@ -15,7 +15,7 @@ module.exports = {
     },
   },
   store: {
-    input: 'http://localhost:8084/v3/api-docs',
+    input: process.env.REACT_APP_SERVERURL + ':' + process.env.REACT_APP_STOREPORT + '/v3/api-docs',
     output: {
       target: 'src/services/storeService.ts',
       mode: 'split',
@@ -30,7 +30,7 @@ module.exports = {
     },
   },
   cards: {
-    input: 'http://localhost:8085/v3/api-docs',
+    input: process.env.REACT_APP_SERVERURL + ':' + process.env.REACT_APP_CARDPORT + '/v3/api-docs',
     output: {
       target: 'src/services/cardService.ts',
       mode: 'split',

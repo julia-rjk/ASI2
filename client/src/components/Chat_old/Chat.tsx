@@ -8,7 +8,7 @@ import { io } from 'socket.io-client';
 import { useForm } from '@mantine/form';
 
 export const Chat_old = () => {
-  const socket = io('http://localhost:8087');
+  const socket = io(process.env.REACT_APP_SERVERURL+':'+ process.env.REACT_APP_GAMEPORT);
 
   const user = useSelector(selectUser);
   const form = useForm({

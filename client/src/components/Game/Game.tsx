@@ -13,7 +13,7 @@ export class AttackCardSelection {
   defender!: CardDTO;
 }
 
-const socket = io('http://localhost:8087');
+const socket = io(process.env.REACT_APP_SERVERURL+':'+ process.env.REACT_APP_GAMEPORT);
 
 export const Game = () => {
   const user = useSelector(selectUser);
@@ -85,6 +85,10 @@ export const Game = () => {
     const gameId = game?.gameId;
     socket.emit('endTurn', gameId);
   };
+
+  // const updateGame = () => {
+    
+  // };
 
   const printMessage = (message: string) => {
     // TODO: complete

@@ -2,11 +2,13 @@ import Axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 
 let instance: AxiosInstance;
 
+console.log(process.env.REACT_APP_SERVERURL+":"+process.env.REACT_APP_CARDPORT)
+
 export const getInstance = () => {
   if (instance) return instance;
 
   instance = Axios.create({
-    baseURL: 'http://localhost:8085',
+    baseURL: process.env.REACT_APP_SERVERURL+":"+process.env.REACT_APP_CARDPORT,
   });
   // instance.interceptors.request.use(async (config) => {
   //   let token = getStoredSynapseToken();
