@@ -50,7 +50,6 @@ public class CardServiceImpl implements CardService {
         }
     }
 
-    // TODO Upgrade that sh*t (-> MS Store)
     @Override
     public List<CardDTO> findAllCardIdUserNull() {
         try {
@@ -120,6 +119,7 @@ public class CardServiceImpl implements CardService {
                         .get(generateRandomIntegerValue(0, cardModelsList.size() - 1));
 
                 card.setIdCardBasics(cardBasicsDTO.getId());
+                card.setLevel(Game.LEVEL_MIN);
                 card.setEnergy(generateRandomFloatValue(Game.ENERGY_MIN, Game.ENERGY_MAX));
                 card.setHp(generateRandomFloatValue(Game.HP_MIN, Game.HP_MAX));
                 card.setDefence(generateRandomFloatValue(Game.DEFENCE_MIN, Game.DEFENCE_MAX));
@@ -179,6 +179,7 @@ public class CardServiceImpl implements CardService {
 
             // Mapping
             card.setAttack(cardDTO.getAttack());
+            card.setLevel(cardDTO.getLevel());
             card.setDefence(cardDTO.getDefence());
             card.setEnergy(cardDTO.getEnergy());
             card.setHp(cardDTO.getHp());
