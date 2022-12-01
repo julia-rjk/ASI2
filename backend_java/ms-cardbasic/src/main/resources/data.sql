@@ -98,7 +98,7 @@ VALUES (14,
         'Le jeu est fini',
         'CPE Lyon',
         'https://www.citi-lab.fr/_/face/jsarayda.jpg',
-        'THE END');
+        'Invalidation module');
 INSERT INTO PUBLIC.CARD_BASICS (ID, NAME, DESCRIPTION, FAMILY, IMG_URL, ATTACK_NAME)
 VALUES (15,
         'Thanos',
