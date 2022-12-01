@@ -141,4 +141,19 @@ VALUES (20,
         'JoJo Bizzare Adventure',
         'https://static.tvtropes.org/pmwiki/pub/images/dio_sc_2.png',
         'Star Platinum');
+INSERT INTO PUBLIC.CARD_BASICS (ID, NAME, DESCRIPTION, FAMILY, IMG_URL, ATTACK_NAME)
+VALUES (21,
+        'Bayonetta - 3rd Climax',
+        'Lets Dance Boys !',
+        'Bayonetta 3',
+        'https://www.thumbsticks.com/wp-content/uploads/2022/11/bayonetta-3-homepage.jpg',
+        'Torturer');
+INSERT INTO PUBLIC.CARD_BASICS (ID, NAME, DESCRIPTION, FAMILY, IMG_URL, ATTACK_NAME)
+VALUES (22,
+        'Bayonetta - 2nd Climax',
+        'Lets Dance Boys !',
+        'Bayonetta 3',
+        'https://static.actugaming.net/media/2019/06/bayonetta-3.jpg',
+        'Torturer');
+
 
