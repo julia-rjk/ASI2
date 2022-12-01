@@ -26,4 +26,8 @@ public class CardBasics {
 
     @Column(name = "small_img_url")
     private String smallImgUrl;
+
+    @Column(name = "attack_name")
+    private String attackName;
+
 }
