@@ -5,56 +5,88 @@
             "name": "Launch ActiveMq",
             "request": "launch",
             "command": "./activemq start",
-            "cwd": "C:\\Program Files\\apache-activemq-5.17.2\\bin"
+            "cwd": "C:\\Program Files\\apache-activemq-5.17.2\\bin",
+            "presentation":{
+                "group": "1_firstGroup@2",
+                "hidden": true,
+            }
         },
         {
             "type": "java",
             "name": "Launch MsStoreApplication",
             "request": "launch",
             "mainClass": "com.asi2.msstore.MsStoreApplication",
-            "projectName": "ms-store"
+            "projectName": "ms-store",
+            "presentation":{
+                "group": "1_firstGroup@2",
+                "hidden": true
+            }
         },
         {
             "type": "java",
             "name": "Launch MsUserApplication",
             "request": "launch",
             "mainClass": "com.asi2.msuser.MsUserApplication",
-            "projectName": "ms-user"
+            "projectName": "ms-user",
+            "presentation":{
+                "group": "1_firstGroup@2",
+                "hidden": true
+            }
         },
         {
             "type": "java",
             "name": "Launch MsCardApplication",
             "request": "launch",
             "mainClass": "com.asi2.mscard.MsCardApplication",
-            "projectName": "ms-card"
+            "projectName": "ms-card",
+            "presentation":{
+                "group": "1_firstGroup@2",
+                "hidden": true
+            }
         },
         {
             "type": "java",
             "name": "Launch MsCardBasicApplication",
             "request": "launch",
             "mainClass": "com.asi2.mscardBasic.MsCardBasicApplication",
-            "projectName": "ms-cardBasic"
+            "projectName": "ms-cardBasic",
+            "presentation":{
+                "group": "1_firstGroup@2",
+                "hidden": true
+            }
         },
         {
             "type": "node-terminal",
             "name": "Launch MsGameApplication",
             "request": "launch",
             "command": "npm start",
-            "cwd": "${workspaceFolder}\\backend_nodeJs\\ms-game"
+            "cwd": "${workspaceFolder}\\backend_nodeJs\\ms-game",
+            "presentation":{
+                "group": "1_firstGroup@2",
+                "hidden": true
+            }
         },
         {
             "type": "node-terminal",
             "name": "Launch Client",
             "request": "launch",
             "command": "npm start",
-            "cwd": "${workspaceFolder}/client"
+            "cwd": "${workspaceFolder}/client",
+            "presentation":{
+                "group": "1_firstGroup@2",
+                "hidden": true
+            }
         },
         {
             "type": "chrome",
             "name": "Attach Client",
             "request": "launch",
             "url": "http://localhost:3000",
-            "webRoot": "${workspaceFolder}"
+            "webRoot": "${workspaceFolder}",
+            "presentation":{
+                "group": "1_firstGroup@2",
+                "hidden": true
+            }
           }
     ],
     "compounds": [
