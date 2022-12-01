@@ -18,6 +18,9 @@ public class Card {
     @Column(name = "id_user")
     private Long userId;
 
+    @Column(name = "level")
+    private Integer level;
+
     @Column(name = "energy")
     private Float energy;
 

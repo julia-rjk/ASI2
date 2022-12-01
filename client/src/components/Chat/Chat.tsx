@@ -1,26 +1,53 @@
-import { Badge, Button, Card, Group, Text } from '@mantine/core';
+import { Card, Tabs } from '@mantine/core';
 import React from 'react';
+import { MessageDTO } from '../../entities/messageDTO';
+import './Chat.css';
+import { TabChat } from './TabChat';
 
-export const Chat = () => {
+interface Props {
+  messages: MessageDTO[];
+  sendMessage: (message: string, roomId?: string) => void;
+  roomId?: string;
+}
+
+export const Chat = ({ messages, sendMessage, roomId }: Props) => {
+  const [general, room] = messages.reduce(
+    (acc, message) => {
+      if (message.room && message.room === roomId) {
+        acc[1].push(message);
+      } else {
+        acc[0].push(message);
+      }
+      return acc;
+    },
+    [[], []] as MessageDTO[][],
+  );
+
   return (
-    <Card shadow="sm" p="lg" radius="md" withBorder>
-      <Card.Section></Card.Section>
+    <Card unstyled className="container">
+      <Card.Section withBorder inheritPadding py="xs">
+        <Tabs defaultValue="general">
+          <Tabs.List>
+            <Tabs.Tab value="general">General</Tabs.Tab>
+            {roomId && <Tabs.Tab value="room">Room</Tabs.Tab>}
+          </Tabs.List>
 
-      <Group position="apart" mt="md" mb="xs">
-        <Text weight={500}>Norway Fjord Adventures</Text>
-        <Badge color="pink" variant="light">
-          On Sale
-        </Badge>
-      </Group>
-
-      <Text size="sm" color="dimmed">
-        With Fjord Tours you can explore more of the magical fjord landscapes
-        with tours and activities on and around the fjords of Norway
-      </Text>
-
-      <Button variant="light" color="blue" fullWidth mt="md" radius="md">
-        Book classic tour now
-      </Button>
+          <Tabs.Panel className="tabPanel" value="general" pt="xs">
+            <TabChat
+              messages={general}
+              sendMessage={(message) => sendMessage(message)}
+            />
+          </Tabs.Panel>
+          {roomId && (
+            <Tabs.Panel className="tabPanel" value="room" pt="xs">
+              <TabChat
+                messages={room}
+                sendMessage={(message) => sendMessage(message, roomId)}
+              />
+            </Tabs.Panel>
+          )}
+        </Tabs>
+      </Card.Section>
     </Card>
   );
 };

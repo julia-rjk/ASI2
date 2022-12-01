@@ -3,12 +3,14 @@ import { TextInput } from '@mantine/core';
 import './Chat.css';
 import { Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { selectUser } from '../../redux/user.selector';
 import { io } from 'socket.io-client';
 import { useForm } from '@mantine/form';
+import { selectUser } from '../../redux/user.selector';
 
 export const Chat_old = () => {
-  const socket = io(process.env.REACT_APP_SERVERURL+':'+ process.env.REACT_APP_GAMEPORT);
+  const socket = io(
+    process.env.REACT_APP_SERVERURL + ':' + process.env.REACT_APP_GAMEPORT,
+  );
 
   const user = useSelector(selectUser);
   const form = useForm({

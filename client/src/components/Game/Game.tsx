@@ -1,28 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { Player } from '../Player';
-import { io } from 'socket.io-client';
 import './Game.css';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../redux/user.selector';
 import GameDTO from '../../entities/gameDTO';
 import { Button, Card, Group, Modal, Image, Badge, Text } from '@mantine/core';
 import { CardDTO } from '../../entities';
+import { useLayoutContext } from '../Layout/Layout';
 
 export class AttackCardSelection {
   attacker!: CardDTO;
   defender!: CardDTO;
 }
 
-console.log(process.env.REACT_APP_SERVERURL+':'+ process.env.REACT_APP_GAMEPORT)
-const socket = io(process.env.REACT_APP_SERVERURL+':'+ process.env.REACT_APP_GAMEPORT);
-
 export const Game = () => {
   const user = useSelector(selectUser);
-  const [game, setGame] = useState<GameDTO>();
+  const { setRoomId, socket } = useLayoutContext();
   const [opened, setOpened] = useState(true);
   const [selectedCards, setSelectedCards] = useState<CardDTO[]>([]);
   const [attackCardSelection, setAttackCardSelection] =
     useState<AttackCardSelection>(new AttackCardSelection());
+  const [game, setGame] = useState<GameDTO>();
 
   const addOrRemove = (arr: CardDTO[], item: CardDTO, rm: boolean) => {
     if (rm) {
@@ -35,36 +33,27 @@ export const Game = () => {
   };
 
   useEffect(() => {
-    socket.on('connect', () => {
-      console.log('connected');
-    });
-    socket.on('startingPlay', (game: GameDTO) => {
-      setGame(game);
-      // const gameId = game.gameId;
-      // socket.emit("joinGame", gameId);
-    });
     socket.on('updateGame', (game: GameDTO, damage?: number) => {
+      setRoomId(game.gameId);
       console.log('updateGame');
       setGame(game);
       if (!damage) {
         return;
       }
-      if (damage === 0) 
-        printMessage("Missed");
-      else if (damage < 90)
-        printMessage("Hit");
-      else
-        printMessage("Critical Hit");
+      if (damage === 0) printMessage('Missed');
+      else if (damage < 90) printMessage('Hit');
+      else printMessage('Critical Hit');
       //TODO: afficher l'update de la game (annimation ou alert quand en fonctino des damage [crit, normal, miss])
     });
     return () => {
-      socket.disconnect();
+      // leave game ?
+      setRoomId(undefined);
     };
-  }, []);
+  }, [setRoomId, socket]);
 
   useEffect(() => {
     if (game) {
-      if (game.nextTurn === user.id) { 
+      if (game.nextTurn === user.id) {
         // TODO: Auto selection when only one card can be selected
       }
     }
@@ -88,7 +77,7 @@ export const Game = () => {
   };
 
   // const updateGame = () => {
-    
+
   // };
 
   const printMessage = (message: string) => {
@@ -180,8 +169,8 @@ export const Game = () => {
         <div id="game" className="gameSubContainer">
           <Player
             player={
-              game?
-                game.player1.id === user.id
+              game
+                ? game.player1.id === user.id
                   ? game.player1
                   : game.player2
                 : { ...user, cards: [] }
@@ -196,7 +185,13 @@ export const Game = () => {
                 End turn
               </Button>
               <hr />
-              <Button disabled={attackCardSelection.attacker==undefined || attackCardSelection.defender==undefined } className="control" onClick={() => attack()}>
+              <Button
+                disabled={
+                  attackCardSelection.attacker == undefined ||
+                  attackCardSelection.defender == undefined
+                }
+                className="control"
+                onClick={() => attack()}>
                 Attack ⚔️
               </Button>
             </div>
@@ -211,12 +206,9 @@ export const Game = () => {
               player={game.player1.id === user.id ? game.player2 : game.player1}
             />
           ) : (
-            <div className='waitingForOpponent'>Waiting for opponent</div>
+            <div className="waitingForOpponent">Waiting for opponent</div>
           )}
         </div>
-        {/* <div id="chat" className="gameSubContainer">
-          <Chat />
-        </div> */}
       </div>
     </>
   );

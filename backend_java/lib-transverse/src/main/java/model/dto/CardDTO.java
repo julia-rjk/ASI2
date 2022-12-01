@@ -7,6 +7,7 @@ public class CardDTO {
     private Long id;
     private CardBasicsDTO model;
     private Long userId;
+    private Integer level;
     private Float energy;
     private Float hp;
     private Float defence;

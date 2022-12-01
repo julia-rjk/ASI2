@@ -10,4 +10,6 @@ public class CardBasicsDTO {
     private String family;
     private String imgUrl;
     private String smallImgUrl;
+    private String attackName;
+
 }

@@ -84,8 +84,9 @@ export default class GameService {
         }
         console.log("Player " + game.nextTurn.surName + " is ending his turn");
         // add action points
-        game.player1.actionPoints ? game.player1.actionPoints *= 2 : game.player1.actionPoints = 1;
-        game.player2.actionPoints ? game.player2.actionPoints *= 2 : game.player2.actionPoints = 1;
+        game.player1.actionPoints ? (game.player1.actionPoints * 2 > 100 ? game.player1.actionPoints = 100 : game.player1.actionPoints *= 2) : game.player1.actionPoints = 1;
+        game.player2.actionPoints ? (game.player2.actionPoints * 2 > 100 ? game.player2.actionPoints = 100 : game.player2.actionPoints *= 2) : game.player2.actionPoints = 1;
+
         // change turn
         game.nextTurn = game.player1.id === game.nextTurn.id ? game.player2 : game.player1;
         // add energy to cards
