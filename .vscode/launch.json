@@ -92,7 +92,7 @@
     "compounds": [
         {
             "name": "Launch Backend",
-            "configurations": ["Launch ActiveMq", "Launch MsGameApplication", "Launch MsCardApplication","Launch MsCardBasicApplication","Launch MsStoreApplication","Launch MsUserApplication"]
+            "configurations": ["Launch ActiveMq","Launch MsCardBasicApplication","Launch MsCardApplication","Launch MsUserApplication","Launch MsStoreApplication","Launch MsGameApplication"]
         },
         {
             "name": "Launch Frontend",
@@ -100,7 +100,7 @@
         },
         {
             "name": "Launch All",
-            "configurations": ["Launch ActiveMq", "Launch Client","Attach Client", "Launch MsGameApplication", "Launch MsCardApplication","Launch MsCardBasicApplication","Launch MsStoreApplication","Launch MsUserApplication"]
+            "configurations": ["Launch ActiveMq","Launch MsCardBasicApplication","Launch MsCardApplication","Launch MsUserApplication","Launch MsStoreApplication","Launch MsGameApplication","Launch Client","Attach Client"]
         },
     ]
 }
