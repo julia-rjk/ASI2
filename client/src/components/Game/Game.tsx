@@ -3,10 +3,11 @@ import { Player } from '../Player';
 import './Game.css';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../redux/user.selector';
-import GameDTO from '../../entities/gameDTO';
+import GameDTO, { GameUserDTO } from '../../entities/gameDTO';
 import { Button, Card, Group, Modal, Image, Badge, Text } from '@mantine/core';
-import { CardDTO } from '../../entities';
+import { CardDTO, UserDTO } from '../../entities';
 import { useLayoutContext } from '../Layout/Layout';
+import { io } from 'socket.io-client';
 
 export class AttackCardSelection {
   attacker!: CardDTO;
@@ -32,37 +33,70 @@ export const Game = () => {
     }
   };
 
+  /* Listening for changes on the socket. */
   useEffect(() => {
     socket.on('updateGame', (game: GameDTO, damage?: number) => {
+      if (!game) return;
       setRoomId(game.gameId);
-      console.log('updateGame');
-      setGame(game);
+      if (game.nextTurn && game.nextTurn.id === user.id) {
+        if (game.nextTurn.actionPoints === 0) {
+          endTurn(game.gameId);
+        } else {
+          console.log(game.nextTurn.actionPoints);
+        }
+      }
+      // update game
       if (!damage) {
+        setGame(game);
         return;
       }
-      if (damage === 0) printMessage('Missed');
-      else if (damage < 90) printMessage('Hit');
-      else printMessage('Critical Hit');
+      // update game and show damage
+      setGameAnimated(game);
+      // show type of damage
+      // if (damage === 0) printMessage('Missed');
+      // else if (damage < 90) printMessage('Hit');
+      // else printMessage('Critical Hit');
       //TODO: afficher l'update de la game (annimation ou alert quand en fonctino des damage [crit, normal, miss])
+      const looser = hasLost(game);
+      if (!looser) {
+        return;
+      }
+      socket.emit('endGame', game.gameId, looser.id);
+    });
+    socket.on('gameFinished', (game: GameDTO, looser: UserDTO) => {
+      console.log('gameFinished', game, looser, user.id);
+      if (user.id === looser) {
+        alert('You lost');
+      } else {
+        alert('You won');
+      }
     });
     return () => {
-      // leave game ?
-      setRoomId(undefined);
+      // leave game
+      // socket.emit('leaveGame', game?.gameId, user.id);
+      // setRoomId(undefined);
     };
   }, [setRoomId, socket]);
 
-  useEffect(() => {
-    if (game) {
-      if (game.nextTurn === user.id) {
-        // TODO: Auto selection when only one card can be selected
-      }
-    }
-  }, [game, user.id]);
-
+  /**
+   * Connect() is a function that emits a 'joinWaitingList' event to the server with the user object
+   * and the selectedCards array as the data.
+   */
   const connect = () => {
     socket.emit('joinWaitingList', { ...user, cards: selectedCards });
   };
 
+  const setGameAnimated = (game: GameDTO) => {
+    setGame(game);
+    // setTimeout(() => {
+    //   setGame(game);
+    // }, 1000);
+  };
+
+  /**
+   * When the attack button is clicked, the attackCardSelection is reset and the attack event is
+   * emitted to the server.
+   */
   const attack = () => {
     const gameId = game?.gameId;
     const attackerId = attackCardSelection.attacker.id;
@@ -71,9 +105,43 @@ export const Game = () => {
     socket.emit('attack', gameId, attackerId, defenderId);
   };
 
-  const endTurn = () => {
-    const gameId = game?.gameId;
-    socket.emit('endTurn', gameId);
+  /**
+   * When the endTurn button is clicked, emit an event to the server with the gameId.
+   */
+  const endTurn = (gameId?: string) => {
+    if (!gameId) socket.emit('endTurn', game?.gameId);
+    else socket.emit('endTurn', gameId);
+  };
+
+  /**
+   * If player1Lost is true, return game.player1, else if player2Lost is true, return game.player2,
+   * else return undefined.
+   * @param {GameDTO} game - GameDTO
+   * @returns The player who lost.
+   */
+  const hasLost = (game: GameDTO) => {
+    if (!game) {
+      return;
+    }
+    let lost = true;
+    // get the user playing
+    let userPlaying: GameUserDTO;
+    game.player1.id === user.id
+      ? (userPlaying = game.player1)
+      : (userPlaying = game.player2);
+    if (!userPlaying.cards) {
+      return;
+    }
+    // check if the user has lost
+    userPlaying.cards.forEach((card) => {
+      if (card.hp > 0) {
+        lost = false;
+      }
+    });
+    // return player if lost
+    if (lost) {
+      return userPlaying;
+    }
   };
 
   // const updateGame = () => {

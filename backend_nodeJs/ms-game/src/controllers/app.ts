@@ -4,7 +4,7 @@ import { CardDTO } from "../models/cardDTO";
 import Game from "../models/game";
 import ChatService from "../services/chatService";
 import GameService from "../services/gameService";
-import { MessageDTO } from '../../../../client/src/entities/messageDTO';
+import { MessageDTO } from "../../../../client/src/entities/messageDTO";
 
 export function createApplication(
   httpServer: HttpServer,
@@ -14,35 +14,34 @@ export function createApplication(
   const service = new GameService();
   const chatService = new ChatService();
   io.on("connection", (socket) => {
-
     // ------------------ Game ------------------
-    socket.on('joinWaitingList', (user: any) => {
+    socket.on("joinWaitingList", (user: any) => {
       service.joinWaitingList(io, socket, user);
     });
 
-    socket.on('attack', (gameId:string, attacker:number, defender:number) => {
-      service.attack(io, socket, gameId, attacker, defender);
-    });
+    socket.on(
+      "attack",
+      (gameId: string, attacker: number, defender: number) => {
+        service.attack(io, socket, gameId, attacker, defender);
+      }
+    );
 
-    socket.on('endTurn', (gameId: string) => {
+    socket.on("endTurn", (gameId: string) => {
       service.endTurn(io, socket, gameId);
     });
 
-    
-    
+    socket.on("endGame", (gameId: string, looserId: number) => {
+      service.endGame(io, socket, gameId, looserId);
+    });
+
     // ----------------- Chat -----------------
     chatService.getAllMessagesOfRoom(socket);
-    socket.on('sendMessage', async (msg: MessageDTO) => {
+    socket.on("sendMessage", async (msg: MessageDTO) => {
       chatService.sendMessage(io, msg);
     });
 
     // Runs when client disconnects
-    socket.on('disconnect', () => {
-      
-    });
-
-
-
+    socket.on("disconnect", () => {});
   });
 
   return io;

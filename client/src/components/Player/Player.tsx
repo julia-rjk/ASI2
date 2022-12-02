@@ -82,7 +82,9 @@ export const Player = ({
                   fullWidth
                   mt="md"
                   radius="md"
-                  disabled={Math.round(card.energy) === 0 || Math.round(card.hp) === 0}
+                  disabled={
+                    Math.round(card.energy) === 0 || Math.round(card.hp) === 0
+                  }
                   onClick={() => {
                     if (attacker) {
                       attackCardSelection &&
@@ -97,12 +99,11 @@ export const Player = ({
                           defender: card,
                         });
                     }
-                    console.log(attackCardSelection);
                   }}>
                   {/* attacker? (attackCardSelection? setAttackCardSelection({...attackCardSelection, attacker:card}):null):(attackCardSelection? setAttackCardSelection({...attackCardSelection, defender:card}):null)}
                     }> */}
-                  {Math.round(card.hp) > 0 ?
-                    Math.round(card.energy) > 0
+                  {Math.round(card.hp) > 0
+                    ? Math.round(card.energy) > 0
                       ? attacker
                         ? 'Use'
                         : 'Attack'

@@ -6,7 +6,8 @@ export const getInstance = () => {
   if (instance) return instance;
 
   instance = Axios.create({
-    baseURL: process.env.REACT_APP_SERVERURL+":"+process.env.REACT_APP_CARDPORT,
+    baseURL:
+      process.env.REACT_APP_SERVERURL + ':' + process.env.REACT_APP_CARDPORT,
   });
   // instance.interceptors.request.use(async (config) => {
   //   let token = getStoredSynapseToken();
