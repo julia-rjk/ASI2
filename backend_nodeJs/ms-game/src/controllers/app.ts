@@ -30,8 +30,8 @@ export function createApplication(
     
     
     // ----------------- Chat -----------------
-    socket.on('sendMessage', (msg: MessageDTO) => {
-      chatService.sendMessage(io, msg);
+    socket.on('sendMessage', async (msg: MessageDTO) => {
+      await chatService.sendMessage(io, msg);
     });
 
     // Runs when client disconnects

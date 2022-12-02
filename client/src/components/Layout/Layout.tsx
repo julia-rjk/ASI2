@@ -64,6 +64,7 @@ export const Layout = () => {
     const msg: MessageDTO = {
       message,
       room: roomId,
+      userId: user.id || 0,
       sender: `${user.lastName} ${user.surName}`,
     };
     socket.emit('sendMessage', msg);

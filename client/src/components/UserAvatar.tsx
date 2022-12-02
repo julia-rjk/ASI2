@@ -1,4 +1,4 @@
-import { Group, Avatar, Text } from '@mantine/core';
+import { Group, Avatar, Text, Stack } from '@mantine/core';
 import React from 'react';
 import {} from 'tabler-icons-react';
 
@@ -12,9 +12,9 @@ export const UserAvatar = ({ messageTime, userName }: Props) => {
     <Group>
       <Avatar />
       <div>
-        <Text>{userName}</Text>
+        <Text align="left">{userName}</Text>
         {messageTime && (
-          <Text c="dimmed" size="xs">
+          <Text align="left" c="dimmed" size="xs">
             {messageTime}
           </Text>
         )}
