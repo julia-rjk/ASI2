@@ -19,4 +19,10 @@ public class GlobalProperty {
         return urlUser;
     }
 
+    @Value("${webservice.url.logesb}")
+    private String urlLog;
+
+    public String getUrlLog() {
+        return urlLog;
+    }
 }

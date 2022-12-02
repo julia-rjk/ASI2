@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Service;
 import service.ReceiverService;
+import service.SenderService;
 import utils.WebService;
 
 import java.util.Date;
@@ -43,8 +44,11 @@ public class ReceiverServiceImpl implements ReceiverService<UserDTO, ActionBasic
         log.info("Message [{}] from [{}] proceeded at {}: ", customMessage.getId(), customMessage.getCallBack(), new Date());
         // TODO Gestion erreurs
 
+        // Delete the password for the log service
+        customMessage.getObjectContent().setPassword("*******");
+
         // Send to LogESB Service
-        WebService.put(globalProperty.getUrlLogEsb() + "/" + globalProperty.getQueueName(), customMessage);
+        WebService.put(globalProperty.getUrlLogEsb(), customMessage);
     }
 
 
