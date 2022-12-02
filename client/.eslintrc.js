@@ -17,6 +17,7 @@ module.exports = {
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-unused-vars': ['warn'],
     'prettier/prettier': ['warn'],
+    "react/no-unescaped-entities": 0
   },
   settings: {
     react: {

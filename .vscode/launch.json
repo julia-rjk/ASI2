@@ -13,21 +13,10 @@
         },
         {
             "type": "java",
-            "name": "Launch MsStoreApplication",
+            "name": "Launch MsCardBasicApplication",
             "request": "launch",
-            "mainClass": "com.asi2.msstore.MsStoreApplication",
-            "projectName": "ms-store",
-            "presentation":{
-                "group": "1_firstGroup@2",
-                "hidden": true
-            }
-        },
-        {
-            "type": "java",
-            "name": "Launch MsUserApplication",
-            "request": "launch",
-            "mainClass": "com.asi2.msuser.MsUserApplication",
-            "projectName": "ms-user",
+            "mainClass": "com.asi2.mscardBasic.MsCardBasicApplication",
+            "projectName": "ms-cardBasic",
             "presentation":{
                 "group": "1_firstGroup@2",
                 "hidden": true
@@ -46,10 +35,21 @@
         },
         {
             "type": "java",
-            "name": "Launch MsCardBasicApplication",
+            "name": "Launch MsUserApplication",
             "request": "launch",
-            "mainClass": "com.asi2.mscardBasic.MsCardBasicApplication",
-            "projectName": "ms-cardBasic",
+            "mainClass": "com.asi2.msuser.MsUserApplication",
+            "projectName": "ms-user",
+            "presentation":{
+                "group": "1_firstGroup@2",
+                "hidden": true
+            }
+        },
+        {
+            "type": "java",
+            "name": "Launch MsStoreApplication",
+            "request": "launch",
+            "mainClass": "com.asi2.msstore.MsStoreApplication",
+            "projectName": "ms-store",
             "presentation":{
                 "group": "1_firstGroup@2",
                 "hidden": true
@@ -85,7 +85,7 @@
             "webRoot": "${workspaceFolder}",
             "presentation":{
                 "group": "1_firstGroup@2",
-                "hidden": true
+                "hidden": false
             }
           }
     ],
