@@ -14,6 +14,7 @@ export function createApplication(
   const service = new GameService();
   const chatService = new ChatService();
   io.on("connection", (socket) => {
+
     // ------------------ Game ------------------
     socket.on('joinWaitingList', (user: any) => {
       service.joinWaitingList(io, socket, user);
@@ -30,8 +31,9 @@ export function createApplication(
     
     
     // ----------------- Chat -----------------
+    chatService.getAllMessagesOfRoom(socket);
     socket.on('sendMessage', async (msg: MessageDTO) => {
-      await chatService.sendMessage(io, msg);
+      chatService.sendMessage(io, msg);
     });
 
     // Runs when client disconnects

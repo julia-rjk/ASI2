@@ -1,6 +1,6 @@
 export interface MessageDTO {
   userId: number;
-  sender: string;
+  sender?: string;
   message: string;
   date?: Date;
   room?: string;

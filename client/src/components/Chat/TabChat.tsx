@@ -42,7 +42,7 @@ export const TabChat = ({ messages, sendMessage }: Props) => {
               icon={
                 <Group>
                   <UserAvatar
-                    userName={message.sender}
+                    userName={message.sender ?? 'Unknown'}
                     messageTime={
                       message.date &&
                       new Date(message.date).toLocaleTimeString([], {

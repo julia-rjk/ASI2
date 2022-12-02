@@ -1,4 +1,4 @@
-import { Group, Avatar, Text, Stack } from '@mantine/core';
+import { Group, Avatar, Text } from '@mantine/core';
 import React from 'react';
 import {} from 'tabler-icons-react';
 

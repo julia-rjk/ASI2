@@ -6,6 +6,7 @@ import ChatUser from "../models/chatUser";
 import axios from "axios";
 import { MessageDTO } from "../../../../client/src/entities/messageDTO";
 import * as dotenv from "dotenv";
+import { UserDTO } from "../../../../client/src/entities/userDTO";
 
 dotenv.config();
 
@@ -13,9 +14,9 @@ const URL_MS_USER = process.env.URL + ":" + process.env.USERPORT + "/api/users";
 const URL_MS_CHATHISTORY = process.env.URL + ":" + process.env.MESSAGEPORT + "/api/messages";
 export default class ChatService {
 
-    public async sendMessage(io: Server, msg: MessageDTO) {
+    public sendMessage(io: Server, msg: MessageDTO) {
         msg = {...msg, date: new Date()};
-        await this.saveMessage(msg);
+        axios.post(URL_MS_CHATHISTORY, msg);
         if(msg.room){
             io.to(msg.room).emit('chatMessage', msg);
         }
@@ -24,14 +25,16 @@ export default class ChatService {
         }
     }
     
-    public async saveMessage(message: MessageDTO){
-        await axios.post(URL_MS_CHATHISTORY, {...message});
-        console.log(await this.getAllMessagesOfRoom(message.room));
-    }
+    public async getAllMessagesOfRoom(socket: Socket, room?: string){
+        const messages : MessageDTO[] = (await axios.get(`${URL_MS_CHATHISTORY}/room/${room || ''}`)).data;
+        const uniqueUsersId = [...new Set(messages.map(msg => msg.userId))];
+        const users : UserDTO[] = await Promise.all(uniqueUsersId.map(async id => (await axios.get(`${URL_MS_USER}/${id}`)).data));
+        const messagesWithUsers = messages.map(msg => {
+            const user = users.find(user => user.id === msg.userId);
+            return {...msg, sender: `${user?.lastName} ${user?.surName}`};
+        });
 
-    public async getAllMessagesOfRoom(room?: string){
-        const res = await axios.get(`${URL_MS_CHATHISTORY}/room/${room || ''}`);
-        return res.data;
+        socket.emit('chatRoomMessages', messagesWithUsers);
     }
 
     // users: ChatUser[] = [];
