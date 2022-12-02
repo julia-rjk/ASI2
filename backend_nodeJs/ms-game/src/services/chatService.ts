@@ -16,7 +16,7 @@ export default class ChatService {
 
     public sendMessage(io: Server, msg: MessageDTO) {
         msg = {...msg, date: new Date()};
-        axios.post(URL_MS_CHATHISTORY, msg);
+        axios.post(URL_MS_CHATHISTORY, {msg, date: msg.date?.toISOString()});
         if(msg.room){
             io.to(msg.room).emit('chatMessage', msg);
         }
