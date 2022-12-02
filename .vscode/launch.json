@@ -7,7 +7,7 @@
             "command": "./activemq start",
             "cwd": "C:\\Program Files\\apache-activemq-5.17.2\\bin",
             "presentation":{
-                "group": "1_firstGroup@2",
+                "group": "1_firstGroup",
                 "hidden": true,
             }
         },
@@ -18,7 +18,7 @@
             "mainClass": "com.asi2.mscardBasic.MsCardBasicApplication",
             "projectName": "ms-cardBasic",
             "presentation":{
-                "group": "1_firstGroup@2",
+                "group": "1_firstGroup",
                 "hidden": true
             }
         },
@@ -29,7 +29,7 @@
             "mainClass": "com.asi2.mscard.MsCardApplication",
             "projectName": "ms-card",
             "presentation":{
-                "group": "1_firstGroup@2",
+                "group": "1_firstGroup",
                 "hidden": true
             }
         },
@@ -40,7 +40,7 @@
             "mainClass": "com.asi2.msuser.MsUserApplication",
             "projectName": "ms-user",
             "presentation":{
-                "group": "1_firstGroup@2",
+                "group": "1_firstGroup",
                 "hidden": true
             }
         },
@@ -51,7 +51,7 @@
             "mainClass": "com.asi2.msstore.MsStoreApplication",
             "projectName": "ms-store",
             "presentation":{
-                "group": "1_firstGroup@2",
+                "group": "1_firstGroup",
                 "hidden": true
             }
         },
@@ -62,7 +62,7 @@
             "command": "npm start",
             "cwd": "${workspaceFolder}\\backend_nodeJs\\ms-game",
             "presentation":{
-                "group": "1_firstGroup@2",
+                "group": "1_firstGroup",
                 "hidden": true
             }
         },
@@ -73,8 +73,8 @@
             "mainClass": "com.asi2.mschathistory.MsChatHistoryApplication",
             "projectName": "ms-chathistory",
             "presentation":{
-                "group": "1_firstGroup@2",
-                "hidden": true
+                "group": "1_firstGroup",
+                "hidden": false
             }
         },
         {
@@ -84,7 +84,7 @@
             "command": "npm start",
             "cwd": "${workspaceFolder}/client",
             "presentation":{
-                "group": "1_firstGroup@2",
+                "group": "1_firstGroup",
                 "hidden": true
             }
         },
@@ -95,7 +95,7 @@
             "url": "http://localhost:3000",
             "webRoot": "${workspaceFolder}",
             "presentation":{
-                "group": "1_firstGroup@2",
+                "group": "1_firstGroup",
                 "hidden": false
             }
           }
