@@ -8,7 +8,14 @@ public class GlobalProperty {
     @Value("${webservice.url.logesb}")
     private String urlLog;
 
+    @Value("${chat-messaging.queue.name}")
+    private String queueName;
+
     public String getUrlLogEsb() {
         return urlLog;
+    }
+
+    public String getQueueName() {
+        return queueName;
     }
 }
