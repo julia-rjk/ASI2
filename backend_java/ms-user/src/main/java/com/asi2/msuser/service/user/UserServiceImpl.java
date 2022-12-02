@@ -34,10 +34,6 @@ public class UserServiceImpl implements UserService {
             List<User> users = userDAO.findAll();
             List<UserDTO> userDTOS = new ArrayList<>();
 
-            for(User user : users) {
-                    
-            }
-
             return Mapper.mapList(userDAO.findAll(), UserDTO.class);
         } catch (Exception e) {
             log.error("Error when finding all Users : {}", e.getMessage());

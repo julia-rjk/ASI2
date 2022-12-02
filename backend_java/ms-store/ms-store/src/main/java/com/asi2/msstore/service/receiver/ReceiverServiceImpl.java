@@ -1,6 +1,7 @@
 package com.asi2.msstore.service.receiver;
 
 import com.asi2.msstore.service.store.StoreService;
+import com.asi2.msstore.utils.GlobalProperty;
 import com.asi2.msstorepublic.model.StoreOrder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Service;
 import service.ReceiverService;
+import utils.WebService;
 
 import java.util.Date;
 
@@ -21,6 +23,9 @@ public class ReceiverServiceImpl implements ReceiverService<StoreOrder, ActionSt
 
     @Autowired
     private StoreService storeService;
+
+    @Autowired
+    private GlobalProperty globalProperty;
 
     @Override
     @JmsListener(destination = "${esb.store-messaging.queue.name}")
@@ -39,5 +44,8 @@ public class ReceiverServiceImpl implements ReceiverService<StoreOrder, ActionSt
         log.info("Message [{}] from [{}] proceeded at {}. ", customMessage.getId(), customMessage.getCallBack(), new Date());
 
         // TODO Gestion erreurs
+
+        // Send to LogESB Service
+        WebService.put(globalProperty.getUrlLog(), customMessage);
     }
 }

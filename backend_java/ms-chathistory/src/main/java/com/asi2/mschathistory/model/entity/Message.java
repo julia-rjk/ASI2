@@ -2,6 +2,8 @@ package com.asi2.mschathistory.model.entity;
 
 import lombok.Data;
 
+import java.sql.Date;
+
 import javax.persistence.*;
 
 @Data
@@ -18,11 +20,11 @@ public class Message {
     @Column(name = "room")
     private String room;
 
-    @Column(name = "text")
-    private String text;
+    @Column(name = "message")
+    private String message;
 
-    @Column(name = "timestamp")
-    private String timestamp;
+    @Column(name = "date")
+    private Date date;
 
     public boolean isPresent() {
         return false;

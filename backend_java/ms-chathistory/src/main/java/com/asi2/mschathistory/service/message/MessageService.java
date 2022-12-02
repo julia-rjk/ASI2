@@ -11,5 +11,5 @@ public interface MessageService {
 
     List<MessageDTO> findByRoom(String room);
 
-    Boolean insert(MessageDTO messageDto);
+    Boolean saveMessage(MessageDTO messageDto);
 }

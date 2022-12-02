@@ -64,7 +64,7 @@ public class MessageServiceImpl implements MessageService {
 
             for (Message message : messages) {
                 log.info("room name :  {} compared to {}", message.getRoom(), room);
-                if (message.getRoom().equals(room)) messagesByRoom.add(message);
+                if (message.getRoom() == room) messagesByRoom.add(message);
             }
 
             return Mapper.mapList(messagesByRoom, MessageDTO.class);
@@ -75,14 +75,14 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public Boolean insert(MessageDTO messageDto) {
+    public Boolean saveMessage(MessageDTO messageDto) {
         try {
 
             Message message = new Message();
             message.setUserId(messageDto.getUserId());
             message.setRoom(messageDto.getRoom());
-            message.setText(messageDto.getText());
-            message.setTimestamp(messageDto.getTimestamp());
+            message.setMessage(messageDto.getMessage());
+            message.setDate(messageDto.getDate());
 
             messageDAO.save(message);
             return Boolean.TRUE;

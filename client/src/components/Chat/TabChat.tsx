@@ -10,7 +10,7 @@ import {
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import React, { useEffect, useRef } from 'react';
-import { ArrowDown } from 'tabler-icons-react';
+import { ArrowDown, DatabaseExport } from 'tabler-icons-react';
 import { MessageDTO } from '../../entities/messageDTO';
 import { UserAvatar } from '../UserAvatar';
 
@@ -42,8 +42,14 @@ export const TabChat = ({ messages, sendMessage }: Props) => {
               icon={
                 <Group>
                   <UserAvatar
-                    userName={message.sender}
-                    messageTime={message.time}
+                    userName={message.sender ?? 'Unknown'}
+                    messageTime={
+                      message.date &&
+                      new Date(message.date).toLocaleTimeString([], {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })
+                    }
                   />
                   <Divider size="lg" orientation="vertical" />
                 </Group>

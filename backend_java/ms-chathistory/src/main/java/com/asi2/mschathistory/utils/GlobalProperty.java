@@ -5,24 +5,17 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class GlobalProperty {
-    // @Value("${webservice.url.message}")
-    // private String urlMessage;
+    @Value("${webservice.url.logesb}")
+    private String urlLog;
 
-    // @Value("${esb.user-messaging.queue.name}")
-    // private String queueName;
+    @Value("${chat-messaging.queue.name}")
+    private String queueName;
 
-    // @Value("${webservice.url.card.generateCard.async}")
-    // private String urlGenerateCardAsync;
+    public String getUrlLogEsb() {
+        return urlLog;
+    }
 
-    // public String getUrlCard() {
-    //     return urlCard;
-    // }
-
-    // public String getQueueName() {
-    //     return queueName;
-    // }
-
-    // public String getUrlGenerateCardAsync() {
-    //     return urlGenerateCardAsync;
-    // }
+    public String getQueueName() {
+        return queueName;
+    }
 }

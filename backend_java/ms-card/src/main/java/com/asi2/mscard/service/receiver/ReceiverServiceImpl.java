@@ -1,6 +1,7 @@
 package com.asi2.mscard.service.receiver;
 
 import com.asi2.mscard.service.card.CardService;
+import com.asi2.mscard.utils.GlobalProperty;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import model.action.ActionBasic;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Service;
 import service.ReceiverService;
+import utils.WebService;
 
 import java.util.Date;
 
@@ -20,6 +22,9 @@ public class ReceiverServiceImpl implements ReceiverService<CardDTO, ActionBasic
 
     @Autowired
     private CardService cardService;
+
+    @Autowired
+    private GlobalProperty globalProperty;
 
     @Override
     @JmsListener(destination = "${card-messaging.queue.name}")
@@ -35,5 +40,8 @@ public class ReceiverServiceImpl implements ReceiverService<CardDTO, ActionBasic
                 break;
         }
         log.info("Message [{}] from [{}] proceeded at {}: ", customMessage.getId(), customMessage.getCallBack(), new Date());
+
+        // Send to LogESB Service
+        WebService.put(globalProperty.getUrlLogEsb(), customMessage);
     }
 }

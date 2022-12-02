@@ -44,16 +44,20 @@ export const Layout = () => {
   const [messages, setMessages] = useState<MessageDTO[]>([]);
   const [roomId, setRoomId] = useState<string>();
 
-  const receiveMessage = (message: MessageDTO) => {
-    setMessages((messages) => [...messages, message]);
+  const receiveMessages = (messages: MessageDTO[]) => {
+    setMessages((prev) => [...prev, ...messages]);
   };
 
   useEffect(() => {
     socket.on('connect', () => {
       console.log('connected');
     });
+    socket.on('chatRoomMessages', (messages: MessageDTO[]) => {
+      console.log(messages);
+      receiveMessages(messages);
+    });
     socket.on('chatMessage', (message: MessageDTO) => {
-      receiveMessage(message);
+      receiveMessages([message]);
     });
     return () => {
       socket.disconnect();
@@ -64,6 +68,7 @@ export const Layout = () => {
     const msg: MessageDTO = {
       message,
       room: roomId,
+      userId: user.id || 0,
       sender: `${user.lastName} ${user.surName}`,
     };
     socket.emit('sendMessage', msg);

@@ -75,7 +75,7 @@ public class StoreServiceImpl implements StoreService {
             userCards.add(card);
             user.setCards(userCards);
             user.setAccount(user.getAccount() - card.getPrice());
-            WebService.put(globalProperty.getUrlUser() + "/" + user_id, user);
+            WebService.put(globalProperty.getUrlUser(), user);
 
             // Update card owner with cardService
             card.setUserId(Long.valueOf(user_id));
@@ -136,15 +136,13 @@ public class StoreServiceImpl implements StoreService {
             userCards.remove(card);
             user.setCards(userCards);
             user.setAccount(user.getAccount() + card.getPrice());
-            if (WebService.put(globalProperty.getUrlUser() + "/" + user_id, user) == null) {
-                return false;
-            }
+            WebService.put(globalProperty.getUrlUser(), user);
 
             // Update card
             card.setUserId(null);
-            if (WebService.put(globalProperty.getUrlCard(), card) == null) {
-                return false;
-            }
+            WebService.put(globalProperty.getUrlCard(), card);
+
+            // TODO Gestion erreur
 
             // Add transaction
             StoreTransaction sT = new StoreTransaction(user_id, card_id, StoreAction.SELL);

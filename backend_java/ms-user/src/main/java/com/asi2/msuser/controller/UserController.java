@@ -32,7 +32,6 @@ public class UserController {
     @ApiOperation(value = "", nickname = "getAllUsers")
     @GetMapping()
     public List<UserDTO> getAllUsers() {
-        List<UserDTO> users = null;
         try {
             return userService.findAll();
         } catch (Exception e) {
@@ -44,7 +43,6 @@ public class UserController {
     @ApiOperation(value = "", nickname = "getUserByid")
     @GetMapping(value = "/{id}")
     public UserDTO getUserByid(@PathVariable("id") Long id) {
-        UserDTO userDto = null;
         try {
             return userService.findById(id);
         } catch (Exception e) {

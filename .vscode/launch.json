@@ -67,6 +67,17 @@
             }
         },
         {
+            "type": "java",
+            "name": "Launch MsChatHistoryApplication",
+            "request": "launch",
+            "mainClass": "com.asi2.mschathistory.MsChatHistoryApplication",
+            "projectName": "ms-chathistory",
+            "presentation":{
+                "group": "1_firstGroup@2",
+                "hidden": true
+            }
+        },
+        {
             "type": "node-terminal",
             "name": "Launch Client",
             "request": "launch",
@@ -92,7 +103,7 @@
     "compounds": [
         {
             "name": "Launch Backend",
-            "configurations": ["Launch ActiveMq","Launch MsCardBasicApplication","Launch MsCardApplication","Launch MsUserApplication","Launch MsStoreApplication","Launch MsGameApplication"]
+            "configurations": ["Launch ActiveMq","Launch MsCardBasicApplication","Launch MsCardApplication","Launch MsUserApplication","Launch MsStoreApplication","Launch MsGameApplication","Launch MsChatHistoryApplication"]
         },
         {
             "name": "Launch Frontend",
@@ -100,7 +111,7 @@
         },
         {
             "name": "Launch All",
-            "configurations": ["Launch ActiveMq","Launch MsCardBasicApplication","Launch MsCardApplication","Launch MsUserApplication","Launch MsStoreApplication","Launch MsGameApplication","Launch Client","Attach Client"]
+            "configurations": ["Launch ActiveMq","Launch MsCardBasicApplication","Launch MsCardApplication","Launch MsUserApplication","Launch MsStoreApplication","Launch MsGameApplication","Launch MsChatHistoryApplication","Launch Client","Attach Client"]
         },
     ]
 }

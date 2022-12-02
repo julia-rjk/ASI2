@@ -5,9 +5,9 @@ import * as dotenv from "dotenv";
 dotenv.config();
 
 const httpServer = createServer();
-const PORT= process.env.PORT;
-const CLIENTPORT= process.env.CLIENTPORT;
-const URLCLIENT= process.env.URL + ":" + CLIENTPORT;
+const PORT = process.env.PORT;
+const CLIENTPORT = process.env.CLIENTPORT;
+const URLCLIENT = process.env.URL + ":" + CLIENTPORT;
 const URL = process.env.URL + ":" + PORT;
 
 createApplication(
