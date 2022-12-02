@@ -5,7 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Objects;
 
 @Slf4j
@@ -21,11 +24,13 @@ public class LogServiceImpl implements LogService {
 
         // Get the ressource folder
         if (classLoader != null) {
-            // Get the log file
-            file = new File(Objects.requireNonNull(classLoader.getResource(".")).getFile() + globalProperties.getPathFileName());
             // Write into the log file
-            try (Writer writer = new BufferedWriter(new FileWriter(file))) {
+            try (FileWriter fw = new FileWriter(
+                    Objects.requireNonNull(classLoader.getResource(".")).getFile() + globalProperties.getPathFileName(),
+                    true); BufferedWriter writer = new BufferedWriter(fw);) {
                 writer.write(messageEsb);
+                writer.newLine();
+                writer.close();
                 return Boolean.TRUE;
             } catch (IOException e) {
                 log.error("An error occurred while writing into file : {}", e.getMessage());
