@@ -151,14 +151,12 @@ public class UserServiceImpl implements UserService {
             user.setPassword(userDTO.getPassword());
             user.setSurName(userDTO.getSurName());
             userDTO.setId(user.getId());
-            if (userDTO.getCards() != null && userDTO.getCards().size() != 0) {
+            if (userDTO.getCards() != null && userDTO.getCards().size() > 0 && userDTO.getCards().size() != 0) {
                 List<Long> idCards = new ArrayList<>();
                 for (CardDTO cardDTO : userDTO.getCards()) {
                     idCards.add(cardDTO.getId());
                 }
                 user.setIdCardList(idCards);
-            } else {
-                user.setIdCardList(null);
             }
 
             save(user);
