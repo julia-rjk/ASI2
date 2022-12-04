@@ -9,21 +9,39 @@ import { CardDTO, UserDTO } from '../../entities';
 import { useLayoutContext } from '../Layout/Layout';
 import { io } from 'socket.io-client';
 import { setUser } from '../../redux/user.action';
+import JSConfetti from 'js-confetti';
 
 export class AttackCardSelection {
   attacker!: CardDTO;
   defender!: CardDTO;
 }
 
+class Multiplier {
+  static x1 = 1;
+  static x2 = 2;
+  static x3 = 3;
+  static x4 = 4;
+  static x5 = 5;
+  static toggle(number: number): number {
+    if (number >= Multiplier.x5) return Multiplier.x1;
+    else return number + 1;
+  }
+}
+
 export const Game = () => {
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
   const { setRoomId, socket } = useLayoutContext();
-  const [opened, setOpened] = useState(true);
+  const [selectCardOpened, setSelectCardOpened] = useState(true);
   const [selectedCards, setSelectedCards] = useState<CardDTO[]>([]);
   const [attackCardSelection, setAttackCardSelection] =
     useState<AttackCardSelection>(new AttackCardSelection());
+  const [multiplier, setMultiplier] = useState(Multiplier.x1);
   const [game, setGame] = useState<GameDTO>();
+  const jsConfetti = new JSConfetti();
+  // messageBox
+  const [messageBoxOpened, setMessageBoxOpened] = useState(false);
+  const [messageBoxContent, setMessageBoxContent] = useState('');
 
   const addOrRemove = (arr: CardDTO[], item: CardDTO, rm: boolean) => {
     if (rm) {
@@ -35,7 +53,7 @@ export const Game = () => {
     }
   };
 
-  /* Listening for changes on the socket. */
+  // Listening for changes on the socket.
   useEffect(() => {
     socket.on('updateGame', (game: GameDTO, damage?: number) => {
       if (!game) return;
@@ -43,27 +61,29 @@ export const Game = () => {
       if (game.nextTurn && game.nextTurn.id === user.id) {
         if (game.nextTurn.actionPoints === 0) {
           endTurn(game.gameId);
-        } else {
-          console.log(game.nextTurn.actionPoints);
         }
       }
       // update game
-      if (!damage) {
+      if (damage == null) {
         setGame(game);
         return;
       }
       // update game and show damage
       setGameAnimated(game);
       // show type of damage
-      // if (damage === 0) printMessage('Missed');
-      // else if (damage < 90) printMessage('Hit');
-      // else printMessage('Critical Hit');
+      if (damage === 0) printMessage('Missed');
+      else if (damage < 90) printMessage('Hit');
+      else {
+        printMessage('Critical');
+      }
       //TODO: afficher l'update de la game (annimation ou alert quand en fonctino des damage [crit, normal, miss])
       const looser = hasLost(game);
       if (!looser) {
         return;
       }
-      socket.emit('endGame', game.gameId, looser.id);
+      setTimeout(() => {
+        socket.emit('endGame', game.gameId, looser.id);
+      }, 1000);
     });
     socket.on('gameFinished', (game: GameDTO, looser: UserDTO) => {
       if (game.player1.id === user.id) {
@@ -73,9 +93,10 @@ export const Game = () => {
       }
       dispatch(setUser(user));
       if (user.id === looser) {
-        alert('You lost');
+        printMessage('Defeat');
       } else {
-        alert('You won');
+        printMessage('Victory');
+        jsConfetti.addConfetti();
       }
     });
     return () => {
@@ -85,10 +106,7 @@ export const Game = () => {
     };
   }, [setRoomId, socket]);
 
-  /**
-   * Connect() is a function that emits a 'joinWaitingList' event to the server with the user object
-   * and the selectedCards array as the data.
-   */
+  // Connect() is a function that emits a 'joinWaitingList' event to the server with the user object and the selectedCards array as the data.
   const connect = () => {
     socket.emit('joinWaitingList', { ...user, cards: selectedCards });
   };
@@ -100,32 +118,24 @@ export const Game = () => {
     // }, 1000);
   };
 
-  /**
-   * When the attack button is clicked, the attackCardSelection is reset and the attack event is
-   * emitted to the server.
-   */
+  // When the attack button is clicked, the attackCardSelection is reset and the attack event is emitted to the server.
   const attack = () => {
     const gameId = game?.gameId;
     const attackerId = attackCardSelection.attacker.id;
     const defenderId = attackCardSelection.defender.id;
     setAttackCardSelection(new AttackCardSelection());
-    socket.emit('attack', gameId, attackerId, defenderId);
+    for (let i = 0; i < multiplier; i++) {
+      socket.emit('attack', gameId, attackerId, defenderId);
+    }
   };
 
-  /**
-   * When the endTurn button is clicked, emit an event to the server with the gameId.
-   */
+  // When the endTurn button is clicked, emit an event to the server with the gameId.
   const endTurn = (gameId?: string) => {
     if (!gameId) socket.emit('endTurn', game?.gameId);
     else socket.emit('endTurn', gameId);
   };
 
-  /**
-   * If player1Lost is true, return game.player1, else if player2Lost is true, return game.player2,
-   * else return undefined.
-   * @param {GameDTO} game - GameDTO
-   * @returns The player who lost.
-   */
+  // If player1Lost is true, return game.player1, else if player2Lost is true, return game.player2, else return undefined.
   const hasLost = (game: GameDTO) => {
     if (!game) {
       return;
@@ -151,22 +161,29 @@ export const Game = () => {
     }
   };
 
-  // const updateGame = () => {
-
-  // };
-
+  // When the function is called, it sets the message box content to the message that was passed in, sets the message box to opened, and then after a second, sets the message box to closed.
   const printMessage = (message: string) => {
-    // TODO: complete
-    const print = document.createElement('p');
-    print.innerHTML = message;
-    document.appendChild(print);
+    setMessageBoxContent(message);
+    setMessageBoxOpened(true);
+    // time out
+    setTimeout(() => {
+      setMessageBoxOpened(false);
+    }, 1000);
   };
 
   return (
     <>
+      <div className="messageBox">
+        <div
+          className={`${messageBoxContent.toLowerCase()} ${
+            messageBoxOpened && 'open'
+          }`}>
+          {messageBoxContent} !
+        </div>
+      </div>
       <Modal
-        opened={opened}
-        onClose={() => setOpened(false)}
+        opened={selectCardOpened}
+        onClose={() => setSelectCardOpened(false)}
         title="Select up to 4 cards 🃏 end click on play ▶️"
         size="fit-content"
         closeOnClickOutside={false}
@@ -233,7 +250,7 @@ export const Game = () => {
           <Button
             disabled={selectedCards?.length == 0}
             onClick={() => {
-              setOpened(false);
+              setSelectCardOpened(false);
               connect();
             }}>
             Play
@@ -260,6 +277,13 @@ export const Game = () => {
                 End turn
               </Button>
               <hr />
+              <Button
+                id="multiplyButton"
+                onClick={() => {
+                  multiplier && setMultiplier(Multiplier.toggle(multiplier));
+                }}>
+                {multiplier}
+              </Button>
               <Button
                 disabled={
                   attackCardSelection.attacker == undefined ||

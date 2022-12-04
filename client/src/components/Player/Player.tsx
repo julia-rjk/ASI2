@@ -83,7 +83,8 @@ export const Player = ({
                   mt="md"
                   radius="md"
                   disabled={
-                    Math.round(card.energy) === 0 || Math.round(card.hp) === 0
+                    (Math.round(card.energy) === 0 && attacker) ||
+                    Math.round(card.hp) === 0
                   }
                   onClick={() => {
                     if (attacker) {

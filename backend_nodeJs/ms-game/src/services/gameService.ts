@@ -151,7 +151,7 @@ export default class GameService {
   }
 
   private playerAddActionPoints(player: GameUserDTO) {
-    const multiplicationConstant = 2.2;
+    const multiplicationConstant = 2;
     player.actionPoints
       ? player.actionPoints * multiplicationConstant > 100
         ? (player.actionPoints = 100)

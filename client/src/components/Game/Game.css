@@ -46,6 +46,10 @@ hr {
 	height: 50px;
 	cursor: pointer;
 }
+#controls #multiplyButton {
+	min-width: 50px;
+	width: fit-content;
+}
 
 .selectCardsContainer {
 	display: grid;
@@ -72,4 +76,34 @@ hr {
 .waitingForOpponent{
 	display: grid;
 	place-items: center;
+}
+
+.messageBox{
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	font-size: 100px;
+	font-weight: bold;
+	visibility: hidden;
+	transition: all 0.3s ease-in-out;
+	z-index: 100;
+}
+.victory{
+	color: green;
+}
+.defeat{
+	color: red;
+}
+.hit{
+	color: blue;
+}
+.miss{
+	color: rgb(63, 63, 63);
+}
+.critical{
+	color: purple;
+}
+.messageBox .open{
+	visibility: visible;
 }
