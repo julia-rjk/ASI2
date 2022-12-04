@@ -57,6 +57,7 @@ export const Game = () => {
   useEffect(() => {
     socket.on('updateGame', (game: GameDTO, damage?: number) => {
       if (!game) return;
+      autoSelect(game);
       setRoomId(game.gameId);
       if (game.nextTurn && game.nextTurn.id === user.id) {
         if (game.nextTurn.actionPoints === 0) {
@@ -116,6 +117,41 @@ export const Game = () => {
     // setTimeout(() => {
     //   setGame(game);
     // }, 1000);
+  };
+
+  const autoSelect = (game: GameDTO) => {
+    // find the number of selectable cards, if 1, select it
+    let selectableAttackers;
+    let selectableDefenders;
+    if (game.player1.id === user.id) {
+      if (game.player1.cards) {
+        selectableAttackers = game.player1.cards.filter(
+          (c: CardDTO) => c.hp > 0 && c.energy > 0,
+        );
+      }
+
+      if (game.player2 && game.player2.cards) {
+        selectableDefenders = game.player2.cards.filter(
+          (c: CardDTO) => c.hp > 0,
+        );
+      }
+    } else {
+      if (game.player2 && game.player2.cards) {
+        selectableAttackers = game.player2.cards.filter(
+          (c: CardDTO) => c.hp > 0 && c.energy > 0,
+        );
+      }
+      if (game.player1.cards) {
+        selectableDefenders = game.player1.cards.filter(
+          (c: CardDTO) => c.hp > 0,
+        );
+      }
+    }
+    if (selectableAttackers && selectableAttackers.length === 1)
+      attackCardSelection.attacker = selectableAttackers[0];
+    if (selectableDefenders && selectableDefenders.length === 1)
+      attackCardSelection.defender = selectableDefenders[0];
+    setAttackCardSelection(attackCardSelection);
   };
 
   // When the attack button is clicked, the attackCardSelection is reset and the attack event is emitted to the server.
