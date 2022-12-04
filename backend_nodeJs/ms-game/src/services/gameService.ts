@@ -192,6 +192,20 @@ export default class GameService {
       UserService.updateUser(looser);
       UserService.updateUser(winner);
     }
+    this.leaveGame(io, socket, gameId, looserId);
+  }
+
+  public leaveGame(
+    io: Server,
+    socket: Socket,
+    gameId: string,
+    looserId: number
+  ) {
+    // get game
+    const game = this.currentGames.find((g) => g.gameId === gameId);
+    if (!game) {
+      return;
+    }
     // remove game from current games
     this.currentGames = this.currentGames.filter((g) => g.gameId !== gameId);
     // add game to finished games

@@ -10,6 +10,7 @@ import { useLayoutContext } from '../Layout/Layout';
 import { io } from 'socket.io-client';
 import { setUser } from '../../redux/user.action';
 import JSConfetti from 'js-confetti';
+import { Link } from 'react-router-dom';
 
 export class AttackCardSelection {
   attacker!: CardDTO;
@@ -98,6 +99,9 @@ export const Game = () => {
         printMessage('Victory');
         jsConfetti.addConfetti();
       }
+      setTimeout(() => {
+        window.location.href = '/';
+      }, 2000);
     });
     return () => {
       // leave game
@@ -200,6 +204,12 @@ export const Game = () => {
     }, 1000);
   };
 
+  const leaveGame = () => {
+    socket.emit('leaveGame', game?.gameId, user.id);
+    setRoomId(undefined);
+    window.location.href = '/';
+  };
+
   return (
     <>
       <div className="messageBox">
@@ -287,7 +297,7 @@ export const Game = () => {
         </div>
       </Modal>
       <div id="gameContainer">
-        <div id="game" className="gameSubContainer">
+        <div id="game">
           <Player
             player={
               game
@@ -337,6 +347,7 @@ export const Game = () => {
             <div className="waitingForOpponent">Waiting for opponent</div>
           )}
         </div>
+        <Button onClick={() => leaveGame()}>Leave game</Button>
       </div>
     </>
   );

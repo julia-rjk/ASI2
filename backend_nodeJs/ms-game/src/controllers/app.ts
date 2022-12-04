@@ -34,6 +34,10 @@ export function createApplication(
       service.endGame(io, socket, gameId, looserId);
     });
 
+    socket.on("leaveGame", (gameId: string, looserId: number) => {
+      service.leaveGame(io, socket, gameId, looserId);
+    });
+
     // ----------------- Chat -----------------
     chatService.getAllMessagesOfRoom(socket);
     socket.on("sendMessage", async (msg: MessageDTO) => {
