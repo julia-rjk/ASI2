@@ -65,12 +65,11 @@ export const Game = () => {
         }
       }
       // update game
+      setGame(game);
+
       if (damage == null) {
-        setGame(game);
         return;
       }
-      // update game and show damage
-      setGameAnimated(game);
       // show type of damage
       if (damage === 0) printMessage('Missed');
       else if (damage < 90) printMessage('Hit');
@@ -112,13 +111,7 @@ export const Game = () => {
     socket.emit('joinWaitingList', { ...user, cards: selectedCards });
   };
 
-  const setGameAnimated = (game: GameDTO) => {
-    setGame(game);
-    // setTimeout(() => {
-    //   setGame(game);
-    // }, 1000);
-  };
-
+  // Auto select a card if the user has only one card he can use
   const autoSelect = (game: GameDTO) => {
     // find the number of selectable cards, if 1, select it
     let selectableAttackers;
