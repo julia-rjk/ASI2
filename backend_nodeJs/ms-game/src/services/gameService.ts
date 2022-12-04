@@ -10,7 +10,15 @@ export default class GameService {
   finishedGames: Game[] = [];
 
   public joinWaitingList(io: Server, socket: Socket, user: GameUserDTO) {
-    const game = this.currentGames.find((g) => !g.player2);
+    let game = this.currentGames.find(
+      (g) => g.player1.id === user.id || g.player2?.id === user.id
+    );
+    if (game) {
+      socket.join(game.gameId);
+      io.to(game.gameId).emit("updateGame", game);
+      return;
+    }
+    game = this.currentGames.find((g) => !g.player2);
     if (!game) {
       user.actionPoints = 1;
       // create a new game
@@ -143,10 +151,13 @@ export default class GameService {
   }
 
   private playerAddActionPoints(player: GameUserDTO) {
+    const multiplicationConstant = 2.2;
     player.actionPoints
-      ? player.actionPoints * 2 > 100
+      ? player.actionPoints * multiplicationConstant > 100
         ? (player.actionPoints = 100)
-        : (player.actionPoints *= 2)
+        : (player.actionPoints = Math.round(
+            player.actionPoints * multiplicationConstant
+          ))
       : (player.actionPoints = 1);
   }
 
