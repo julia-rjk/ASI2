@@ -19,10 +19,10 @@
     height: auto;
 }
 .playerCards{
-    display: grid;
-    grid-auto-flow: column;
+    display: flex;
+    flex-wrap: wrap;
     gap: 10px;
-    place-items: center;
+    justify-content: space-between;
 }
 .stats{
     gap: 5px;
@@ -30,4 +30,21 @@
 .gameCard{
     max-width: 220px;
     transition: all 0.1s ease-in-out;
+}
+@media screen and (max-width:1050px) {
+    .playerContainer {
+        gap: 8px;
+    }
+    .playerIcon {
+        width: 40px;
+    }
+    .playerCards{
+        gap: 7px;
+    }
+    .stats{
+        gap: 3px;
+    }
+    .gameCard{
+        max-width: 180px;
+    }
 }
