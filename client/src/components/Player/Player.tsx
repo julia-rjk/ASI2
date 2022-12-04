@@ -106,7 +106,7 @@ export const Player = ({
                   {Math.round(card.hp) > 0
                     ? Math.round(card.energy) > 0
                       ? attacker
-                        ? 'Use'
+                        ? card.model?.attackName
                         : 'Attack'
                       : 'No energy'
                     : 'Dead'}
