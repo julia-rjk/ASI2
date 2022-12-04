@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Player } from '../Player';
 import './Game.css';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from '../../redux/user.selector';
 import GameDTO, { GameUserDTO } from '../../entities/gameDTO';
 import { Button, Card, Group, Modal, Image, Badge, Text } from '@mantine/core';
 import { CardDTO, UserDTO } from '../../entities';
 import { useLayoutContext } from '../Layout/Layout';
 import { io } from 'socket.io-client';
+import { setUser } from '../../redux/user.action';
 
 export class AttackCardSelection {
   attacker!: CardDTO;
@@ -15,6 +16,7 @@ export class AttackCardSelection {
 }
 
 export const Game = () => {
+  const dispatch = useDispatch();
   const user = useSelector(selectUser);
   const { setRoomId, socket } = useLayoutContext();
   const [opened, setOpened] = useState(true);
@@ -64,7 +66,12 @@ export const Game = () => {
       socket.emit('endGame', game.gameId, looser.id);
     });
     socket.on('gameFinished', (game: GameDTO, looser: UserDTO) => {
-      console.log('gameFinished', game, looser, user.id);
+      if (game.player1.id === user.id) {
+        user.account = game.player1.account;
+      } else {
+        user.account = game.player2.account;
+      }
+      dispatch(setUser(user));
       if (user.id === looser) {
         alert('You lost');
       } else {
