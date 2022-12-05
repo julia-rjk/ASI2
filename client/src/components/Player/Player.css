@@ -22,17 +22,13 @@
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    justify-content: space-between;
-}
-.stats{
-    gap: 5px;
-}
-.gameCard{
-    max-width: 220px;
-    transition: all 0.1s ease-in-out;
+    justify-content: space-evenly;
+    width: 100%;
 }
 @media screen and (max-width:1050px) {
     .playerContainer {
+        grid-template-columns: 1fr;
+        place-items: center;
         gap: 8px;
     }
     .playerIcon {
@@ -40,11 +36,5 @@
     }
     .playerCards{
         gap: 7px;
-    }
-    .stats{
-        gap: 3px;
-    }
-    .gameCard{
-        max-width: 180px;
     }
 }

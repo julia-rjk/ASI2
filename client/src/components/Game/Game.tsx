@@ -238,7 +238,6 @@ export const Game = () => {
                     selectedCards.includes(card) && 'selectedCard'
                   } gameCard`}
                   shadow="sm"
-                  p="lg"
                   radius="md"
                   withBorder>
                   <Card.Section>

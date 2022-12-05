@@ -91,17 +91,20 @@ hr {
 .messageBox .open{
 	visibility: visible;
 }
+.stats{
+    gap: 5px;
+}
+.gameCard{
+    max-width: 220px;
+    transition: all 0.1s ease-in-out;
+}
 
 @media screen and (max-width:1050px) {
 	.gameCard{
-		/* transform: scale(0.8); */
 		padding: 13px;
 	}
 	.stats div {
 		padding: 0 5px;
-	}
-	.selectedCard {
-		/* transform: scale(0.81); */
 	}
 	#gameContainer {
 		gap: 8px;
@@ -117,8 +120,6 @@ hr {
 	}
 	hr {
 		width: 100%;
-		height: 1px;
-		/* background: #e2e1e0; */
 	}
 	#controls button {
 		font-size: 15px;
@@ -134,4 +135,10 @@ hr {
 	.messageBox{
 		font-size: 75px;
 	}
+    .stats{
+        gap: 3px;
+    }
+    .gameCard{
+        max-width: 180px;
+    }
 }
