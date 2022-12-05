@@ -29,9 +29,12 @@ export default class ChatService {
     ).data;
     const uniqueUsersId = [...new Set(messages.map((msg) => msg.userId))];
     const users: UserDTO[] = await Promise.all(
-      uniqueUsersId.map(
-        async (id) => (await axios.get(`${URL_MS_USER}/${id}`)).data
-      )
+      uniqueUsersId.map(async (id) => {
+        if (!id) {
+          return [];
+        }
+        return (await axios.get(`${URL_MS_USER}/${id}`)).data;
+      })
     );
     const messagesWithUsers = messages.map((msg) => {
       const user = users.find((user) => user.id === msg.userId);
