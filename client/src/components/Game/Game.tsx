@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Player } from '../Player';
-import './Game.css';
+import './Game.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from '../../redux/user.selector';
 import GameDTO, { GameUserDTO } from '../../entities/gameDTO';
@@ -227,7 +227,8 @@ export const Game = () => {
         size="fit-content"
         closeOnClickOutside={false}
         closeOnEscape={false}
-        withCloseButton={false}>
+        withCloseButton={false}
+        className="cardsSelectionPannel">
         <div className="selectCardsContainer">
           <div className="playerCards">
             {user.cards?.map((card: CardDTO) => {
@@ -241,26 +242,30 @@ export const Game = () => {
                   radius="md"
                   withBorder>
                   <Card.Section>
-                    <Image src={card.model?.imgUrl} height={80} alt="" />
+                    <Image
+                      src={card.model?.imgUrl}
+                      className="cardImage"
+                      alt=""
+                    />
                   </Card.Section>
-                  <Text weight={500}>{card.model?.name}</Text>
-                  <Text size="sm" color="dimmed">
+                  <Text weight={500} className="cardName">
+                    {card.model?.name}
+                  </Text>
+                  <Text className="cardDescription" color="dimmed">
                     {card.model?.description}
                   </Text>
 
                   <Group className="stats">
-                    <Badge color="green">
+                    <Badge className="cardStat" color="green">
                       ❤️‍🩹 : {card.hp && Math.round(card.hp)}
                     </Badge>
-                    <Badge color="magenta">
+                    <Badge className="cardStat" color="magenta">
                       ⚡ : {card.energy && Math.round(card.energy)}
                     </Badge>
-                  </Group>
-                  <Group className="stats">
-                    <Badge color="red">
+                    <Badge className="cardStat" color="red">
                       ⚔️ : {card.attack && Math.round(card.attack)}
                     </Badge>
-                    <Badge color="blue">
+                    <Badge className="cardStat" color="blue">
                       🛡️ : {card.defence && Math.round(card.defence)}
                     </Badge>
                   </Group>
@@ -269,8 +274,8 @@ export const Game = () => {
                     variant="light"
                     color="blue"
                     fullWidth
-                    mt="md"
                     radius="md"
+                    className="selectCardButton"
                     disabled={
                       selectedCards.length >= 4 && !selectedCards.includes(card)
                     }
@@ -316,20 +321,23 @@ export const Game = () => {
               </Button>
               <hr />
               <Button
-                id="multiplyButton"
-                onClick={() => {
-                  multiplier && setMultiplier(Multiplier.toggle(multiplier));
-                }}>
-                {multiplier}
-              </Button>
-              <Button
                 disabled={
                   attackCardSelection.attacker == undefined ||
                   attackCardSelection.defender == undefined
                 }
                 className="control"
                 onClick={() => attack()}>
-                Attack ⚔️
+                {attackCardSelection.attacker &&
+                attackCardSelection.attacker.model?.attackName
+                  ? attackCardSelection.attacker.model?.attackName + ' ⚔️'
+                  : 'Attack ⚔️'}
+              </Button>
+              <Button
+                id="multiplyButton"
+                onClick={() => {
+                  multiplier && setMultiplier(Multiplier.toggle(multiplier));
+                }}>
+                {multiplier}
               </Button>
             </div>
           ) : (

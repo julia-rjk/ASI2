@@ -1,5 +1,4 @@
 import React from 'react';
-import './Player.css';
 import { Card, Badge, Button, Group, Text, Image } from '@mantine/core';
 import { CardDTO } from '../../entities';
 import { GameUserDTO } from '../../entities/gameDTO';
@@ -48,30 +47,33 @@ export const Player = ({
                       'selectedCard'
                 }`}
                 shadow="sm"
-                p="lg"
                 radius="md"
                 withBorder>
                 <Card.Section>
-                  <Image src={card.model?.imgUrl} height={80} alt="" />
+                  <Image
+                    src={card.model?.imgUrl}
+                    className="cardImage"
+                    alt=""
+                  />
                 </Card.Section>
-                <Text weight={500}>{card.model?.name}</Text>
-                <Text size="sm" color="dimmed">
+                <Text weight={500} className="cardName">
+                  {card.model?.name}
+                </Text>
+                <Text className="cardDescription" color="dimmed">
                   {card.model?.description}
                 </Text>
 
                 <Group className="stats">
-                  <Badge color="green">
+                  <Badge className="cardStat" color="green">
                     ❤️‍🩹 : {card.hp && Math.round(card.hp)}
                   </Badge>
-                  <Badge color="magenta">
+                  <Badge className="cardStat" color="magenta">
                     ⚡ : {card.energy && Math.round(card.energy)}
                   </Badge>
-                </Group>
-                <Group className="stats">
-                  <Badge color="red">
+                  <Badge className="cardStat" color="red">
                     ⚔️ : {card.attack && Math.round(card.attack)}
                   </Badge>
-                  <Badge color="blue">
+                  <Badge className="cardStat" color="blue">
                     🛡️ : {card.defence && Math.round(card.defence)}
                   </Badge>
                 </Group>
@@ -80,8 +82,8 @@ export const Player = ({
                   variant="light"
                   color="blue"
                   fullWidth
-                  mt="md"
                   radius="md"
+                  className="selectCardButton"
                   disabled={
                     (Math.round(card.energy) === 0 && attacker) ||
                     Math.round(card.hp) === 0
@@ -106,7 +108,7 @@ export const Player = ({
                   {Math.round(card.hp) > 0
                     ? Math.round(card.energy) > 0
                       ? attacker
-                        ? card.model?.attackName
+                        ? 'Use'
                         : 'Attack'
                       : 'No energy'
                     : 'Dead'}
