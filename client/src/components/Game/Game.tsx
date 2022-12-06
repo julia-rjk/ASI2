@@ -228,6 +228,7 @@ export const Game = () => {
         closeOnClickOutside={false}
         closeOnEscape={false}
         withCloseButton={false}
+        centered
         className="cardsSelectionPannel">
         <div className="selectCardsContainer">
           <div className="playerCards">

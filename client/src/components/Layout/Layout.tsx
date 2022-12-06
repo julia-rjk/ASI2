@@ -78,14 +78,14 @@ export const Layout = () => {
     <AppShell
       padding="md"
       header={
-        <Header height={60}>
+        <Header height={60} className="header">
           <Group sx={{ height: '100%' }} px={20} position="apart">
             {title && (
               <Link to="/">
-                <Home size={30} color="black" />
+                <Home className="headerIcon" size={30} color="black" />
               </Link>
             )}
-            <Title>{title}</Title>
+            <Title className="headerTitle">{title}</Title>
             <Menu shadow="md" width={200} trigger="hover">
               <Menu.Target>
                 <UnstyledButton>
