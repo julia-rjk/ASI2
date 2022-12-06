@@ -53,10 +53,15 @@ export const Game = () => {
         : [...arr, item];
     }
   };
+  // Do only on init
+  useEffect(() => {
+    socket.emit('isInGame', user);
+  }, []);
 
   // Listening for changes on the socket.
   useEffect(() => {
     socket.on('updateGame', (game: GameDTO, damage?: number) => {
+      selectCardOpened && setSelectCardOpened(false);
       if (!game) return;
       autoSelect(game);
       setRoomId(game.gameId);
@@ -77,7 +82,6 @@ export const Game = () => {
       else {
         printMessage('Critical');
       }
-      //TODO: afficher l'update de la game (annimation ou alert quand en fonctino des damage [crit, normal, miss])
       const looser = hasLost(game);
       if (!looser) {
         return;
@@ -103,11 +107,6 @@ export const Game = () => {
         window.location.href = '/';
       }, 2000);
     });
-    return () => {
-      // leave game
-      // socket.emit('leaveGame', game?.gameId, user.id);
-      // setRoomId(undefined);
-    };
   }, [setRoomId, socket]);
 
   // Connect() is a function that emits a 'joinWaitingList' event to the server with the user object and the selectedCards array as the data.

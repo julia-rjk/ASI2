@@ -11,16 +11,22 @@ export default class GameService {
   startActionPoint = 1;
   actionPointMultiplier = 2;
 
-  public joinWaitingList(io: Server, socket: Socket, user: GameUserDTO) {
+  public isInGame(io: Server, socket: Socket, user: GameUserDTO): boolean {
     let game = this.currentGames.find(
       (g) => g.player1.id === user.id || g.player2?.id === user.id
     );
     if (game) {
       socket.join(game.gameId);
       io.to(game.gameId).emit("updateGame", game);
+      return true;
+    }
+    return false;
+  }
+  public joinWaitingList(io: Server, socket: Socket, user: GameUserDTO) {
+    if (this.isInGame(io, socket, user)) {
       return;
     }
-    game = this.currentGames.find((g) => !g.player2);
+    let game = this.currentGames.find((g) => !g.player2);
     if (!game) {
       user.actionPoints = this.startActionPoint;
       // create a new game

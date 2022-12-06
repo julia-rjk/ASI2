@@ -15,6 +15,9 @@ export function createApplication(
   const chatService = new ChatService();
   io.on("connection", (socket) => {
     // ------------------ Game ------------------
+    socket.on("isInGame", (user: any) => {
+      service.isInGame(io, socket, user);
+    });
     socket.on("joinWaitingList", (user: any) => {
       service.joinWaitingList(io, socket, user);
     });
