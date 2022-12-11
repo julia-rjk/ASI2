@@ -2,7 +2,7 @@ package com.asi2.mschathistory.model.entity;
 
 import lombok.Data;
 
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.*;
 

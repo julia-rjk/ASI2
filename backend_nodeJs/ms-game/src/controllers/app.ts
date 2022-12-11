@@ -11,34 +11,38 @@ export function createApplication(
   serverOptions: Partial<ServerOptions> = {}
 ): Server {
   const io = new Server(httpServer, serverOptions);
-  const service = new GameService();
+  const gameService = new GameService();
   const chatService = new ChatService();
   io.on("connection", (socket) => {
     // ------------------ Game ------------------
     socket.on("isInGame", (user: any) => {
-      service.isInGame(io, socket, user);
+      const isAlreadyInGameId = gameService.isInGame(io, socket, user);
+      if(isAlreadyInGameId) {
+        chatService.getAllMessagesOfRoom(socket, isAlreadyInGameId);
+      }
     });
     socket.on("joinWaitingList", (user: any) => {
-      service.joinWaitingList(io, socket, user);
+      const gameId = gameService.joinWaitingList(io, socket, user);
+      chatService.getAllMessagesOfRoom(socket, gameId);
     });
 
     socket.on(
       "attack",
       (gameId: string, attacker: number, defender: number) => {
-        service.attack(io, socket, gameId, attacker, defender);
+        gameService.attack(io, socket, gameId, attacker, defender);
       }
     );
 
     socket.on("endTurn", (gameId: string) => {
-      service.endTurn(io, socket, gameId);
+      gameService.endTurn(io, socket, gameId);
     });
 
     socket.on("endGame", (gameId: string, looserId: number) => {
-      service.endGame(io, socket, gameId, looserId);
+      gameService.endGame(io, socket, gameId, looserId);
     });
 
     socket.on("leaveGame", (gameId: string, looserId: number) => {
-      service.leaveGame(io, socket, gameId, looserId);
+      gameService.leaveGame(io, socket, gameId, looserId);
     });
 
     // ----------------- Chat -----------------

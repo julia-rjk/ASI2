@@ -64,7 +64,10 @@ public class MessageServiceImpl implements MessageService {
 
             for (Message message : messages) {
                 log.info("room name :  {} compared to {}", message.getRoom(), room);
-                if (message.getRoom() == room) messagesByRoom.add(message);
+                if ((message.getRoom() == null && room == null) // general room
+                 || (message.getRoom() != null 
+                 && message.getRoom().equals(room))// specific room
+                 ) messagesByRoom.add(message);
             }
 
             return Mapper.mapList(messagesByRoom, MessageDTO.class);
@@ -82,7 +85,7 @@ public class MessageServiceImpl implements MessageService {
             message.setUserId(messageDto.getUserId());
             message.setRoom(messageDto.getRoom());
             message.setMessage(messageDto.getMessage());
-            message.setDate(messageDto.getDate());
+            message.setDate(new java.sql.Date(messageDto.getDate().getTime()));
 
             messageDAO.save(message);
             return Boolean.TRUE;

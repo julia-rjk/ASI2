@@ -15,8 +15,8 @@ const URL_MS_CHATHISTORY =
 export default class ChatService {
   public sendMessage(io: Server, msg: MessageDTO) {
     msg = { ...msg, date: new Date() };
-    axios.post(URL_MS_CHATHISTORY, { msg, date: msg.date?.valueOf() });
-    if (msg.room) {
+    axios.post(URL_MS_CHATHISTORY, {...msg, date: msg.date?.getTime()});
+    if (msg.room) { 
       io.to(msg.room).emit("chatMessage", msg);
     } else {
       io.emit("chatMessage", msg);
@@ -30,15 +30,12 @@ export default class ChatService {
     const uniqueUsersId = [...new Set(messages.map((msg) => msg.userId))];
     const users: UserDTO[] = await Promise.all(
       uniqueUsersId.map(async (id) => {
-        if (!id) {
-          return [];
-        }
         return (await axios.get(`${URL_MS_USER}/${id}`)).data;
       })
     );
     const messagesWithUsers = messages.map((msg) => {
-      const user = users.find((user) => user.id === msg.userId);
-      return { ...msg, sender: `${user?.lastName} ${user?.surName}` };
+      const user = users.find((user) => user.id === msg.userId)!;
+      return { ...msg, sender: `${user.lastName} ${user.surName}`, date: msg.date ? new Date(msg.date) : msg.date };
     });
 
     socket.emit("chatRoomMessages", messagesWithUsers);
