@@ -59,22 +59,14 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public List<MessageDTO> findByRoom(String room) {
         try {
-            List<Message> messages = messageDAO.findAll();
-            List<Message> messagesByRoom = new ArrayList<>();
-
-            for (Message message : messages) {
-                log.info("room name :  {} compared to {}", message.getRoom(), room);
-                if ((message.getRoom() == null && room == null) // general room
-                 || (message.getRoom() != null 
-                 && message.getRoom().equals(room))// specific room
-                 ) messagesByRoom.add(message);
+            List<Message> messages = messageDAO.findAllByRoomEquals(room);
+            if (messages != null) {
+                return Mapper.mapList(messages, MessageDTO.class);
             }
-
-            return Mapper.mapList(messagesByRoom, MessageDTO.class);
         } catch (Exception e) {
-            log.error("Error when finding all messages : {}", e.getMessage());
-            return null;
+            log.error("Error when finding all rooms : {}", e.getMessage());
         }
+        return null;
     }
 
     @Override
