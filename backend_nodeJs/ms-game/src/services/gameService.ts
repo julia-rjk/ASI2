@@ -11,40 +11,39 @@ export default class GameService {
   startActionPoint = 1;
   actionPointMultiplier = 2;
 
-  public isInGame(io: Server, socket: Socket, user: GameUserDTO): boolean {
+  public isInGame(io: Server, socket: Socket, user: GameUserDTO) {
     let game = this.currentGames.find(
       (g) => g.player1.id === user.id || g.player2?.id === user.id
     );
     if (game) {
       socket.join(game.gameId);
       io.to(game.gameId).emit("updateGame", game);
-      return true;
+      return game.gameId;
     }
-    return false;
+    return undefined;
   }
   public joinWaitingList(io: Server, socket: Socket, user: GameUserDTO) {
-    if (this.isInGame(io, socket, user)) {
-      return;
+    const isAlreadyInGameId = this.isInGame(io, socket, user)
+    if (isAlreadyInGameId) {
+      return isAlreadyInGameId;
     }
     let game = this.currentGames.find((g) => !g.player2);
+    user.actionPoints = this.startActionPoint;
     if (!game) {
-      user.actionPoints = this.startActionPoint;
       // create a new game
-      const newGame = new Game(user);
-      this.currentGames.push(newGame);
-      console.log("User", user.id, "created game room", newGame.gameId);
-      socket.join(newGame.gameId);
-      // send the game to the player
-      io.to(newGame.gameId).emit("updateGame", newGame);
+      game = new Game(user);
+      this.currentGames.push(game);
+      console.log("User", user.id, "created game room", game.gameId);
     } else {
       user.actionPoints = this.startActionPoint;
       // join the game
       game.join(user);
       console.log("User", user.id, "joined game room", game.gameId);
-      socket.join(game.gameId);
-      // send the game to the players
-      io.to(game.gameId).emit("updateGame", game);
     }
+    socket.join(game.gameId);
+    // send the game to the players
+    io.to(game.gameId).emit("updateGame", game);
+    return game.gameId;
   }
 
   public attack(

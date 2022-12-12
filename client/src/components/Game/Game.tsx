@@ -7,10 +7,11 @@ import GameDTO, { GameUserDTO } from '../../entities/gameDTO';
 import { Button, Card, Group, Modal, Image, Badge, Text } from '@mantine/core';
 import { CardDTO, UserDTO } from '../../entities';
 import { useLayoutContext } from '../Layout/Layout';
-import { io } from 'socket.io-client';
 import { setUser } from '../../redux/user.action';
 import JSConfetti from 'js-confetti';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
+const jsConfetti = new JSConfetti();
 
 export class AttackCardSelection {
   attacker!: CardDTO;
@@ -32,6 +33,7 @@ class Multiplier {
 export const Game = () => {
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
+  const navigate = useNavigate();
   const { setRoomId, socket } = useLayoutContext();
   const [selectCardOpened, setSelectCardOpened] = useState(true);
   const [selectedCards, setSelectedCards] = useState<CardDTO[]>([]);
@@ -39,7 +41,6 @@ export const Game = () => {
     useState<AttackCardSelection>(new AttackCardSelection());
   const [multiplier, setMultiplier] = useState(Multiplier.x1);
   const [game, setGame] = useState<GameDTO>();
-  const jsConfetti = new JSConfetti();
   // messageBox
   const [messageBoxOpened, setMessageBoxOpened] = useState(false);
   const [messageBoxContent, setMessageBoxContent] = useState('');
@@ -62,7 +63,6 @@ export const Game = () => {
   useEffect(() => {
     socket.on('updateGame', (game: GameDTO, damage?: number) => {
       selectCardOpened && setSelectCardOpened(false);
-      if (!game) return;
       autoSelect(game);
       setRoomId(game.gameId);
       if (game.nextTurn && game.nextTurn.id === user.id) {
@@ -104,7 +104,7 @@ export const Game = () => {
         jsConfetti.addConfetti();
       }
       setTimeout(() => {
-        window.location.href = '/';
+        navigate('/');
       }, 2000);
     });
   }, [setRoomId, socket]);
@@ -162,9 +162,8 @@ export const Game = () => {
   };
 
   // When the endTurn button is clicked, emit an event to the server with the gameId.
-  const endTurn = (gameId?: string) => {
-    if (!gameId) socket.emit('endTurn', game?.gameId);
-    else socket.emit('endTurn', gameId);
+  const endTurn = (gameId: string) => {
+    socket.emit('endTurn', gameId);
   };
 
   // If player1Lost is true, return game.player1, else if player2Lost is true, return game.player2, else return undefined.
@@ -206,7 +205,7 @@ export const Game = () => {
   const leaveGame = () => {
     socket.emit('leaveGame', game?.gameId, user.id);
     setRoomId(undefined);
-    window.location.href = '/';
+    navigate('/');
   };
 
   return (
@@ -291,7 +290,7 @@ export const Game = () => {
             })}
           </div>
           <Button
-            disabled={selectedCards?.length == 0}
+            disabled={selectedCards?.length === 0}
             onClick={() => {
               setSelectCardOpened(false);
               connect();
@@ -316,14 +315,16 @@ export const Game = () => {
           />
           {game?.nextTurn?.id === user.id ? (
             <div id="controls">
-              <Button className="control" onClick={() => endTurn()}>
+              <Button
+                className="control"
+                onClick={() => game?.gameId && endTurn(game.gameId)}>
                 End turn
               </Button>
               <hr />
               <Button
                 disabled={
-                  attackCardSelection.attacker == undefined ||
-                  attackCardSelection.defender == undefined
+                  attackCardSelection.attacker === undefined ||
+                  attackCardSelection.defender === undefined
                 }
                 className="control"
                 onClick={() => attack()}>

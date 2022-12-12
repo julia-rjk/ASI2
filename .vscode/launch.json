@@ -78,6 +78,17 @@
             }
         },
         {
+            "type": "java",
+            "name": "Launch LogEsb",
+            "request": "launch",
+            "mainClass": "com.asi2.mslogesb.MsLogEsbApplication",
+            "projectName": "ms-logEsb",
+            "presentation":{
+                "group": "1_firstGroup",
+                "hidden": false
+            }
+        },
+        {
             "type": "node-terminal",
             "name": "Launch Client",
             "request": "launch",
@@ -96,14 +107,14 @@
             "webRoot": "${workspaceFolder}",
             "presentation":{
                 "group": "1_firstGroup",
-                "hidden": false
+                "hidden": true
             }
           }
     ],
     "compounds": [
         {
             "name": "Launch Backend",
-            "configurations": ["Launch ActiveMq","Launch MsCardBasicApplication","Launch MsCardApplication","Launch MsUserApplication","Launch MsStoreApplication","Launch MsGameApplication","Launch MsChatHistoryApplication"]
+            "configurations": ["Launch ActiveMq","Launch MsCardBasicApplication","Launch MsCardApplication","Launch MsUserApplication","Launch MsStoreApplication","Launch MsGameApplication","Launch MsChatHistoryApplication","Launch LogEsb"]
         },
         {
             "name": "Launch Frontend",
@@ -111,7 +122,7 @@
         },
         {
             "name": "Launch All",
-            "configurations": ["Launch ActiveMq","Launch MsCardBasicApplication","Launch MsCardApplication","Launch MsUserApplication","Launch MsStoreApplication","Launch MsGameApplication","Launch MsChatHistoryApplication","Launch Client","Attach Client"]
+            "configurations": ["Launch ActiveMq","Launch MsCardBasicApplication","Launch MsCardApplication","Launch MsUserApplication","Launch MsStoreApplication","Launch MsGameApplication","Launch MsChatHistoryApplication","Launch LogEsb","Launch Client","Attach Client"]
         },
     ]
 }
