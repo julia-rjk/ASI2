@@ -77,36 +77,36 @@
 	gap: 10px;
 	justify-content: space-evenly;
 	width: 100%;
-	.gameCard{
+}
+.gameCard{
+	display: grid;
+	gap: 5px;
+	width: 200px;
+	transition: all 0.1s ease-in-out;
+	text-align: center;
+	.cardImage img{
+		height: 100px !important;
+	}
+	.cardName{
+		font-size: 16px;
+	}
+	.cardDescription {
+		font-size: 14px !important;
+	}
+	.stats{
 		display: grid;
+		grid-template-columns: 1fr 1fr;
+		grid-template-rows: 1fr 1fr;
 		gap: 5px;
-		width: 200px;
-		transition: all 0.1s ease-in-out;
-		text-align: center;
-		.cardImage img{
-			height: 100px !important;
+		.cardStat{
+			font-size: 11px !important;
+			padding: 0 10px !important;
 		}
-		.cardName{
-			font-size: 16px;
-		}
-		.cardDescription {
-			font-size: 14px !important;
-		}
-		.stats{
-			display: grid;
-			grid-template-columns: 1fr 1fr;
-			grid-template-rows: 1fr 1fr;
-			gap: 5px;
-			.cardStat{
-				font-size: 11px !important;
-				padding: 0 10px !important;
-			}
-		}
-		&.selectedCard {
-			box-shadow: 0 14px 28px rgb(0 0 0 / 25%), 0 10px 10px rgb(0 0 0 / 22%);
-			transform: scale(1.01);
-			position: relative;
-		}
+	}
+	&.selectedCard {
+		box-shadow: 0 14px 28px rgb(0 0 0 / 25%), 0 10px 10px rgb(0 0 0 / 22%);
+		transform: scale(1.01);
+		position: relative;
 	}
 }
 .messageBox{
@@ -179,24 +179,24 @@
 	}
 	.playerCards{
 		gap: 10px;
-		.gameCard{
-			width: 160px;
-			padding: 10px;
-			.cardImage img{
-				height: 70px !important;
-			}
-			.cardName{
-				font-size: 14px;
-			}
-			.cardDescription {
-				font-size: 12px !important;
-			}
-			.stats{
-				gap: 5px;
-				.cardStat{
-					font-size: 10px !important;
-					padding: 0 8px !important;
-				}
+	}
+	.gameCard{
+		width: 160px;
+		padding: 10px;
+		.cardImage img{
+			height: 70px !important;
+		}
+		.cardName{
+			font-size: 14px;
+		}
+		.cardDescription {
+			font-size: 12px !important;
+		}
+		.stats{
+			gap: 5px;
+			.cardStat{
+				font-size: 10px !important;
+				padding: 0 8px !important;
 			}
 		}
 	}
@@ -241,24 +241,24 @@
 	}
 	.playerCards{
 		gap: 8px;
-		.gameCard{
-			width: 144px;
-			padding: 8px;
-			.cardImage img{
-				height: 60px !important;
-			}
-			.cardName{
-				font-size: 13px;
-			}
-			.cardDescription {
-				font-size: 11.5px !important;
-			}
-			.stats{
-				gap: 4px;
-				.cardStat{
-					font-size: 9.5px !important;
-					padding: 0 7px !important;
-				}
+	}
+	.gameCard{
+		width: 144px;
+		padding: 8px;
+		.cardImage img{
+			height: 60px !important;
+		}
+		.cardName{
+			font-size: 13px;
+		}
+		.cardDescription {
+			font-size: 11.5px !important;
+		}
+		.stats{
+			gap: 4px;
+			.cardStat{
+				font-size: 9.5px !important;
+				padding: 0 7px !important;
 			}
 		}
 	}
@@ -303,24 +303,24 @@
 	}
 	.playerCards{
 		gap: 7px;
-		.gameCard{
-			width: 130px;
-			padding: 5px;
-			.cardImage img{
-				height: 60px !important;
-			}
-			.cardName{
-				font-size: 12px;
-			}
-			.cardDescription {
-				font-size: 11px !important;
-			}
-			.stats{
-				gap: 3px;
-				.cardStat{
-					font-size: 9px !important;
-					padding: 0 5px !important;
-				}
+	}
+	.gameCard{
+		width: 130px;
+		padding: 5px;
+		.cardImage img{
+			height: 60px !important;
+		}
+		.cardName{
+			font-size: 12px;
+		}
+		.cardDescription {
+			font-size: 11px !important;
+		}
+		.stats{
+			gap: 3px;
+			.cardStat{
+				font-size: 9px !important;
+				padding: 0 5px !important;
 			}
 		}
 	}

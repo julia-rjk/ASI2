@@ -1,0 +1,17 @@
+.storeLayout{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+}
+.storeTableContainer{
+    overflow-x:auto;
+    width: 100%;
+}
+.storeTable{
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+    border: 1px solid #ddd;
+}

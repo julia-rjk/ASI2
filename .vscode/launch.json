@@ -6,7 +6,7 @@
             "request": "launch",
             "command": "./activemq start",
             "cwd": "C:\\Program Files\\apache-activemq-5.17.2\\bin",
-            "presentation":{
+            "presentation": {
                 "group": "1_firstGroup",
                 "hidden": true,
             }
@@ -17,7 +17,7 @@
             "request": "launch",
             "mainClass": "com.asi2.mscardBasic.MsCardBasicApplication",
             "projectName": "ms-cardBasic",
-            "presentation":{
+            "presentation": {
                 "group": "1_firstGroup",
                 "hidden": true
             }
@@ -28,7 +28,7 @@
             "request": "launch",
             "mainClass": "com.asi2.mscard.MsCardApplication",
             "projectName": "ms-card",
-            "presentation":{
+            "presentation": {
                 "group": "1_firstGroup",
                 "hidden": true
             }
@@ -39,9 +39,9 @@
             "request": "launch",
             "mainClass": "com.asi2.msuser.MsUserApplication",
             "projectName": "ms-user",
-            "presentation":{
+            "presentation": {
                 "group": "1_firstGroup",
-                "hidden": true
+                "hidden": false
             }
         },
         {
@@ -50,7 +50,7 @@
             "request": "launch",
             "mainClass": "com.asi2.msstore.MsStoreApplication",
             "projectName": "ms-store",
-            "presentation":{
+            "presentation": {
                 "group": "1_firstGroup",
                 "hidden": true
             }
@@ -61,7 +61,7 @@
             "request": "launch",
             "command": "npm start",
             "cwd": "${workspaceFolder}\\backend_nodeJs\\ms-game",
-            "presentation":{
+            "presentation": {
                 "group": "1_firstGroup",
                 "hidden": true
             }
@@ -72,9 +72,9 @@
             "request": "launch",
             "mainClass": "com.asi2.mschathistory.MsChatHistoryApplication",
             "projectName": "ms-chathistory",
-            "presentation":{
+            "presentation": {
                 "group": "1_firstGroup",
-                "hidden": false
+                "hidden": true
             }
         },
         {
@@ -83,9 +83,9 @@
             "request": "launch",
             "mainClass": "com.asi2.mslogesb.MsLogEsbApplication",
             "projectName": "ms-logEsb",
-            "presentation":{
+            "presentation": {
                 "group": "1_firstGroup",
-                "hidden": false
+                "hidden": true
             }
         },
         {
@@ -94,7 +94,7 @@
             "request": "launch",
             "command": "npm start",
             "cwd": "${workspaceFolder}/client",
-            "presentation":{
+            "presentation": {
                 "group": "1_firstGroup",
                 "hidden": true
             }
@@ -105,24 +105,47 @@
             "request": "launch",
             "url": "http://localhost:3000",
             "webRoot": "${workspaceFolder}",
-            "presentation":{
+            "presentation": {
                 "group": "1_firstGroup",
                 "hidden": true
             }
-          }
+        }
     ],
     "compounds": [
         {
             "name": "Launch Backend",
-            "configurations": ["Launch ActiveMq","Launch MsCardBasicApplication","Launch MsCardApplication","Launch MsUserApplication","Launch MsStoreApplication","Launch MsGameApplication","Launch MsChatHistoryApplication","Launch LogEsb"]
+            "configurations": [
+                "Launch ActiveMq",
+                "Launch MsCardBasicApplication",
+                "Launch MsCardApplication",
+                "Launch MsUserApplication",
+                "Launch MsStoreApplication",
+                "Launch MsGameApplication",
+                "Launch MsChatHistoryApplication",
+                "Launch LogEsb"
+            ]
         },
         {
             "name": "Launch Frontend",
-            "configurations": ["Launch Client","Attach Client"]
+            "configurations": [
+                "Launch Client",
+                "Attach Client"
+            ]
         },
         {
             "name": "Launch All",
-            "configurations": ["Launch ActiveMq","Launch MsCardBasicApplication","Launch MsCardApplication","Launch MsUserApplication","Launch MsStoreApplication","Launch MsGameApplication","Launch MsChatHistoryApplication","Launch LogEsb","Launch Client","Attach Client"]
+            "configurations": [
+                "Launch ActiveMq",
+                "Launch MsCardBasicApplication",
+                "Launch MsCardApplication",
+                "Launch MsUserApplication",
+                "Launch MsStoreApplication",
+                "Launch MsGameApplication",
+                "Launch MsChatHistoryApplication",
+                "Launch LogEsb",
+                "Launch Client",
+                "Attach Client"
+            ]
         },
     ]
 }

@@ -10,6 +10,7 @@ import {
 } from '@mantine/core';
 import React, { useState } from 'react';
 import { CardDTO } from '../entities';
+import './StoreLayout.scss';
 
 interface Props {
   cards: CardDTO[];
@@ -34,9 +35,14 @@ export const StoreLayout = ({ cards, onAction, loading, type }: Props) => {
   ));
 
   return (
-    <Grid>
-      <Grid.Col span="auto">
-        <Table striped highlightOnHover withBorder withColumnBorders>
+    <div className="storeLayout">
+      <div className="storeTableContainer">
+        <Table
+          striped
+          highlightOnHover
+          withBorder
+          withColumnBorders
+          className="storeTable">
           <thead>
             <tr>
               <th>Name</th>
@@ -50,41 +56,54 @@ export const StoreLayout = ({ cards, onAction, loading, type }: Props) => {
           </thead>
           <tbody>{rows}</tbody>
         </Table>
-      </Grid.Col>
+      </div>
       {selectedCard && (
-        <Grid.Col span={4}>
-          <Card shadow="sm" p="lg" radius="md" withBorder>
-            <Card.Section>
-              <Image src={selectedCard.model?.imgUrl} height={160} alt="" />
-            </Card.Section>
+        <Card shadow="sm" p="lg" radius="md" withBorder className="gameCard">
+          <Card.Section>
+            <Image
+              src={selectedCard.model?.imgUrl}
+              className="cardImage"
+              alt=""
+            />
+          </Card.Section>
 
-            <Group position="apart" mt="md" mb="xs">
-              <Text weight={500}>{selectedCard.model?.name}</Text>
-              <Badge color="pink" variant="light">
-                Own
-              </Badge>
-            </Group>
+          <Text weight={500} className="cardName">
+            {selectedCard.model?.name}
+          </Text>
+          <Text className="cardDescription" color="dimmed">
+            {selectedCard.model?.description}
+          </Text>
 
-            <Text size="sm" color="dimmed">
-              {selectedCard.model?.description}
-            </Text>
+          <Group className="stats">
+            <Badge className="cardStat" color="green">
+              ❤️‍🩹 : {selectedCard.hp && Math.round(selectedCard.hp)}
+            </Badge>
+            <Badge className="cardStat" color="magenta">
+              ⚡ : {selectedCard.energy && Math.round(selectedCard.energy)}
+            </Badge>
+            <Badge className="cardStat" color="red">
+              ⚔️ : {selectedCard.attack && Math.round(selectedCard.attack)}
+            </Badge>
+            <Badge className="cardStat" color="blue">
+              🛡️ : {selectedCard.defence && Math.round(selectedCard.defence)}
+            </Badge>
+          </Group>
 
-            <Button
-              variant="light"
-              color="blue"
-              fullWidth
-              mt="md"
-              radius="md"
-              loading={loading}
-              onClick={() => {
-                selectedCard.id && onAction(selectedCard.id);
-                setSelectedCard(undefined);
-              }}>
-              {type === 'buy' ? 'Buy' : 'Sell'}
-            </Button>
-          </Card>
-        </Grid.Col>
+          <Button
+            variant="light"
+            color="blue"
+            fullWidth
+            radius="md"
+            className="selectCardButton"
+            loading={loading}
+            onClick={() => {
+              selectedCard.id && onAction(selectedCard.id);
+              setSelectedCard(undefined);
+            }}>
+            {type === 'buy' ? 'Buy' : 'Sell'}
+          </Button>
+        </Card>
       )}
-    </Grid>
+    </div>
   );
 };
