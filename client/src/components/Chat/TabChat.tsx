@@ -34,7 +34,7 @@ export const TabChat = ({ messages, sendMessage }: Props) => {
 
   return (
     <>
-      <ScrollArea style={{ height: 300 }} viewportRef={viewport}>
+      <ScrollArea className="tabChat" viewportRef={viewport}>
         <List spacing="xs" size="sm" center>
           {messages.map((message, index) => (
             <List.Item

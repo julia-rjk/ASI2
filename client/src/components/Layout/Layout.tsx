@@ -124,7 +124,8 @@ export const Layout = () => {
         transition="slide-up"
         onClose={() => setChatOpened(false)}
         style={{ width: 500 }}
-        radius="md">
+        radius="md"
+        className="chatDialog">
         <Chat roomId={roomId} messages={messages} sendMessage={sendMessage} />
       </Dialog>
     </AppShell>

@@ -9,6 +9,11 @@
   padding:16px;
 }
 
+.chatDialog{
+  max-width: calc(100vw - 48px);
+  max-height: calc(100vh - 48px);
+}
+
 @media screen and (max-width: 1050px), screen and (max-height: 810px) {
   header {
     height: 55px !important;
