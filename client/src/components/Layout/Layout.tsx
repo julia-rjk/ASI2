@@ -13,12 +13,7 @@ import { Link, Outlet, useLocation, useOutletContext } from 'react-router-dom';
 import { useMenu } from '../../hooks/useMenu';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from '../../redux/user.selector';
-import {
-  CurrencyDollar,
-  Home,
-  Logout,
-  MessageChatbot,
-} from 'tabler-icons-react';
+import { Coin, Home, Logout, MessageChatbot } from 'tabler-icons-react';
 import { setUser } from '../../redux/user.action';
 import './Layout.css';
 import { UserAvatar } from '../UserAvatar';
@@ -96,7 +91,7 @@ export const Layout = () => {
               <Menu.Dropdown>
                 <Menu.Item
                   className="money"
-                  icon={<CurrencyDollar size={14} color="black" />}>
+                  icon={<Coin size={14} color="black" />}>
                   {user.account}
                 </Menu.Item>
                 <Menu.Divider />

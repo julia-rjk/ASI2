@@ -42,6 +42,11 @@ export const GameHome = () => {
           energy you will get next turn
         </li>
       </ul>
+      <h3>End of game</h3>
+      <ul>
+        <li>The game will end when a player has no cards with life left</li>
+        <li>By default the winner gets 100 coins</li>
+      </ul>
       <Button component={Link} to="/game/play">
         Play!!!
       </Button>
