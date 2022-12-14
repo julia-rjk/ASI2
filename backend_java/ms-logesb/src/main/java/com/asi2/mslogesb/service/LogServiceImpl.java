@@ -2,6 +2,8 @@ package com.asi2.mslogesb.service;
 
 import com.asi2.mslogesb.utils.GlobalProperties;
 import lombok.extern.slf4j.Slf4j;
+import model.message.CustomMessage;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;

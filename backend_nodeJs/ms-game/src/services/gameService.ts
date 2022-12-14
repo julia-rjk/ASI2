@@ -1,4 +1,4 @@
-import GameDTO, { GameUserDTO } from "../../../../client/src/entities/gameDTO";
+import GameDTO, { GameUserDTO } from "../models/gameDTO";
 import Game from "../models/game";
 import { Server, Socket } from "socket.io";
 import { CardDTO } from "../models/cardDTO";
@@ -46,8 +46,8 @@ export default class GameService {
         }
 
         // get cards
-        const cardAttacker = attacker.cards.find(c => c.id === cardAttackerId) as CardDTO;
-        const cardDefender = defender.cards.find(c => c.id === cardDefenderId) as CardDTO;        
+        const cardAttacker = attacker.cards.find((c : any) => c.id === cardAttackerId) as CardDTO;
+        const cardDefender = defender.cards.find((c : any) => c.id === cardDefenderId) as CardDTO;        
         if (!cardAttacker|| !cardDefender || cardAttacker.energy < 1 || cardDefender.hp < 1 || cardAttacker.hp < 1) {
             return;
         }
@@ -90,11 +90,11 @@ export default class GameService {
         // change turn
         game.nextTurn = game.player1.id === game.nextTurn.id ? game.player2 : game.player1;
         // add energy to cards
-        game.player1.cards?.forEach(c => {
+        game.player1.cards?.forEach((c : any) => {
             c.energy += 10 + Math.random() * 90
             c.energy > 1000 ? c.energy = 1000 : null;
         });
-        game.player2.cards?.forEach(c => {
+        game.player2.cards?.forEach((c : any)  => {
             c.energy += 10 + Math.random() * 90
             c.energy > 1000 ? c.energy = 1000 : null;
         });

@@ -4,7 +4,7 @@ import { CardDTO } from "../models/cardDTO";
 import Game from "../models/game";
 import ChatService from "../services/chatService";
 import GameService from "../services/gameService";
-import { MessageDTO } from '../../../../client/src/entities/messageDTO';
+import { MessageDTO } from '../models/messageDTO';
 
 export function createApplication(
   httpServer: HttpServer,

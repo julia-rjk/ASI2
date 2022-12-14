@@ -4,10 +4,10 @@ import { Server, Socket } from "socket.io";
 // import moment from 'moment';
 import ChatUser from "../models/chatUser";
 import axios from "axios";
-import { MessageDTO } from "../../../../client/src/entities/messageDTO";
+import { MessageDTO } from "../models/messageDTO";
 
-const URL_MS_USER = process.env.URL + ":" + process.env.USERPORT + "/api/users";
-const URL_MS_CHATHISTORY = process.env.URL + ":" + process.env.PORT + "/api/messages";
+const URL_MS_USER = process.env.URL + "/api/users";
+const URL_MS_CHATHISTORY = process.env.URL + "/api/messages";
 export default class ChatService {
     users: ChatUser[] = [];
     allUsers: any = [];

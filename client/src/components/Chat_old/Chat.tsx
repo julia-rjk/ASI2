@@ -9,7 +9,7 @@ import { selectUser } from '../../redux/user.selector';
 
 export const Chat_old = () => {
   const socket = io(
-    process.env.REACT_APP_SERVERURL + ':' + process.env.REACT_APP_GAMEPORT,
+    process.env.REACT_APP_SERVERURL + ""
   );
 
   const user = useSelector(selectUser);

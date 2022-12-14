@@ -27,7 +27,7 @@ import { io, Socket } from 'socket.io-client';
 import { MessageDTO } from '../../entities/messageDTO';
 
 const socket = io(
-  process.env.REACT_APP_SERVERURL + ':' + process.env.REACT_APP_GAMEPORT,
+  process.env.REACT_APP_GAMERURL + '',
 );
 
 interface OutletContext {
@@ -36,7 +36,7 @@ interface OutletContext {
 }
 
 export const Layout = () => {
-  const pathName = useLocation().pathname;
+  const pathName = useLocation().pathname ;
   const title = useMenu().find((item) => pathName === item.path)?.name;
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
