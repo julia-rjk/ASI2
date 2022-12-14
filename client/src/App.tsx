@@ -20,7 +20,7 @@ export const App = () => {
         <Route path="store/sell" element={<Sell />} />
       </Route>
       <Route path="/public" element={<UserForm />} />
-      <Route path="*" element={<div>Not found</div>} />
+      {/* <Route path="/" element={<div>Not found</div>} /> */}
     </Routes>
   );
 };

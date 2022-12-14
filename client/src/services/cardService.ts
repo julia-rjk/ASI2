@@ -9,12 +9,12 @@ import type { CardDTO, GenerateCardParams } from '../entities';
 import { cardApi } from '../api/cardApi';
 
 export const getAllCards = () => {
-  return cardApi<CardDTO[]>({ url: `/api/cards`, method: 'get' });
+  return cardApi<CardDTO[]>({ url: ``, method: 'get' });
 };
 
 export const updateCardAsync = (cardDTO: CardDTO) => {
   return cardApi<boolean>({
-    url: `/api/cards`,
+    url: ``,
     method: 'put',
     headers: { 'Content-Type': 'application/json' },
     data: cardDTO,
@@ -22,19 +22,19 @@ export const updateCardAsync = (cardDTO: CardDTO) => {
 };
 
 export const generateCard = (params?: GenerateCardParams) => {
-  return cardApi<CardDTO>({ url: `/api/cards`, method: 'post', params });
+  return cardApi<CardDTO>({ url: ``, method: 'post', params });
 };
 
 export const getCardById = (id: number) => {
-  return cardApi<CardDTO>({ url: `/api/cards/${id}`, method: 'get' });
+  return cardApi<CardDTO>({ url: `/${id}`, method: 'get' });
 };
 
 export const deleteCard = (id: number) => {
-  return cardApi<boolean>({ url: `/api/cards/${id}`, method: 'delete' });
+  return cardApi<boolean>({ url: `/${id}`, method: 'delete' });
 };
 
 export const getAllCardsOnSell = () => {
-  return cardApi<CardDTO[]>({ url: `/api/cards/onSell`, method: 'get' });
+  return cardApi<CardDTO[]>({ url: `/onSell`, method: 'get' });
 };
 
 export type GetAllCardsResult = NonNullable<
