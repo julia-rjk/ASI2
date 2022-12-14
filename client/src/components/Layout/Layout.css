@@ -5,3 +5,53 @@
 .money[data-hovered] {
   background-color: transparent;
 }
+.mantine-Modal-inner {
+  padding:16px;
+}
+
+.chatDialog{
+  max-width: calc(100vw - 48px);
+  max-height: calc(100vh - 48px);
+}
+
+@media screen and (max-width: 1050px), screen and (max-height: 810px) {
+  header {
+    height: 55px !important;
+  }
+  main {
+    padding-top: calc(55px + 16px) !important;
+  }
+  .header .headerTitle {
+    font-size: 32px !important;
+  }
+}
+@media screen and (max-width: 870px), screen and (max-height: 690px) {
+  header {
+    height: 50px !important;
+  }
+  .header .headerTitle {
+    font-size: 30px !important;
+  }
+  main {
+    padding-top: calc(50px + 16px) !important;
+  }
+  .headerIcon {
+    width: 28px !important;
+    height: 28px !important;
+  }
+}
+@media screen and (max-width: 650px), screen and (max-height: 570px) {
+  header {
+    height: 40px !important;
+  }
+  .header .headerTitle {
+    font-size: 26px !important;
+  }
+  main {
+    padding-top: calc(40px + 16px) !important;
+  }
+  .headerIcon {
+    width: 25px !important;
+    height: 25px !important;
+  }
+}

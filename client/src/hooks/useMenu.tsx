@@ -1,5 +1,10 @@
 import React from 'react';
-import { DeviceGamepad, PigMoney, ShoppingCart } from 'tabler-icons-react';
+import {
+  Article,
+  DeviceGamepad,
+  PigMoney,
+  ShoppingCart,
+} from 'tabler-icons-react';
 
 type MenuItem = {
   name: string;
@@ -20,8 +25,13 @@ export const useMenu = () => {
       icon: <PigMoney size={48} color="black" />,
     },
     {
-      name: 'GAME',
+      name: 'GAME RULES',
       path: '/game',
+      icon: <Article size={48} color="black" />,
+    },
+    {
+      name: 'PLAY',
+      path: '/game/play',
       icon: <DeviceGamepad size={48} color="black" />,
     },
   ] as MenuItem[];

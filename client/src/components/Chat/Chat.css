@@ -7,3 +7,12 @@
   bottom:0;
   right:0;
 }
+
+.tabChat{
+  height:calc(100vh - 253px);
+  max-height: 300px; 
+}
+/* @media screen and (max-height: 553px) {
+  .tabChat{
+  }
+} */

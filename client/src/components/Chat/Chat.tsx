@@ -1,5 +1,5 @@
 import { Card, Tabs } from '@mantine/core';
-import React from 'react';
+import React, { useState } from 'react';
 import { MessageDTO } from '../../entities/messageDTO';
 import './Chat.css';
 import { TabChat } from './TabChat';
@@ -11,6 +11,10 @@ interface Props {
 }
 
 export const Chat = ({ messages, sendMessage, roomId }: Props) => {
+  const [activeTab, setActiveTab] = useState<string | null>(
+    roomId ? 'room' : 'general',
+  );
+
   const [general, room] = messages.reduce(
     (acc, message) => {
       if (message.room && message.room === roomId) {
@@ -26,7 +30,7 @@ export const Chat = ({ messages, sendMessage, roomId }: Props) => {
   return (
     <Card unstyled className="container">
       <Card.Section withBorder inheritPadding py="xs">
-        <Tabs defaultValue="general">
+        <Tabs value={activeTab} onTabChange={setActiveTab}>
           <Tabs.List>
             <Tabs.Tab value="general">General</Tabs.Tab>
             {roomId && <Tabs.Tab value="room">Room</Tabs.Tab>}

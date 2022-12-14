@@ -21,7 +21,6 @@ public class CardBasicsController {
 
     @GetMapping
     public List<CardBasicsDTO> getAllCardBasics() {
-        List<CardBasicsDTO> cardBasicsList = null;
         try {
             return cardBasicsService.findAll();
         } catch (Exception e) {
@@ -32,7 +31,6 @@ public class CardBasicsController {
 
     @GetMapping("/{id}")
     public CardBasicsDTO getCardBasicsById(@PathVariable Long id) {
-        CardBasicsDTO model = null;
         try {
             return cardBasicsService.findById(id);
         } catch (Exception e) {

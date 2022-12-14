@@ -1,0 +1,333 @@
+#gameContainer {
+	display: grid;
+	height: 100%;
+	max-width: 1150px;
+    margin: auto;
+	align-items: stretch;
+	gap: 16px;
+	#game {
+		display: grid;
+		grid-template-rows: repeat(3, auto);
+		gap: 16px;
+		height: 100%;
+		background-color: #ffffff;
+		align-items: center;
+		border-radius: 15px;
+		#controls {
+			display: grid;
+			grid-auto-flow: column;
+			grid-template-columns: auto 1fr auto;
+			justify-content: space-between;
+			align-items: center;
+			gap: 16px;
+			
+		}
+		hr {
+			width: -webkit-fill-available !important;
+			height: 0px !important;
+		}
+		.playerContainer {
+			display: grid;
+			grid-template-columns: auto 1fr;
+			height: fit-content;
+			gap: 16px;
+			.playerInfo{
+				display: grid;
+				place-content: center;
+				width: fit-content;
+				width: -moz-fit-content;
+				section{
+					display: grid;
+					place-items: center;
+				}
+				.playerIcon {
+					width: 50px;
+					height: auto;
+				}
+			}
+		}
+		.waitingForOpponent{
+			display: grid;
+			place-items: center;
+		}
+	}
+	button {
+		font-size: 20px !important;
+		height: 45px !important;
+		padding: 0 22px !important;
+	}
+	#multiplyButton {
+		width: 45px;
+		padding: 0 !important;
+	}
+	.selectCardButton{
+		font-size: 14px !important;
+		padding: 0 18px !important;
+		height: 34px !important;
+	}
+}
+.selectCardsContainer {
+	display: grid;
+	gap: 16px;
+	place-items: center;
+}
+.playerCards{
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	justify-content: space-evenly;
+	width: 100%;
+}
+.gameCard{
+	display: grid;
+	gap: 5px;
+	width: 200px;
+	transition: all 0.1s ease-in-out;
+	text-align: center;
+	.cardImage img{
+		height: 100px !important;
+	}
+	.cardName{
+		font-size: 16px;
+	}
+	.cardDescription {
+		font-size: 14px !important;
+	}
+	.stats{
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		grid-template-rows: 1fr 1fr;
+		gap: 5px;
+		.cardStat{
+			font-size: 11px !important;
+			padding: 0 10px !important;
+		}
+	}
+	&.selectedCard {
+		box-shadow: 0 14px 28px rgb(0 0 0 / 25%), 0 10px 10px rgb(0 0 0 / 22%);
+		transform: scale(1.01);
+		position: relative;
+	}
+}
+.messageBox{
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	font-size: 100px;
+	font-weight: bold;
+	visibility: hidden;
+	transition: all 0.3s ease-in-out;
+	z-index: 100;
+	.victory{
+		color: green;
+	}
+	.defeat{
+		color: red;
+	}
+	.hit{
+		color: blue;
+	}
+	.miss{
+		color: rgb(63, 63, 63);
+	}
+	.critical{
+		color: purple;
+	}
+	.open{
+		visibility: visible;
+	}
+}
+
+@media screen and (max-width:1050px), screen and (max-height: 810px) {
+	#gameContainer {
+		gap: 12px;
+		#game {
+			gap: 12px;
+			#controls {
+				gap: 12px;
+			}
+			.playerContainer {
+				gap: 12px;
+				.playerInfo {
+					font-size: 15px;
+					.playerIcon {
+						width: 45px !important;
+					}
+				}
+			}
+			.waitingForOpponent{
+				font-size: 15px;
+			}
+		}
+		button {
+			font-size: 18px !important;
+			height: 36px !important;
+			padding: 0 18px !important;
+		}
+		#multiplyButton {
+			width: 36px;
+		}
+		.selectCardButton{
+			font-size: 12px !important;
+			padding: 0 14px !important;
+			height: 28px !important;
+		}
+	}
+	.selectCardsContainer {
+		gap: 12px;
+	}
+	.playerCards{
+		gap: 10px;
+	}
+	.gameCard{
+		width: 160px;
+		padding: 10px;
+		.cardImage img{
+			height: 70px !important;
+		}
+		.cardName{
+			font-size: 14px;
+		}
+		.cardDescription {
+			font-size: 12px !important;
+		}
+		.stats{
+			gap: 5px;
+			.cardStat{
+				font-size: 10px !important;
+				padding: 0 8px !important;
+			}
+		}
+	}
+}
+@media screen and (max-width:870px), screen and (max-height: 690px) {
+	#gameContainer {
+		gap: 9px;
+		#game {
+			gap: 9px;
+			#controls {
+				gap: 9px;				
+			}
+			.playerContainer {
+				gap: 9px;
+				.playerInfo {
+					font-size: 13.5px;
+					.playerIcon {
+						width: 40px !important;
+					}
+				}
+			}
+			.waitingForOpponent{
+				font-size: 13.5px;
+			}
+		}
+		button {
+			font-size: 16px !important;
+			height: 30px !important;
+			padding: 0 14px !important;
+		}
+		#multiplyButton {
+			min-width: 30px;
+		}
+		.selectCardButton {
+			font-size: 10px !important;
+			padding: 0 10px !important;
+			height: 24px !important;
+		}
+	}
+	.selectCardsContainer {
+		gap: 9px;
+	}
+	.playerCards{
+		gap: 8px;
+	}
+	.gameCard{
+		width: 144px;
+		padding: 8px;
+		.cardImage img{
+			height: 60px !important;
+		}
+		.cardName{
+			font-size: 13px;
+		}
+		.cardDescription {
+			font-size: 11.5px !important;
+		}
+		.stats{
+			gap: 4px;
+			.cardStat{
+				font-size: 9.5px !important;
+				padding: 0 7px !important;
+			}
+		}
+	}
+}
+@media screen and (max-width:650px), screen and (max-height: 570px) {
+	#gameContainer {
+		gap: 8px;
+		#game {
+			gap: 8px;
+			#controls {
+				gap: 8px;				
+			}
+			.playerContainer {
+				gap: 8px;
+				.playerInfo {
+					font-size: 12.5px !important;
+					.playerIcon {
+						width: 35px !important;
+					}
+				}
+			}
+			.waitingForOpponent{
+				font-size: 12.5px;
+			}
+		}
+		button {
+			font-size: 15px !important;
+			height: 27px !important;
+			padding: 0 11px !important;
+		}
+		#multiplyButton {
+			min-width: 27px;
+		}
+		.selectCardButton {
+			font-size: 9px !important;
+			padding: 0 8px !important;
+			height: 22px !important;
+		}
+	}
+	.selectCardsContainer {
+		gap: 8px;
+	}
+	.playerCards{
+		gap: 7px;
+	}
+	.gameCard{
+		width: 130px;
+		padding: 5px;
+		.cardImage img{
+			height: 60px !important;
+		}
+		.cardName{
+			font-size: 12px;
+		}
+		.cardDescription {
+			font-size: 11px !important;
+		}
+		.stats{
+			gap: 3px;
+			.cardStat{
+				font-size: 9px !important;
+				padding: 0 5px !important;
+			}
+		}
+	}
+}
+@media screen and (max-width:760px) {
+	.playerContainer {
+		grid-template-columns: 1fr !important;
+		place-items: center !important;
+	}
+}

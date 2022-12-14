@@ -13,12 +13,7 @@ import { Link, Outlet, useLocation, useOutletContext } from 'react-router-dom';
 import { useMenu } from '../../hooks/useMenu';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from '../../redux/user.selector';
-import {
-  CurrencyDollar,
-  Home,
-  Logout,
-  MessageChatbot,
-} from 'tabler-icons-react';
+import { Coin, Home, Logout, MessageChatbot } from 'tabler-icons-react';
 import { setUser } from '../../redux/user.action';
 import './Layout.css';
 import { UserAvatar } from '../UserAvatar';
@@ -44,16 +39,20 @@ export const Layout = () => {
   const [messages, setMessages] = useState<MessageDTO[]>([]);
   const [roomId, setRoomId] = useState<string>();
 
-  const receiveMessage = (message: MessageDTO) => {
-    setMessages((messages) => [...messages, message]);
+  const receiveMessages = (messages: MessageDTO[]) => {
+    setMessages((prev) => [...prev, ...messages]);
   };
 
   useEffect(() => {
     socket.on('connect', () => {
       console.log('connected');
     });
+    socket.on('chatRoomMessages', (messages: MessageDTO[]) => {
+      console.log(messages);
+      receiveMessages(messages);
+    });
     socket.on('chatMessage', (message: MessageDTO) => {
-      receiveMessage(message);
+      receiveMessages([message]);
     });
     return () => {
       socket.disconnect();
@@ -64,6 +63,7 @@ export const Layout = () => {
     const msg: MessageDTO = {
       message,
       room: roomId,
+      userId: user.id || 0,
       sender: `${user.lastName} ${user.surName}`,
     };
     socket.emit('sendMessage', msg);
@@ -73,14 +73,14 @@ export const Layout = () => {
     <AppShell
       padding="md"
       header={
-        <Header height={60}>
+        <Header height={60} className="header">
           <Group sx={{ height: '100%' }} px={20} position="apart">
             {title && (
               <Link to="/">
-                <Home size={30} color="black" />
+                <Home className="headerIcon" size={30} color="black" />
               </Link>
             )}
-            <Title>{title}</Title>
+            <Title className="headerTitle">{title}</Title>
             <Menu shadow="md" width={200} trigger="hover">
               <Menu.Target>
                 <UnstyledButton>
@@ -91,7 +91,7 @@ export const Layout = () => {
               <Menu.Dropdown>
                 <Menu.Item
                   className="money"
-                  icon={<CurrencyDollar size={14} color="black" />}>
+                  icon={<Coin size={14} color="black" />}>
                   {user.account}
                 </Menu.Item>
                 <Menu.Divider />
@@ -119,7 +119,8 @@ export const Layout = () => {
         transition="slide-up"
         onClose={() => setChatOpened(false)}
         style={{ width: 500 }}
-        radius="md">
+        radius="md"
+        className="chatDialog">
         <Chat roomId={roomId} messages={messages} sendMessage={sendMessage} />
       </Dialog>
     </AppShell>

@@ -1,128 +1,117 @@
-
 import Game from "../models/game";
 import { Server, Socket } from "socket.io";
 // import moment from 'moment';
 import ChatUser from "../models/chatUser";
 import axios from "axios";
 import { MessageDTO } from "../models/messageDTO";
-
 const URL_MS_USER = process.env.URL + "/api/users";
 const URL_MS_CHATHISTORY = process.env.URL + "/api/messages";
+import * as dotenv from "dotenv";
+import { UserDTO } from "../models/userDTO";
+
+dotenv.config();
+
 export default class ChatService {
-    users: ChatUser[] = [];
-    allUsers: any = [];
-    public joinRoom(io: Server, socket: Socket, userId: any, userName:any, room: string) {
-        const user = this.newUser(socket.id, userId, userName, room);
-        if (user != null) {
-            socket.join(user.room);
-
-            socket.emit('message', this.formatMessage("", null , 'Bienvenue '));
-
-            // Broadcast everytime users connects
-            socket.broadcast.to(user.room).emit('message', this.formatMessage("--", null, `${user.userId} a rejoint la discussion`));
-
-            // Current active users and room name
-            io.to(user.room).emit('roomUsers', {
-                room: user.room,
-                users: this.getIndividualRoomUsers(user.room)
-            });
-        }
+  public sendMessage(io: Server, msg: MessageDTO) {
+    msg = { ...msg, date: new Date() };
+    axios.post(URL_MS_CHATHISTORY, {...msg, date: msg.date?.getTime()});
+    if (msg.room) { 
+      io.to(msg.room).emit("chatMessage", msg);
+    } else {
+      io.emit("chatMessage", msg);
     }
+  }
 
-    public sendMessage(io: Server, msg: MessageDTO) {
-        const returnMessage: MessageDTO = {...msg, time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
-        if(msg.room){
-            console.log("room", msg.room)
-            io.to(msg.room).emit('chatMessage', returnMessage);
-        }
-        else{
-            console.log("no room")
-            io.emit('chatMessage', returnMessage);
-        }
-    }
+  public async getAllMessagesOfRoom(socket: Socket, room?: string) {
+    const messages: MessageDTO[] = (
+      await axios.get(`${URL_MS_CHATHISTORY}/room/${room || ""}`)
+    ).data;
+    const uniqueUsersId = [...new Set(messages.map((msg) => msg.userId))];
+    const users: UserDTO[] = await Promise.all(
+      uniqueUsersId.map(async (id) => {
+        return (await axios.get(`${URL_MS_USER}/${id}`)).data;
+      })
+    );
+    const messagesWithUsers = messages.map((msg) => {
+      const user = users.find((user) => user.id === msg.userId)!;
+      return { ...msg, sender: `${user.lastName} ${user.surName}`, date: msg.date ? new Date(msg.date) : msg.date };
+    });
 
-    public getUsers(io: Server, socket: Socket) {
-        io.sockets.emit('chat:sendUsers', this.formatMessage("", null, this.allUsers))
-    }
+    socket.emit("chatRoomMessages", messagesWithUsers);
+  }
 
-    public sendBroadcast(io: Server, socket: Socket, username: string, msg: string) {
-        const user = this.getActiveUser(socket.id);
-        let formattedMessage = this.formatMessage("Broadcast from " + user?.userName, "Broadcast from " + user?.userName, msg)
-        this.saveMessage(user?.id, user?.room, formattedMessage.text, formattedMessage.time);
-        console.log(user, socket.id)
-        io.emit('chat:getBroadcast', formattedMessage);
-    }
+  // users: ChatUser[] = [];
+  // allUsers: any = [];
+  // public joinRoom(io: Server, socket: Socket, userId: any, userName:any, room: string) {
+  //     const user = this.newUser(socket.id, userId, userName, room);
+  //     if (user != null) {
+  //         socket.join(user.room);
 
-    // Join user to chat
-    public newUser(id: any, userId: any, userName:any, room: any) {
-        const user = new ChatUser(id, userId, userName, room);
-        if (this.users.find(user => user.id === id) == undefined) {
-            this.users.push(user);
-            return user;
-        } else return null;
-    }
+  //         socket.emit('message', this.formatMessage("", null , 'Bienvenue '));
 
-    // Get current user
-    public getActiveUser(id: any) {
-        return this.users.find(user => user.id === id);
-    }
+  //         // Broadcast everytime users connects
+  //         socket.broadcast.to(user.room).emit('message', this.formatMessage("--", null, `${user.userId} a rejoint la discussion`));
 
-    // User leaves chat
-    public exitRoom(id: any) {
-        const index = this.users.findIndex(user => user.id === id);
-        if (index !== -1) {
-            return this.users.splice(index, 1)[0];
-        }
-    }
+  //         // Current active users and room name
+  //         io.to(user.room).emit('roomUsers', {
+  //             room: user.room,
+  //             users: this.getIndividualRoomUsers(user.room)
+  //         });
+  //     }
+  // }
 
-    // Get room this.users
-    public getIndividualRoomUsers(room: String) {
-        return this.users.filter(user => user.room === room);
-    }
+  // public getUsers(io: Server, socket: Socket) {
+  //     io.sockets.emit('chat:sendUsers', this.formatMessage("", null, this.allUsers))
+  // }
 
-    public formatMessage(userId: any, userName: any,  text: any) {
-        let current = new Date();
-        let cDate = current.getFullYear() + '-' + (current.getMonth() + 1) + '-' + current.getDate();
-        let cTime = current.getHours() + ":" + current.getMinutes() + ":" + current.getSeconds();
-        let dateTime = cDate + ' ' + cTime;
-        return {
-            userId,
-            userName,
-            text,
-            time: dateTime
-        };
-    }
+  // // Join user to chat
+  // public newUser(id: any, userId: any, userName:any, room: any) {
+  //     const user = new ChatUser(id, userId, userName, room);
+  //     if (this.users.find(user => user.id === id) == undefined) {
+  //         this.users.push(user);
+  //         return user;
+  //     } else return null;
+  // }
 
-    public disconnect(io: Server, socket: Socket){
-        const user = this.exitRoom(socket.id);
+  // // Get current user
+  // public getActiveUser(id: any) {
+  //     return this.users.find(user => user.id === id);
+  // }
 
-        if (user) {
-          io.to(user.room).emit(
-            'message',
-            this.formatMessage("", "", `${user.userName}  a quitté la discussion`)
-          );
-  
-        //   // Current active users and room name
-        //   io.to(user.room).emit('roomUsers', {
-        //     room: user.room,
-        //     users: getIndividualRoomUsers(user.room)
-        //   });
-        }
-    }
+  // // User leaves chat
+  // public exitRoom(id: any) {
+  //     const index = this.users.findIndex(user => user.id === id);
+  //     if (index !== -1) {
+  //         return this.users.splice(index, 1)[0];
+  //     }
+  // }
 
-    public getAllUsers(){
-        axios.get(URL_MS_USER).then(data =>{
-            this.allUsers = data; 
-        })
-        return this.allUsers; 
-    }
+  // // Get room this.users
+  // public getIndividualRoomUsers(room: String) {
+  //     return this.users.filter(user => user.room === room);
+  // }
 
-    public saveMessage(userId: any, room: any, message: any, time: any){
-        axios.put(URL_MS_CHATHISTORY, {
-            "userId": userId, 
-            "room": room,
-            "text": message, 
-            "timestamp" : time
-        })
-    }
+  // public disconnect(io: Server, socket: Socket){
+  //     const user = this.exitRoom(socket.id);
+
+  //     if (user) {
+  //       io.to(user.room).emit(
+  //         'message',
+  //         this.formatMessage("", "", `${user.userName}  a quitté la discussion`)
+  //       );
+
+  //     //   // Current active users and room name
+  //     //   io.to(user.room).emit('roomUsers', {
+  //     //     room: user.room,
+  //     //     users: getIndividualRoomUsers(user.room)
+  //     //   });
+  //     }
+  // }
+
+  // public getAllUsers(){
+  //     axios.get(URL_MS_USER).then(data =>{
+  //         this.allUsers = data;
+  //     })
+  //     return this.allUsers;
+  // }
 }

@@ -5,10 +5,13 @@ import lombok.extern.slf4j.Slf4j;
 import model.message.CustomMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -17,20 +20,23 @@ public class LogServiceImpl implements LogService {
     private GlobalProperties globalProperties;
 
     @Override
-    public Boolean saveToFile(String queueName, CustomMessage messageEsb) {
-        File file = null;
+    public Boolean saveToFile(String messageEsb) {
+        File file;
+        ClassLoader classLoader = getClass().getClassLoader();
 
-        try {
-            file = new File(globalProperties.getPathFileLog() + queueName + "/" + globalProperties.getPathFileName());
-            InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
-        } catch (FileNotFoundException e) {
-            log.error("An error occurred while opening file : {}", e.getMessage());
-        }
-        try (Writer writer = new BufferedWriter(new FileWriter(file))) {
-            writer.write(messageEsb.toString());
-            return Boolean.TRUE;
-        } catch (IOException e) {
-            log.error("An error occurred while writing into file : {}", e.getMessage());
+        // Get the ressource folder
+        if (classLoader != null) {
+            // Write into the log file
+            try (FileWriter fw = new FileWriter(
+                    Objects.requireNonNull(classLoader.getResource(".")).getFile() + globalProperties.getPathFileName(),
+                    true); BufferedWriter writer = new BufferedWriter(fw);) {
+                writer.write(messageEsb);
+                writer.newLine();
+                writer.close();
+                return Boolean.TRUE;
+            } catch (IOException e) {
+                log.error("An error occurred while writing into file : {}", e.getMessage());
+            }
         }
 
         return Boolean.FALSE;

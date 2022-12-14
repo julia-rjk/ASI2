@@ -13,4 +13,5 @@ export interface CardBasicsDTO {
   family?: string;
   imgUrl?: string;
   smallImgUrl?: string;
+  attackName?: string;
 }
