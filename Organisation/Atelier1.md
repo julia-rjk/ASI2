@@ -67,17 +67,19 @@ Source :
 
 
 - Quel est le mode de transmission activé par défaut dans activeMq ? 
-    - 
+    - Point-to-Point
     
 - Quels avantages proposent un bus de communication vis-à-vis de requêtes http classiques ? 
     - Facilite la communication en normalisant les données dans un même format
     - Garantit la sécurité 
+    - Permet l'asynchrone
 
 - Comment faire pour partager des modules Maven avec un partenaire extérieur ? 
     - Faire un maven plugin / jar
 
 - Comment faire pour exporter un composant REACTJS ? 
     - "export default App"
+    - "export App"
     - "export {Greet as Greeting}"
 
 - Quel est le pré-requis pour Springboot afin de pouvoir convertir automatiquement le message reçu dans un bus de communication en objet ? 
