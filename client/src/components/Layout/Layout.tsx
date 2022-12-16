@@ -22,8 +22,12 @@ import { io, Socket } from 'socket.io-client';
 import { MessageDTO } from '../../entities/messageDTO';
 
 const socket = io(
-  process.env.REACT_APP_SERVERURL + ':' + process.env.REACT_APP_GAMEPORT,
+  process.env.REACT_APP_SERVERURL + ''
+  ,{
+    path: process.env.REACT_APP_GAMEPATH
+  }
 );
+
 
 interface OutletContext {
   setRoomId: (id?: string) => void;
@@ -31,7 +35,7 @@ interface OutletContext {
 }
 
 export const Layout = () => {
-  const pathName = useLocation().pathname;
+  const pathName = useLocation().pathname ;
   const title = useMenu().find((item) => pathName === item.path)?.name;
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
@@ -66,6 +70,9 @@ export const Layout = () => {
       userId: user.id || 0,
       sender: `${user.lastName} ${user.surName}`,
     };
+
+    console.log(sendMessage);
+    console.log(socket)
     socket.emit('sendMessage', msg);
   };
 

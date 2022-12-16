@@ -18,7 +18,7 @@ const store = createStore(userReducer as any);
 
 root.render(
   <Provider store={store}>
-    <BrowserRouter>
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
       <MantineProvider
         withGlobalStyles
         withNormalizeCSS

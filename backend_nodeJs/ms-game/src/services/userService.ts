@@ -1,9 +1,9 @@
-import { UserDTO } from "../../../../client/src/entities/userDTO";
+import { UserDTO } from "../models/userDTO";
 import axios from "axios";
 import * as dotenv from "dotenv";
 
 dotenv.config();
-const URL_MS_USER = process.env.URL + ":" + process.env.USERPORT + "/api/users";
+const URL_MS_USER = process.env.URL + "/api/users";
 
 export default class UserService {
   // update user on ms-user

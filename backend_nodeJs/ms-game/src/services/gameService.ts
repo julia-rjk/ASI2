@@ -1,4 +1,4 @@
-import GameDTO, { GameUserDTO } from "../../../../client/src/entities/gameDTO";
+import GameDTO, { GameUserDTO } from "../models/gameDTO";
 import Game from "../models/game";
 import { Server, Socket } from "socket.io";
 import { CardDTO } from "../models/cardDTO";

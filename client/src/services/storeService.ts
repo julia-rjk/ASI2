@@ -10,7 +10,7 @@ import { storeApi } from '../api/storeApi';
 
 export const sellCardAsync = (storeOrder: StoreOrder) => {
   return storeApi<boolean>({
-    url: `/api/store/sell`,
+    url: `/sell`,
     method: 'post',
     headers: { 'Content-Type': 'application/json' },
     data: storeOrder,
@@ -19,7 +19,7 @@ export const sellCardAsync = (storeOrder: StoreOrder) => {
 
 export const buyCardAsync = (storeOrder: StoreOrder) => {
   return storeApi<boolean>({
-    url: `/api/store/buy`,
+    url: `/buy`,
     method: 'post',
     headers: { 'Content-Type': 'application/json' },
     data: storeOrder,
@@ -27,7 +27,7 @@ export const buyCardAsync = (storeOrder: StoreOrder) => {
 };
 
 export const getCard = () => {
-  return storeApi<StoreTransaction[]>({ url: `/api/store`, method: 'get' });
+  return storeApi<StoreTransaction[]>({ url: ``, method: 'get' });
 };
 
 export type SellCardAsyncResult = NonNullable<

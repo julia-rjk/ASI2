@@ -12,7 +12,7 @@ import { userApi } from '../api/userApi';
  * @summary getAllUsers
  */
 export const getAllUsers = () => {
-  return userApi<UserDTO[]>({ url: `/api/users`, method: 'get' });
+  return userApi<UserDTO[]>({ url: ``, method: 'get' });
 };
 
 /**
@@ -20,7 +20,7 @@ export const getAllUsers = () => {
  */
 export const updateUserAsync = (userDTO: UserDTO) => {
   return userApi<boolean | void>({
-    url: `/api/users`,
+    url: ``,
     method: 'put',
     headers: { 'Content-Type': 'application/json' },
     data: userDTO,
@@ -32,7 +32,7 @@ export const updateUserAsync = (userDTO: UserDTO) => {
  */
 export const login = (userDTO: UserDTO) => {
   return userApi<UserDTO | void>({
-    url: `/api/users/login`,
+    url: `/login`,
     method: 'put',
     headers: { 'Content-Type': 'application/json' },
     data: userDTO,
@@ -44,7 +44,7 @@ export const login = (userDTO: UserDTO) => {
  */
 export const register = (userDTO: UserDTO) => {
   return userApi<boolean | void>({
-    url: `/api/users/register`,
+    url: `/register`,
     method: 'post',
     headers: { 'Content-Type': 'application/json' },
     data: userDTO,
@@ -55,14 +55,14 @@ export const register = (userDTO: UserDTO) => {
  * @summary getUserByid
  */
 export const getUserByid = (id: number) => {
-  return userApi<UserDTO>({ url: `/api/users/${id}`, method: 'get' });
+  return userApi<UserDTO>({ url: `/${id}`, method: 'get' });
 };
 
 /**
  * @summary deleteUser
  */
 export const deleteUser = (id: number) => {
-  return userApi<boolean | void>({ url: `/api/users/${id}`, method: 'delete' });
+  return userApi<boolean | void>({ url: `/${id}`, method: 'delete' });
 };
 
 export type GetAllUsersResult = NonNullable<
