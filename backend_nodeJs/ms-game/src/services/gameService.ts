@@ -87,14 +87,6 @@ export default class GameService {
       return;
     }
 
-<<<<<<< HEAD
-        // get cards
-        const cardAttacker = attacker.cards.find((c : any) => c.id === cardAttackerId) as CardDTO;
-        const cardDefender = defender.cards.find((c : any) => c.id === cardDefenderId) as CardDTO;        
-        if (!cardAttacker|| !cardDefender || cardAttacker.energy < 1 || cardDefender.hp < 1 || cardAttacker.hp < 1) {
-            return;
-        }
-=======
     // get cards
     const cardAttacker = attacker.cards.find(
       (c) => c.id === cardAttackerId
@@ -111,7 +103,6 @@ export default class GameService {
     ) {
       return;
     }
->>>>>>> 445ac26cacbc342c1554e7e18124ac7a8293adbf
 
     // remove action point
     attacker.actionPoints = attacker.actionPoints - 1;

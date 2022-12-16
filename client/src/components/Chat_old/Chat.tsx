@@ -9,9 +9,11 @@ import { selectUser } from '../../redux/user.selector';
 
 export const Chat_old = () => {
   const socket = io(
-    process.env.REACT_APP_SERVERURL + ""
+    process.env.REACT_APP_SERVERURL + ''
+    ,{
+      path: process.env.REACT_APP_GAMEPATH
+    }
   );
-
   const user = useSelector(selectUser);
   const form = useForm({
     initialValues: {

@@ -1,6 +1,21 @@
 version: '3.7'
 services:
 
+  activemq:
+    container_name: activemq
+    image: codingpuss/activemq:5.17.2-jre-19-alpine
+    ports:
+      - 8161:8161
+      - 61616:61616
+    networks:
+      - app-network     
+  proxy:
+    build: ./reverseproxy
+    ports:
+      - "80:80"
+    networks:
+      - app-network
+
   # Port 8081
   userservice:
     build: backend_java/ms-user
@@ -59,20 +74,7 @@ services:
     networks:
       - app-network
 
-  activemq:
-    container_name: activemq
-    image: codingpuss/activemq:5.17.2-jre-19-alpine
-    ports:
-      - 8161:8161
-      - 61616:61616
-    networks:
-      - app-network     
-  proxy:
-    build: ./reverseproxy
-    ports:
-      - "80:80"
-    networks:
-      - app-network
+
 
 networks:
   app-network:
