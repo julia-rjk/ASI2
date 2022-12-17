@@ -34,11 +34,11 @@ services:
     networks:
       - app-network
 
-  # # Port 8084
-  # storeservice:
-  #   build: backend_java/ms-store/ms-store
-  #   networks:
-  #     - app-network
+  # Port 8084
+  storeservice:
+    build: backend_java/ms-store/ms-store
+    networks:
+      - app-network
 
   # Port 8085
   cardservice:
@@ -53,10 +53,10 @@ services:
       - app-network
 
   # Port 8087
-  gameservice:
-    build: ./backend_nodeJs/ms-game
-    networks:
-      - app-network
+  # gameservice:
+  #   build: ./backend_nodeJs/ms-game
+  #   networks:
+  #     - app-network
 
   # Port 8088
   logesbservice:

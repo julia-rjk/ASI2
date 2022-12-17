@@ -11,7 +11,7 @@ const URLCLIENT = process.env.URL + ":" + CLIENTPORT;
 const URL = process.env.URL + ":" + PORT;
 createApplication(httpServer, {
   cors: {
-    origin: [URLCLIENT, `http://localhost/api/client`],
+    origin: [URLCLIENT, `http://localhost/client`],
   },
 });
 

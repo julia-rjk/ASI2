@@ -1,15 +1,18 @@
 import Game from "../models/game";
 import { Server, Socket } from "socket.io";
 // import moment from 'moment';
+
 import ChatUser from "../models/chatUser";
 import axios from "axios";
+import * as dotenv from "dotenv";
+dotenv.config();
 import { MessageDTO } from "../models/messageDTO";
 const URL_MS_USER = process.env.URL + "/api/users";
 const URL_MS_CHATHISTORY = process.env.URL + "/api/messages";
-import * as dotenv from "dotenv";
+
 import { UserDTO } from "../models/userDTO";
 
-dotenv.config();
+
 
 export default class ChatService {
   public sendMessage(io: Server, msg: MessageDTO) {

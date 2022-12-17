@@ -8,7 +8,9 @@ import { MessageDTO } from '../models/messageDTO';
 
 export function createApplication(
   httpServer: HttpServer,
-  serverOptions: Partial<ServerOptions> = {}
+  serverOptions: Partial<ServerOptions> = {
+    path: "/api/game/socket.io/"
+  }
 ): Server {
   const io = new Server(httpServer, serverOptions);
   const gameService = new GameService();
