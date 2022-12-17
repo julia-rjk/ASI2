@@ -31,6 +31,167 @@ jobs:
           
           push: ${{ github.ref == 'refs/heads/main' }}
 
+  push-ms-cardbasic:
+    runs-on: ubuntu-latest
+    env:
+      working-directory: ./backend_java/ms-cardbasic 
+      
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+
+      - name: Login to DockerHub
+        run: docker login -u ${{secrets.DOCKERHUB_USERNAME }} -p ${{secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build image and push backend
+        uses: docker/build-push-action@v2
+        with:
+        
+          context: ./backend_java/ms-cardbasic 
+          
+          tags: ${{secrets.DOCKERHUB_USERNAME}}/asi2-ms-cardbasic
+          
+          push: ${{ github.ref == 'refs/heads/main' }}
+
+  push-ms-chathistory:
+    runs-on: ubuntu-latest
+    env:
+      working-directory: ./backend_java/ms-chathistory 
+      
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+
+      - name: Login to DockerHub
+        run: docker login -u ${{secrets.DOCKERHUB_USERNAME }} -p ${{secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build image and push backend
+        uses: docker/build-push-action@v2
+        with:
+        
+          context: ./backend_java/ms-chathistory 
+          
+          tags: ${{secrets.DOCKERHUB_USERNAME}}/asi2-ms-chathistory
+          
+          push: ${{ github.ref == 'refs/heads/main' }}
+
+  push-ms-logesb:
+    runs-on: ubuntu-latest
+    env:
+      working-directory: ./backend_java/ms-logesb 
+      
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+
+      - name: Login to DockerHub
+        run: docker login -u ${{secrets.DOCKERHUB_USERNAME }} -p ${{secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build image and push backend
+        uses: docker/build-push-action@v2
+        with:
+        
+          context: ./backend_java/ms-logesb 
+          
+          tags: ${{secrets.DOCKERHUB_USERNAME}}/asi2-ms-logesb
+          
+          push: ${{ github.ref == 'refs/heads/main' }}
+
+  push-ms-store:
+    runs-on: ubuntu-latest
+    env:
+      working-directory: ./backend_java/ms-store/ms-store 
+      
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+
+      - name: Login to DockerHub
+        run: docker login -u ${{secrets.DOCKERHUB_USERNAME }} -p ${{secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build image and push backend
+        uses: docker/build-push-action@v2
+        with:
+        
+          context: ./backend_java/ms-store/ms-store 
+          
+          tags: ${{secrets.DOCKERHUB_USERNAME}}/asi2-ms-store
+          
+          push: ${{ github.ref == 'refs/heads/main' }}
+
+  push-ms-user:
+    runs-on: ubuntu-latest
+    env:
+      working-directory: ./backend_java/ms-user 
+      
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+
+      - name: Login to DockerHub
+        run: docker login -u ${{secrets.DOCKERHUB_USERNAME }} -p ${{secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build image and push backend
+        uses: docker/build-push-action@v2
+        with:
+        
+          context: ./backend_java/ms-user 
+          
+          tags: ${{secrets.DOCKERHUB_USERNAME}}/asi2-ms-user
+          
+          push: ${{ github.ref == 'refs/heads/main' }}
+
+  push-ms-auth:
+    runs-on: ubuntu-latest
+    env:
+      working-directory: ./backend_nodeJs/ms-auth 
+      
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+
+      - name: Login to DockerHub
+        run: docker login -u ${{secrets.DOCKERHUB_USERNAME }} -p ${{secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build image and push backend
+        uses: docker/build-push-action@v2
+        with:
+        
+          context: ./backend_nodeJs/ms-auth 
+          
+          tags: ${{secrets.DOCKERHUB_USERNAME}}/asi2-ms-auth
+          
+          push: ${{ github.ref == 'refs/heads/main' }}
+
+  push-ms-game:
+    runs-on: ubuntu-latest
+    env:
+      working-directory: ./backend_nodeJs/ms-game 
+      
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+
+      - name: Login to DockerHub
+        run: docker login -u ${{secrets.DOCKERHUB_USERNAME }} -p ${{secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build image and push backend
+        uses: docker/build-push-action@v2
+        with:
+        
+          context: ./backend_nodeJs/ms-game 
+          
+          tags: ${{secrets.DOCKERHUB_USERNAME}}/asi2-ms-game
+          
+          push: ${{ github.ref == 'refs/heads/main' }}
+
   push-frontend:
     runs-on: ubuntu-latest
     
