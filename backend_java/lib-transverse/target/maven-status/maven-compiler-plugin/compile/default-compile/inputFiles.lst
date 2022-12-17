@@ -1,0 +1,12 @@
+/home/julia/ASI/3ASI/backend_java/lib-transverse/src/main/java/model/action/ActionStore.java
+/home/julia/ASI/3ASI/backend_java/lib-transverse/src/main/java/model/dto/MessageDTO.java
+/home/julia/ASI/3ASI/backend_java/lib-transverse/src/main/java/model/dto/StoreAction.java
+/home/julia/ASI/3ASI/backend_java/lib-transverse/src/main/java/utils/WebService.java
+/home/julia/ASI/3ASI/backend_java/lib-transverse/src/main/java/service/SenderService.java
+/home/julia/ASI/3ASI/backend_java/lib-transverse/src/main/java/model/action/ActionBasic.java
+/home/julia/ASI/3ASI/backend_java/lib-transverse/src/main/java/model/message/CustomMessage.java
+/home/julia/ASI/3ASI/backend_java/lib-transverse/src/main/java/model/dto/UserDTO.java
+/home/julia/ASI/3ASI/backend_java/lib-transverse/src/main/java/service/ReceiverService.java
+/home/julia/ASI/3ASI/backend_java/lib-transverse/src/main/java/utils/Mapper.java
+/home/julia/ASI/3ASI/backend_java/lib-transverse/src/main/java/model/dto/CardDTO.java
+/home/julia/ASI/3ASI/backend_java/lib-transverse/src/main/java/model/dto/CardBasicsDTO.java
