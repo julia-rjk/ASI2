@@ -1,4 +1,4 @@
-name: CI devops 2022 CPE
+name: ASI CICD
 on:
   # Launch this job in main and develop branches
   push:
