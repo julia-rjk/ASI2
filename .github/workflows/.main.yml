@@ -1,0 +1,14 @@
+name: CI devops 2022 CPE
+on:
+  # Launch this job in main and develop branches
+  push:
+    branches: 
+      - main
+  pull_request:
+
+jobs:
+  call-workflow-push-docker:
+    uses: ./.github/workflows/.production.yml  # Path of the workflow
+    secrets: # Passing secrets
+      DOCKERHUB_USERNAME: ${{secrets.DOCKERHUB_USERNAME }} 
+      DOCKERHUB_TOKEN: ${{secrets.DOCKERHUB_TOKEN }}
